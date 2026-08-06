@@ -16,7 +16,7 @@ export const profile = {
   facebookUrl: 'https://www.facebook.com/vuvnhn',
   instagramUrl: 'https://www.instagram.com/riceskrtttricemoney/',
   whatsappUrl: 'https://wa.me/817090122965',
-  cvPath: '/CV/CV_VU_VAN_HOANG_EN.pdf',
+  cvPath: '/public/cv.pdf',
   portrait: '/images/personal-11.jpg',
 };
 
