@@ -23,7 +23,7 @@ export const profile = {
 export const ui = {
   en: {
     meta: {
-      title: 'Hoàng | Industrial Automation Engineer · Full Factory Automation',
+      title: 'HOANGAUTOMATION',
       description:
         'Automation R&D Engineer pursuing full factory automation — core strengths in SCADA, PLC, and industrial AI.',
       skip: 'Skip to main content',
