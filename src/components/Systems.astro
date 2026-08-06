@@ -1,0 +1,47 @@
+---
+import { ui } from '../i18n/ui';
+
+const t = ui.en;
+---
+
+<section
+  id="systems"
+  class="border-t border-slate-800/60 py-20 sm:py-24"
+  aria-labelledby="systems-heading"
+>
+  <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+    <div class="max-w-2xl">
+      <p class="text-sm font-semibold uppercase tracking-widest text-emerald-400" data-i18n="systems.kicker">{t.systems.kicker}</p>
+      <h2 id="systems-heading" class="mt-2 text-3xl font-bold tracking-tight text-white sm:text-4xl" data-i18n="systems.title">
+        {t.systems.title}
+      </h2>
+      <p class="mt-4 text-base text-slate-400 sm:text-lg" data-i18n="systems.subtitle">
+        {t.systems.subtitle}
+      </p>
+    </div>
+
+    <div class="mt-12 grid gap-5 sm:grid-cols-2">
+      {
+        t.systems.items.map((item, i) => (
+          <figure class="group overflow-hidden rounded-2xl border border-slate-800 bg-slate-900/40 transition hover:border-emerald-500/40 hover:bg-slate-900/70">
+            <div class="aspect-[16/9] overflow-hidden bg-slate-950">
+              <img
+                src={item.image}
+                alt=""
+                width="640"
+                height="360"
+                loading="lazy"
+                decoding="async"
+                class="h-full w-full object-cover transition duration-500 group-hover:scale-[1.02]"
+              />
+            </div>
+            <figcaption class="border-t border-slate-800/80 p-5">
+              <h3 class="text-base font-bold text-white" data-i18n={`systems.items.${i}.title`}>{item.title}</h3>
+              <p class="mt-1.5 text-sm leading-relaxed text-slate-400" data-i18n={`systems.items.${i}.desc`}>{item.desc}</p>
+            </figcaption>
+          </figure>
+        ))
+      }
+    </div>
+  </div>
+</section>

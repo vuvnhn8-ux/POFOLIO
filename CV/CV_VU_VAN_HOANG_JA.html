@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>職務経歴書・履歴書 - VU VAN HOANG（日本語）</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --primary: #0f2c59;
+    --accent: #1a5276;
+    --line: #d0d7de;
+    --bg: #f4f6f8;
+    --text: #1f2937;
+    --muted: #5b6570;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Noto Sans JP', 'Yu Gothic', 'Meiryo', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.65;
+    font-size: 13px;
+  }
+
+  .page {
+    max-width: 900px;
+    margin: 24px auto;
+    background: #fff;
+    box-shadow: 0 8px 30px rgba(15, 44, 89, 0.12);
+    overflow: hidden;
+  }
+
+  .header {
+    display: grid;
+    grid-template-columns: 1fr 140px;
+    gap: 24px;
+    background: linear-gradient(135deg, #0f2c59 0%, #1a5276 100%);
+    color: #fff;
+    padding: 28px 36px;
+  }
+
+  .header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin-bottom: 2px;
+  }
+
+  .header .kana {
+    font-size: 12px;
+    opacity: 0.9;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+  }
+
+  .header .role {
+    font-size: 13.5px;
+    font-weight: 400;
+    opacity: 0.95;
+    margin-bottom: 14px;
+  }
+
+  .header-meta {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5px 16px;
+    font-size: 12px;
+  }
+
+  .photo-wrap {
+    width: 130px;
+    height: 160px;
+    border: 3px solid rgba(255,255,255,0.85);
+    border-radius: 4px;
+    overflow: hidden;
+    background: #fff;
+    justify-self: end;
+    align-self: center;
+  }
+
+  .photo-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+  }
+
+  .body {
+    display: grid;
+    grid-template-columns: 250px 1fr;
+    min-height: 600px;
+  }
+
+  .sidebar {
+    background: #f0f4f8;
+    padding: 24px 20px;
+    border-right: 1px solid var(--line);
+  }
+
+  .main {
+    padding: 24px 28px 34px;
+  }
+
+  h2 {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--primary);
+    border-bottom: 2px solid var(--primary);
+    padding-bottom: 6px;
+    margin-bottom: 12px;
+    margin-top: 20px;
+  }
+
+  .sidebar h2:first-child,
+  .main h2:first-child { margin-top: 0; }
+
+  .info-item {
+    margin-bottom: 9px;
+    font-size: 12px;
+  }
+
+  .info-item .label {
+    display: block;
+    font-weight: 600;
+    color: var(--primary);
+    font-size: 11px;
+    margin-bottom: 1px;
+  }
+
+  .skill-list, .lang-list, .cert-list {
+    list-style: none;
+  }
+
+  .skill-list li, .lang-list li, .cert-list li {
+    padding: 4px 0;
+    border-bottom: 1px dashed #cfd8e3;
+    font-size: 12px;
+  }
+
+  .skill-list li:last-child,
+  .lang-list li:last-child,
+  .cert-list li:last-child { border-bottom: none; }
+
+  .bar {
+    height: 5px;
+    background: #d5dde8;
+    border-radius: 3px;
+    margin-top: 4px;
+    overflow: hidden;
+  }
+
+  .bar > i {
+    display: block;
+    height: 100%;
+    background: linear-gradient(90deg, #0f2c59, #2e86ab);
+    border-radius: 3px;
+  }
+
+  .job, .edu {
+    margin-bottom: 16px;
+    position: relative;
+    padding-left: 14px;
+    border-left: 2px solid #c5d0de;
+  }
+
+  .job::before, .edu::before {
+    content: '';
+    position: absolute;
+    left: -6px;
+    top: 6px;
+    width: 10px;
+    height: 10px;
+    background: var(--primary);
+    border-radius: 50%;
+    border: 2px solid #fff;
+    box-shadow: 0 0 0 1px var(--primary);
+  }
+
+  .job-head, .edu-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .job-title, .edu-title {
+    font-weight: 600;
+    font-size: 13px;
+    color: var(--primary);
+  }
+
+  .job-company, .edu-school {
+    font-weight: 500;
+    font-size: 12.5px;
+  }
+
+  .period {
+    font-size: 11px;
+    color: var(--muted);
+    white-space: nowrap;
+    font-weight: 500;
+  }
+
+  .job ul {
+    margin: 5px 0 0 16px;
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  .job li { margin-bottom: 2px; }
+
+  .summary {
+    font-size: 12.5px;
+    color: var(--text);
+    text-align: justify;
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+  }
+
+  .tag {
+    background: #e8eef5;
+    color: var(--primary);
+    font-size: 11px;
+    padding: 3px 9px;
+    border-radius: 12px;
+    font-weight: 500;
+  }
+
+  .footer-note {
+    margin-top: 18px;
+    padding-top: 10px;
+    border-top: 1px solid var(--line);
+    font-size: 10.5px;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  table.basic {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    margin-bottom: 4px;
+  }
+
+  table.basic td {
+    padding: 3px 0;
+    vertical-align: top;
+  }
+
+  table.basic td:first-child {
+    width: 72px;
+    color: var(--muted);
+    font-weight: 500;
+  }
+
+  @media print {
+    body { background: #fff; }
+    .page { margin: 0; box-shadow: none; max-width: 100%; }
+    @page { margin: 10mm; size: A4; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="header">
+    <div>
+      <div class="kana">ヴ　ヴァン　ホアン</div>
+      <h1>VU VAN HOANG</h1>
+      <div class="role">制御設計エンジニア ／ FA・PLC・ロボットシステム</div>
+      <div class="header-meta">
+        <span>📅 生年月日：2000年8月20日（満25歳）</span>
+        <span>🌏 国籍：ベトナム</span>
+        <span>📍 〒412-0043 静岡県御殿場市</span>
+        <span>📞 070-9012-2965</span>
+        <span>✉️ vuvnh8@gmail.com</span>
+        <span>🪪 在留資格：エンジニア（2027/09/20まで）</span>
+      </div>
+    </div>
+    <div class="photo-wrap">
+      <img src="photo.png" alt="VU VAN HOANG" />
+    </div>
+  </header>
+
+  <div class="body">
+    <aside class="sidebar">
+      <h2>基本情報</h2>
+      <div class="info-item">
+        <span class="label">性別</span>
+        <span class="value">男</span>
+      </div>
+      <div class="info-item">
+        <span class="label">配偶者</span>
+        <span class="value">無</span>
+      </div>
+      <div class="info-item">
+        <span class="label">健康状態</span>
+        <span class="value">良好</span>
+      </div>
+      <div class="info-item">
+        <span class="label">扶養家族</span>
+        <span class="value">0人（配偶者を除く）</span>
+      </div>
+
+      <h2>語学</h2>
+      <ul class="lang-list">
+        <li>
+          ベトナム語 — 母語
+          <div class="bar"><i style="width:100%"></i></div>
+        </li>
+        <li>
+          日本語 — N2相当
+          <div class="bar"><i style="width:80%"></i></div>
+        </li>
+        <li>
+          英語 — B1（TOEIC 650相当）
+          <div class="bar"><i style="width:60%"></i></div>
+        </li>
+      </ul>
+
+      <h2>スキル</h2>
+      <ul class="skill-list">
+        <li>PLCプログラミング（キーエンス／三菱／オムロン）</li>
+        <li>HMI・タッチパネル設計</li>
+        <li>ロボットティーチング（安川SCARA、IAI）</li>
+        <li>セーフティPLC</li>
+        <li>AI画像処理</li>
+        <li>C# ／ Python ／ C++</li>
+        <li>制御盤設計・組立・配線</li>
+        <li>FA・スマートファクトリー構築</li>
+        <li>IO-Link ／ I/Oチェック</li>
+        <li>電気設備施工監督・検査</li>
+      </ul>
+
+      <h2>免許・資格</h2>
+      <ul class="cert-list">
+        <li><strong>2023.10</strong> — キーエンス機器プログラミング</li>
+        <li><strong>2024.05</strong> — 普通自動車運転免許（MT）</li>
+        <li><strong>2026.03</strong> — 安川ロボットティーチング</li>
+        <li><strong>2026.04</strong> — 低圧電気取扱</li>
+      </ul>
+
+      <h2>趣味・特技</h2>
+      <div class="tags">
+        <span class="tag">絵を描く</span>
+        <span class="tag">サッカー</span>
+        <span class="tag">バレーボール</span>
+        <span class="tag">キャンプ</span>
+        <span class="tag">読書</span>
+        <span class="tag">ハンドメイド</span>
+      </div>
+    </aside>
+
+    <main class="main">
+      <h2>職務要約</h2>
+      <p class="summary">
+        FA（工場自動化）分野における3年以上のR&amp;D経験と、AI画像処理・ロボット制御・PLCシステム構築の
+        専門知識を活かし、グローバル市場向けテクニカルセールス／プリセールスとして貢献します。
+        技術的なバックグラウンド（電気工事士、安川ロボット資格等）を強みに、顧客の現場課題を正確に把握し、
+        最適かつ高付加価値なスマートファクトリーソリューションを提案・実現します。
+      </p>
+
+      <h2>職歴</h2>
+
+      <div class="job">
+        <div class="job-head">
+          <div>
+            <div class="job-title">制御設計</div>
+            <div class="job-company">東洋製罐グループホールディングス<br />東罐興業株式会社 技術開発センター</div>
+          </div>
+          <div class="period">2026年3月 ～ 現在</div>
+        </div>
+        <ul>
+          <li>技術開発センターにて生産設備の制御設計に従事</li>
+          <li>グループ製造拠点を支えるFAシステムの開発・改善</li>
+        </ul>
+      </div>
+
+      <div class="job">
+        <div class="job-head">
+          <div>
+            <div class="job-title">FA設備開発・制御設計</div>
+            <div class="job-company">株式会社東邦テクノス</div>
+          </div>
+          <div class="period">2023年9月 ～ 2026年2月</div>
+        </div>
+        <ul>
+          <li>生産設備の電気設計業務（期間：約22か月、担当：約8台の装置）</li>
+          <li>シーケンサ・HMI（キーエンス、三菱、オムロン）制御ソフト（PLCプログラミング）の設計・開発</li>
+          <li>安川SCARAロボット、IAIロボット、セーフティPLCの設計・ティーチング</li>
+          <li>制御盤組立、配線、I/Oチェック、タッチパネル、IO-Link使用経験</li>
+          <li>大小規模の装置4台程度の据付サポート（期間：約16か月）</li>
+        </ul>
+      </div>
+
+      <div class="job">
+        <div class="job-head">
+          <div>
+            <div class="job-title">契約社員 — 施工監督・検査</div>
+            <div class="job-company">Doan Nhat 電気機械合資会社（ベトナム）</div>
+          </div>
+          <div class="period">2023年6月 ～ 2023年8月</div>
+        </div>
+        <ul>
+          <li>工場電気設備の施工監督・検査業務</li>
+          <li>産業用電気・機械システムの現場調整</li>
+        </ul>
+      </div>
+
+      <div class="job">
+        <div class="job-head">
+          <div>
+            <div class="job-title">実習社員 — 保守・保全</div>
+            <div class="job-company">ベトナム DreamTech 会社</div>
+          </div>
+          <div class="period">2023年1月～3月 ／ 4月～6月</div>
+        </div>
+        <ul>
+          <li>電子部品製造工場における設備の保守・保全業務（実習生）</li>
+          <li>生産ライン設備および工場運営の実務経験</li>
+        </ul>
+      </div>
+
+      <h2>学歴</h2>
+
+      <div class="edu">
+        <div class="edu-head">
+          <div>
+            <div class="edu-title">オンライン日本語課程</div>
+            <div class="edu-school">VCI 人材輩出アカデミー</div>
+          </div>
+          <div class="period">2023年7月 ～ 2023年9月</div>
+        </div>
+      </div>
+
+      <div class="edu">
+        <div class="edu-head">
+          <div>
+            <div class="edu-title">技術系大学 卒業</div>
+            <div class="edu-school">VINH 技術師範大学（ベトナム）</div>
+          </div>
+          <div class="period">2018年9月 ～ 2023年7月</div>
+        </div>
+      </div>
+
+      <div class="edu">
+        <div class="edu-head">
+          <div>
+            <div class="edu-title">高等学校 卒業</div>
+            <div class="edu-school">QUYNH LUU 2 高校（ベトナム）</div>
+          </div>
+          <div class="period">2015年8月 ～ 2018年8月</div>
+        </div>
+      </div>
+
+      <h2>志望動機・本人希望</h2>
+      <p class="summary">
+        日本のFA業界において、AI画像処理、産業用ロボット、PLCシステム等のR&amp;D開発に3年以上従事してまいりました。
+        今後はこれまでの開発実績および技術的バックグラウンド（C#／Python／C++、制御設計）を活かし、
+        <strong>ソリューションエンジニア</strong>、<strong>技術コンサルタント</strong>、
+        <strong>ブリッジエンジニア</strong>としてより広い領域で活躍したいと考えております。
+        単なる製品・機能開発にとどまらず、現場の課題解決に向けた技術提案やシステム設計、
+        ならびにグローバルな環境における技術コミュニケーションの要となり、
+        スマートファクトリーの推進と事業成長に貢献いたします。
+      </p>
+
+      <h2>自己PR</h2>
+      <p class="summary">
+        私は、自己成長と心身の健康のバランスを常に追求する人間です。
+        業務面では、芸術（絵画、読書）に対する情熱と、日本家業に対する深い観察力が、
+        私に詳細な分析的思考、創造性、そして異文化への尊重の精神を育みました。
+        私生活では、特にサッカーなどの運動を定期的に続けることで、優れた健康状態、
+        高いチームワーク精神、そして迅速な対応力を保っています。
+        また、週末のキャンプを通じて、環境への適応力と自主的な問題解決能力も養うことができました。
+      </p>
+
+      <div class="footer-note">
+        履歴書・職務経歴書 ｜ VU VAN HOANG ｜ 2026年8月 現在 ｜ 機密
+      </div>
+    </main>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CV - VŨ VĂN HOÀNG (Tiếng Việt)</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --primary: #0f2c59;
+    --accent: #1a5276;
+    --line: #d0d7de;
+    --bg: #f4f6f8;
+    --text: #1f2937;
+    --muted: #5b6570;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Be Vietnam Pro', 'Segoe UI', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    font-size: 13.5px;
+  }
+
+  .page {
+    max-width: 900px;
+    margin: 24px auto;
+    background: #fff;
+    box-shadow: 0 8px 30px rgba(15, 44, 89, 0.12);
+    overflow: hidden;
+  }
+
+  .header {
+    display: grid;
+    grid-template-columns: 1fr 140px;
+    gap: 24px;
+    background: linear-gradient(135deg, #0f2c59 0%, #1a5276 100%);
+    color: #fff;
+    padding: 28px 36px;
+  }
+
+  .header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+  }
+
+  .header .role {
+    font-size: 13.5px;
+    font-weight: 400;
+    opacity: 0.95;
+    margin-bottom: 14px;
+  }
+
+  .header-meta {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5px 16px;
+    font-size: 12px;
+  }
+
+  .photo-wrap {
+    width: 130px;
+    height: 160px;
+    border: 3px solid rgba(255,255,255,0.85);
+    border-radius: 4px;
+    overflow: hidden;
+    background: #fff;
+    justify-self: end;
+    align-self: center;
+  }
+
+  .photo-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+  }
+
+  .body {
+    display: grid;
+    grid-template-columns: 255px 1fr;
+    min-height: 600px;
+  }
+
+  .sidebar {
+    background: #f0f4f8;
+    padding: 24px 20px;
+    border-right: 1px solid var(--line);
+  }
+
+  .main {
+    padding: 24px 28px 34px;
+  }
+
+  h2 {
+    font-size: 12.5px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--primary);
+    border-bottom: 2px solid var(--primary);
+    padding-bottom: 6px;
+    margin-bottom: 12px;
+    margin-top: 20px;
+  }
+
+  .sidebar h2:first-child,
+  .main h2:first-child { margin-top: 0; }
+
+  .info-item {
+    margin-bottom: 9px;
+    font-size: 12.5px;
+  }
+
+  .info-item .label {
+    display: block;
+    font-weight: 600;
+    color: var(--primary);
+    font-size: 11px;
+    margin-bottom: 1px;
+  }
+
+  .skill-list, .lang-list, .cert-list {
+    list-style: none;
+  }
+
+  .skill-list li, .lang-list li, .cert-list li {
+    padding: 4px 0;
+    border-bottom: 1px dashed #cfd8e3;
+    font-size: 12px;
+  }
+
+  .skill-list li:last-child,
+  .lang-list li:last-child,
+  .cert-list li:last-child { border-bottom: none; }
+
+  .bar {
+    height: 5px;
+    background: #d5dde8;
+    border-radius: 3px;
+    margin-top: 4px;
+    overflow: hidden;
+  }
+
+  .bar > i {
+    display: block;
+    height: 100%;
+    background: linear-gradient(90deg, #0f2c59, #2e86ab);
+    border-radius: 3px;
+  }
+
+  .job, .edu {
+    margin-bottom: 16px;
+    position: relative;
+    padding-left: 14px;
+    border-left: 2px solid #c5d0de;
+  }
+
+  .job::before, .edu::before {
+    content: '';
+    position: absolute;
+    left: -6px;
+    top: 6px;
+    width: 10px;
+    height: 10px;
+    background: var(--primary);
+    border-radius: 50%;
+    border: 2px solid #fff;
+    box-shadow: 0 0 0 1px var(--primary);
+  }
+
+  .job-head, .edu-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .job-title, .edu-title {
+    font-weight: 600;
+    font-size: 13px;
+    color: var(--primary);
+  }
+
+  .job-company, .edu-school {
+    font-weight: 500;
+    font-size: 12.5px;
+  }
+
+  .period {
+    font-size: 11px;
+    color: var(--muted);
+    white-space: nowrap;
+    font-weight: 500;
+  }
+
+  .job ul {
+    margin: 5px 0 0 16px;
+    color: var(--muted);
+    font-size: 12.5px;
+  }
+
+  .job li { margin-bottom: 2px; }
+
+  .summary {
+    font-size: 12.5px;
+    color: var(--text);
+    text-align: justify;
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+  }
+
+  .tag {
+    background: #e8eef5;
+    color: var(--primary);
+    font-size: 11px;
+    padding: 3px 9px;
+    border-radius: 12px;
+    font-weight: 500;
+  }
+
+  .footer-note {
+    margin-top: 18px;
+    padding-top: 10px;
+    border-top: 1px solid var(--line);
+    font-size: 10.5px;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  @media print {
+    body { background: #fff; }
+    .page { margin: 0; box-shadow: none; max-width: 100%; }
+    @page { margin: 10mm; size: A4; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="header">
+    <div>
+      <h1>VŨ VĂN HOÀNG</h1>
+      <div class="role">Kỹ sư Thiết kế Điều khiển · FA / PLC / Hệ thống Robot</div>
+      <div class="header-meta">
+        <span>📅 Sinh: 20/08/2000 (25 tuổi)</span>
+        <span>🌏 Quốc tịch: Việt Nam</span>
+        <span>📍 〒412-0043 Gotemba, Shizuoka, Nhật Bản</span>
+        <span>📞 070-9012-2965</span>
+        <span>✉️ vuvnh8@gmail.com</span>
+      </div>
+    </div>
+    <div class="photo-wrap">
+      <img src="photo.png" alt="VŨ VĂN HOÀNG" />
+    </div>
+  </header>
+
+  <div class="body">
+    <aside class="sidebar">
+      <h2>Thông tin cá nhân</h2>
+      <div class="info-item">
+        <span class="label">Giới tính</span>
+        <span class="value">Nam</span>
+      </div>
+      <div class="info-item">
+        <span class="label">Tình trạng hôn nhân</span>
+        <span class="value">Độc thân</span>
+      </div>
+      <div class="info-item">
+        <span class="label">Sức khỏe</span>
+        <span class="value">Tốt</span>
+      </div>
+      <div class="info-item">
+        <span class="label">Người phụ thuộc</span>
+        <span class="value">0 người</span>
+      </div>
+
+      <h2>Ngoại ngữ</h2>
+      <ul class="lang-list">
+        <li>
+          Tiếng Việt — Bản ngữ
+          <div class="bar"><i style="width:100%"></i></div>
+        </li>
+        <li>
+          Tiếng Nhật — JLPT N2
+          <div class="bar"><i style="width:80%"></i></div>
+        </li>
+        <li>
+          Tiếng Anh — B1 (TOEIC 650)
+          <div class="bar"><i style="width:60%"></i></div>
+        </li>
+      </ul>
+
+      <h2>Kỹ năng chuyên môn</h2>
+      <ul class="skill-list">
+        <li>Lập trình PLC (KEYENCE / Mitsubishi / Omron)</li>
+        <li>Thiết kế HMI / Màn hình cảm ứng</li>
+        <li>Dạy robot (Yaskawa SCARA, IAI)</li>
+        <li>Safety PLC</li>
+        <li>Xử lý ảnh AI</li>
+        <li>C# / Python / C++</li>
+        <li>Thiết kế &amp; lắp ráp tủ điện, đấu dây</li>
+        <li>Hệ thống FA / Nhà máy thông minh</li>
+        <li>IO-Link / Kiểm tra I/O</li>
+        <li>Giám sát thi công thiết bị điện</li>
+      </ul>
+
+      <h2>Chứng chỉ &amp; Bằng lái</h2>
+      <ul class="cert-list">
+        <li><strong>10/2023</strong> — Lập trình thiết bị KEYENCE</li>
+        <li><strong>05/2024</strong> — Bằng lái xe Nhật Bản (MT thường)</li>
+        <li><strong>03/2026</strong> — Yaskawa Robot Teaching</li>
+        <li><strong>04/2026</strong> — Xử lý điện hạ áp</li>
+      </ul>
+
+      <h2>Sở thích</h2>
+      <div class="tags">
+        <span class="tag">Vẽ</span>
+        <span class="tag">Bóng đá</span>
+        <span class="tag">Bóng chuyền</span>
+        <span class="tag">Cắm trại</span>
+        <span class="tag">Đọc sách</span>
+        <span class="tag">Thủ công</span>
+      </div>
+    </aside>
+
+    <main class="main">
+      <h2>Tóm tắt nghề nghiệp</h2>
+      <p class="summary">
+        Kỹ sư Thiết kế Điều khiển với hơn 3 năm kinh nghiệm R&amp;D trong lĩnh vực Tự động hóa nhà máy (FA).
+        Chuyên sâu về xử lý ảnh AI, điều khiển robot và xây dựng hệ thống PLC.
+        Kết hợp nền tảng kỹ thuật điện vững chắc với chứng chỉ dạy robot Yaskawa và kỹ năng PLC đa hãng
+        (KEYENCE, Mitsubishi, Omron) để nắm bắt chính xác vấn đề hiện trường và đề xuất giải pháp
+        nhà máy thông minh tối ưu, giá trị cao.
+        Định hướng phát triển: Solution Engineer, Technical Consultant hoặc Bridge Engineer.
+      </p>
+
+      <h2>Kinh nghiệm làm việc</h2>
+
+      <div class="job">
+        <div class="job-head">
+          <div>
+            <div class="job-title">Kỹ sư Thiết kế Điều khiển</div>
+            <div class="job-company">Toyo Seikan Group Holdings — Tokan Kogyo Co., Ltd.<br />Trung tâm Phát triển Kỹ thuật</div>
+          </div>
+          <div class="period">03/2026 – Hiện tại</div>
+        </div>
+        <ul>
+          <li>Thiết kế điều khiển thiết bị sản xuất tại Trung tâm Phát triển Kỹ thuật</li>
+          <li>Phát triển và cải tiến hệ thống FA phục vụ các nhà máy trong tập đoàn</li>
+        </ul>
+      </div>
+
+      <div class="job">
+        <div class="job-head">
+          <div>
+            <div class="job-title">Phát triển thiết bị FA / Thiết kế điều khiển</div>
+            <div class="job-company">Toho Technos Co., Ltd. (Nhật Bản)</div>
+          </div>
+          <div class="period">09/2023 – 02/2026</div>
+        </div>
+        <ul>
+          <li>Thiết kế điện thiết bị sản xuất (~22 tháng, ~8 thiết bị)</li>
+          <li>Lập trình PLC/HMI: KEYENCE, Mitsubishi, Omron (ladder &amp; structured text)</li>
+          <li>Tích hợp robot: Yaskawa SCARA, IAI; thiết kế Safety PLC</li>
+          <li>Lắp ráp tủ điện, đấu dây, kiểm tra I/O, cài đặt màn hình cảm ứng, IO-Link</li>
+          <li>Hỗ trợ lắp đặt thiết bị quy mô vừa và nhỏ (~16 tháng, ~4 máy)</li>
+        </ul>
+      </div>
+
+      <div class="job">
+        <div class="job-head">
+          <div>
+            <div class="job-title">Kỹ sư hợp đồng — Giám sát thi công &amp; kiểm tra</div>
+            <div class="job-company">Công ty TNHH Điện cơ Doan Nhat (Việt Nam)</div>
+          </div>
+          <div class="period">06/2023 – 08/2023</div>
+        </div>
+        <ul>
+          <li>Giám sát và kiểm tra thi công thiết bị điện nhà máy</li>
+          <li>Phối hợp hiện trường hệ thống điện – cơ công nghiệp</li>
+        </ul>
+      </div>
+
+      <div class="job">
+        <div class="job-head">
+          <div>
+            <div class="job-title">Thực tập sinh — Bảo trì thiết bị</div>
+            <div class="job-company">Công ty DreamTech (Việt Nam)</div>
+          </div>
+          <div class="period">01–03/2023 · 04–06/2023</div>
+        </div>
+        <ul>
+          <li>Bảo trì, bảo dưỡng thiết bị tại nhà máy sản xuất linh kiện điện tử</li>
+          <li>Kinh nghiệm thực tế với thiết bị dây chuyền sản xuất và vận hành nhà máy</li>
+        </ul>
+      </div>
+
+      <h2>Học vấn</h2>
+
+      <div class="edu">
+        <div class="edu-head">
+          <div>
+            <div class="edu-title">Khóa tiếng Nhật trực tuyến</div>
+            <div class="edu-school">Học viện Phát triển Nhân lực VCI</div>
+          </div>
+          <div class="period">07/2023 – 09/2023</div>
+        </div>
+      </div>
+
+      <div class="edu">
+        <div class="edu-head">
+          <div>
+            <div class="edu-title">Cử nhân — Sư phạm Kỹ thuật / Kỹ thuật</div>
+            <div class="edu-school">Đại học Sư phạm Kỹ thuật Vinh (Việt Nam)</div>
+          </div>
+          <div class="period">09/2018 – 07/2023</div>
+        </div>
+      </div>
+
+      <div class="edu">
+        <div class="edu-head">
+          <div>
+            <div class="edu-title">Tốt nghiệp Trung học phổ thông</div>
+            <div class="edu-school">THPT Quỳnh Lưu 2 (Việt Nam)</div>
+          </div>
+          <div class="period">08/2015 – 08/2018</div>
+        </div>
+      </div>
+
+      <h2>Định hướng nghề nghiệp</h2>
+      <p class="summary">
+        Trong ngành FA tại Nhật Bản, tôi đã tham gia R&amp;D về xử lý ảnh AI, robot công nghiệp và hệ thống PLC
+        hơn 3 năm. Trong tương lai, tôi mong muốn phát huy thành tích phát triển cùng nền tảng kỹ thuật
+        (C# / Python / C++, thiết kế điều khiển) ở vai trò <strong>Solution Engineer</strong>,
+        <strong>Technical Consultant</strong> hoặc <strong>Bridge Engineer</strong> —
+        không chỉ dừng ở phát triển sản phẩm/chức năng, mà đề xuất giải pháp và thiết kế hệ thống giải quyết
+        bài toán hiện trường, đồng thời trở thành cầu nối giao tiếp kỹ thuật trong môi trường toàn cầu,
+        góp phần thúc đẩy nhà máy thông minh và tăng trưởng kinh doanh.
+      </p>
+
+      <h2>Tự giới thiệu</h2>
+      <p class="summary">
+        Tôi luôn theo đuổi sự cân bằng giữa phát triển bản thân và sức khỏe thể chất – tinh thần.
+        Trong công việc, niềm đam mê nghệ thuật (vẽ, đọc sách) và sự quan sát sâu sắc văn hóa chế tác Nhật Bản
+        đã rèn cho tôi tư duy phân tích chi tiết, sáng tạo và tinh thần tôn trọng đa dạng văn hóa.
+        Trong cuộc sống, việc tập thể thao đều đặn (đặc biệt bóng đá) giúp duy trì sức khỏe tốt, tinh thần đồng đội
+        và khả năng ra quyết định nhanh. Cắm trại cuối tuần rèn khả năng thích nghi môi trường và giải quyết vấn đề chủ động.
+      </p>
+
+      <div class="footer-note">
+        Sơ yếu lý lịch · VŨ VĂN HOÀNG · Cập nhật tháng 8/2026 · Bảo mật
+      </div>
+    </main>
+  </div>
+</div>
+</body>
+</html>

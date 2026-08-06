@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CV - VU VAN HOANG (English)</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --primary: #0f2c59;
+    --accent: #1a5276;
+    --line: #d0d7de;
+    --bg: #f4f6f8;
+    --text: #1f2937;
+    --muted: #5b6570;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.55;
+    font-size: 13.5px;
+  }
+
+  .page {
+    max-width: 900px;
+    margin: 24px auto;
+    background: #fff;
+    box-shadow: 0 8px 30px rgba(15, 44, 89, 0.12);
+    overflow: hidden;
+  }
+
+  /* Header */
+  .header {
+    display: grid;
+    grid-template-columns: 1fr 140px;
+    gap: 24px;
+    background: linear-gradient(135deg, #0f2c59 0%, #1a5276 100%);
+    color: #fff;
+    padding: 28px 36px;
+  }
+
+  .header h1 {
+    font-size: 30px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+  }
+
+  .header .role {
+    font-size: 14px;
+    font-weight: 400;
+    opacity: 0.92;
+    margin-bottom: 14px;
+  }
+
+  .header-meta {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px 18px;
+    font-size: 12.5px;
+  }
+
+  .header-meta span { opacity: 0.95; }
+
+  .photo-wrap {
+    width: 130px;
+    height: 160px;
+    border: 3px solid rgba(255,255,255,0.85);
+    border-radius: 4px;
+    overflow: hidden;
+    background: #fff;
+    justify-self: end;
+    align-self: center;
+  }
+
+  .photo-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+  }
+
+  /* Body */
+  .body {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    min-height: 600px;
+  }
+
+  .sidebar {
+    background: #f0f4f8;
+    padding: 26px 22px;
+    border-right: 1px solid var(--line);
+  }
+
+  .main {
+    padding: 26px 30px 36px;
+  }
+
+  h2 {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--primary);
+    border-bottom: 2px solid var(--primary);
+    padding-bottom: 6px;
+    margin-bottom: 14px;
+    margin-top: 22px;
+  }
+
+  .sidebar h2:first-child,
+  .main h2:first-child { margin-top: 0; }
+
+  .info-item {
+    margin-bottom: 10px;
+    font-size: 12.5px;
+  }
+
+  .info-item .label {
+    display: block;
+    font-weight: 600;
+    color: var(--primary);
+    font-size: 11.5px;
+    margin-bottom: 2px;
+  }
+
+  .info-item .value { color: var(--text); }
+
+  .skill-list, .lang-list, .cert-list {
+    list-style: none;
+  }
+
+  .skill-list li, .lang-list li, .cert-list li {
+    padding: 5px 0;
+    border-bottom: 1px dashed #cfd8e3;
+    font-size: 12.5px;
+  }
+
+  .skill-list li:last-child,
+  .lang-list li:last-child,
+  .cert-list li:last-child { border-bottom: none; }
+
+  .bar {
+    height: 5px;
+    background: #d5dde8;
+    border-radius: 3px;
+    margin-top: 4px;
+    overflow: hidden;
+  }
+
+  .bar > i {
+    display: block;
+    height: 100%;
+    background: linear-gradient(90deg, #0f2c59, #2e86ab);
+    border-radius: 3px;
+  }
+
+  /* Timeline */
+  .job, .edu {
+    margin-bottom: 18px;
+    position: relative;
+    padding-left: 14px;
+    border-left: 2px solid #c5d0de;
+  }
+
+  .job::before, .edu::before {
+    content: '';
+    position: absolute;
+    left: -6px;
+    top: 5px;
+    width: 10px;
+    height: 10px;
+    background: var(--primary);
+    border-radius: 50%;
+    border: 2px solid #fff;
+    box-shadow: 0 0 0 1px var(--primary);
+  }
+
+  .job-head, .edu-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .job-title, .edu-title {
+    font-weight: 600;
+    font-size: 13.5px;
+    color: var(--primary);
+  }
+
+  .job-company, .edu-school {
+    font-weight: 500;
+    color: var(--text);
+    font-size: 13px;
+  }
+
+  .period {
+    font-size: 11.5px;
+    color: var(--muted);
+    white-space: nowrap;
+    font-weight: 500;
+  }
+
+  .job ul {
+    margin: 6px 0 0 16px;
+    color: var(--muted);
+    font-size: 12.5px;
+  }
+
+  .job li { margin-bottom: 3px; }
+
+  .summary {
+    font-size: 13px;
+    color: var(--text);
+    text-align: justify;
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+  }
+
+  .tag {
+    background: #e8eef5;
+    color: var(--primary);
+    font-size: 11px;
+    padding: 3px 9px;
+    border-radius: 12px;
+    font-weight: 500;
+  }
+
+  .footer-note {
+    margin-top: 20px;
+    padding-top: 12px;
+    border-top: 1px solid var(--line);
+    font-size: 11px;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  @media print {
+    body { background: #fff; }
+    .page { margin: 0; box-shadow: none; max-width: 100%; }
+    @page { margin: 12mm; size: A4; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="header">
+    <div>
+      <h1>VU VAN HOANG</h1>
+      <div class="role">Control Design Engineer · FA / PLC / Robot Systems</div>
+      <div class="header-meta">
+        <span>📅 Born: 20 Aug 2000 (Age 25)</span>
+        <span>🌏 Nationality: Vietnam</span>
+        <span>📍 〒412-0043 Gotemba, Shizuoka, Japan</span>
+        <span>📞 070-9012-2965</span>
+        <span>✉️ vuvnh8@gmail.com</span>
+        <span>🪪 Visa: Engineer (valid until 20 Sep 2027)</span>
+      </div>
+    </div>
+    <div class="photo-wrap">
+      <img src="photo.png" alt="VU VAN HOANG" />
+    </div>
+  </header>
+
+  <div class="body">
+    <aside class="sidebar">
+      <h2>Profile</h2>
+      <div class="info-item">
+        <span class="label">Gender</span>
+        <span class="value">Male</span>
+      </div>
+      <div class="info-item">
+        <span class="label">Marital Status</span>
+        <span class="value">Single</span>
+      </div>
+      <div class="info-item">
+        <span class="label">Health</span>
+        <span class="value">Excellent</span>
+      </div>
+      <div class="info-item">
+        <span class="label">Dependents</span>
+        <span class="value">0</span>
+      </div>
+
+      <h2>Languages</h2>
+      <ul class="lang-list">
+        <li>
+          Vietnamese — Native
+          <div class="bar"><i style="width:100%"></i></div>
+        </li>
+        <li>
+          Japanese — JLPT N2
+          <div class="bar"><i style="width:80%"></i></div>
+        </li>
+        <li>
+          English — B1 (TOEIC 650)
+          <div class="bar"><i style="width:60%"></i></div>
+        </li>
+      </ul>
+
+      <h2>Core Skills</h2>
+      <ul class="skill-list">
+        <li>PLC Programming (KEYENCE / Mitsubishi / Omron)</li>
+        <li>HMI / Touch Panel Design</li>
+        <li>Robot Teaching (Yaskawa SCARA, IAI)</li>
+        <li>Safety PLC Systems</li>
+        <li>AI Image Processing</li>
+        <li>C# / Python / C++</li>
+        <li>Control Panel Design &amp; Wiring</li>
+        <li>FA / Smart Factory Systems</li>
+        <li>IO-Link / I/O Checkout</li>
+        <li>Electrical Equipment Installation</li>
+      </ul>
+
+      <h2>Licenses &amp; Certs</h2>
+      <ul class="cert-list">
+        <li><strong>2023.10</strong> — KEYENCE Equipment Programming</li>
+        <li><strong>2024.05</strong> — Japanese Driver’s License (Ordinary MT)</li>
+        <li><strong>2026.03</strong> — Yaskawa Robot Teaching</li>
+        <li><strong>2026.04</strong> — Low-Voltage Electrical Handling</li>
+      </ul>
+
+      <h2>Interests</h2>
+      <div class="tags">
+        <span class="tag">Drawing</span>
+        <span class="tag">Soccer</span>
+        <span class="tag">Volleyball</span>
+        <span class="tag">Camping</span>
+        <span class="tag">Reading</span>
+        <span class="tag">Handmade crafts</span>
+      </div>
+    </aside>
+
+    <main class="main">
+      <h2>Career Summary</h2>
+      <p class="summary">
+        Control Design Engineer with 3+ years of R&amp;D experience in Factory Automation (FA).
+        Specialized in AI image processing, robot control, and PLC system architecture.
+        Combines a strong electrical engineering background with Yaskawa robot teaching and
+        multi-vendor PLC skills (KEYENCE, Mitsubishi, Omron) to deliver accurate on-site
+        problem solving and high-value, cost-effective smart factory solutions.
+        Seeking roles as Solution Engineer, Technical Consultant, or Bridge Engineer
+        to contribute to global smart factory initiatives.
+      </p>
+
+      <h2>Work Experience</h2>
+
+      <div class="job">
+        <div class="job-head">
+          <div>
+            <div class="job-title">Control Design Engineer</div>
+            <div class="job-company">Toyo Seikan Group Holdings — Tokan Kogyo Co., Ltd.<br />Technology Development Center</div>
+          </div>
+          <div class="period">Mar 2026 – Present</div>
+        </div>
+        <ul>
+          <li>Control design for production equipment at the Technology Development Center</li>
+          <li>Development and improvement of FA systems supporting group manufacturing sites</li>
+        </ul>
+      </div>
+
+      <div class="job">
+        <div class="job-head">
+          <div>
+            <div class="job-title">FA Equipment Development / Control Design</div>
+            <div class="job-company">Toho Technos Co., Ltd. (Japan)</div>
+          </div>
+          <div class="period">Sep 2023 – Feb 2026</div>
+        </div>
+        <ul>
+          <li>Electrical design of production equipment (~8 equipment projects, ~22 months)</li>
+          <li>PLC / HMI programming: KEYENCE, Mitsubishi, Omron (ladder &amp; structured text)</li>
+          <li>Robot integration: Yaskawa SCARA, IAI robots; Safety PLC design</li>
+          <li>Control panel assembly, wiring, I/O checkout, touch panel setup, IO-Link</li>
+          <li>Small-to-medium scale equipment installation support (~16 months, ~4 units)</li>
+        </ul>
+      </div>
+
+      <div class="job">
+        <div class="job-head">
+          <div>
+            <div class="job-title">Contract Engineer — Installation Supervision</div>
+            <div class="job-company">Doan Nhat Electrical &amp; Mechanical Co., Ltd. (Vietnam)</div>
+          </div>
+          <div class="period">Jun 2023 – Aug 2023</div>
+        </div>
+        <ul>
+          <li>Supervision and inspection of factory electrical equipment installation</li>
+          <li>On-site coordination for industrial electrical/mechanical systems</li>
+        </ul>
+      </div>
+
+      <div class="job">
+        <div class="job-head">
+          <div>
+            <div class="job-title">Intern Engineer — Maintenance</div>
+            <div class="job-company">DreamTech Co. (Vietnam)</div>
+          </div>
+          <div class="period">Jan–Mar 2023 · Apr–Jun 2023</div>
+        </div>
+        <ul>
+          <li>Equipment maintenance and preventive care at an electronics manufacturing plant</li>
+          <li>Hands-on experience with production-line equipment and factory operations</li>
+        </ul>
+      </div>
+
+      <h2>Education</h2>
+
+      <div class="edu">
+        <div class="edu-head">
+          <div>
+            <div class="edu-title">Japanese Language Course (Online)</div>
+            <div class="edu-school">VCI Human Resource Development Academy</div>
+          </div>
+          <div class="period">Jul 2023 – Sep 2023</div>
+        </div>
+      </div>
+
+      <div class="edu">
+        <div class="edu-head">
+          <div>
+            <div class="edu-title">Bachelor’s Degree — Technical Education / Engineering</div>
+            <div class="edu-school">Vinh University of Technology Education (Vietnam)</div>
+          </div>
+          <div class="period">Sep 2018 – Jul 2023</div>
+        </div>
+      </div>
+
+      <div class="edu">
+        <div class="edu-head">
+          <div>
+            <div class="edu-title">High School Diploma</div>
+            <div class="edu-school">Quynh Luu 2 High School (Vietnam)</div>
+          </div>
+          <div class="period">Aug 2015 – Aug 2018</div>
+        </div>
+      </div>
+
+      <h2>Career Objective</h2>
+      <p class="summary">
+        In Japan’s FA industry, I have engaged in R&amp;D of AI image processing, industrial robots,
+        and PLC systems for over three years. Going forward, I aim to leverage my development
+        achievements and technical background (C# / Python / C++, control design) as a
+        <strong>Solution Engineer</strong>, <strong>Technical Consultant</strong>, or
+        <strong>Bridge Engineer</strong> — proposing and designing systems that solve real
+        shop-floor challenges, and serving as a technical communication hub in global environments
+        to advance smart factories and business growth.
+      </p>
+
+      <h2>Self-PR</h2>
+      <p class="summary">
+        I continuously pursue balance between personal growth and physical/mental health.
+        At work I bring passion for craftsmanship (drawing, reading), a deep respect for Japanese
+        craftsmanship culture, analytical thinking, creativity, and respect for diversity.
+        Through regular sports (especially soccer), I maintain strong health, teamwork spirit,
+        and quick decision-making under pressure. Weekly camping builds environmental adaptability
+        and independent problem-solving skills.
+      </p>
+
+      <div class="footer-note">
+        Curriculum Vitae · VU VAN HOANG · Updated August 2026 · Confidential
+      </div>
+    </main>
+  </div>
+</div>
+</body>
+</html>

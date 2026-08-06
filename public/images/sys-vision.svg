@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" fill="none" role="img" aria-labelledby="t">
+  <title id="t">AI Machine Vision cell</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="640" y2="360" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#020617"/><stop offset="1" stop-color="#0f172a"/>
+    </linearGradient>
+    <linearGradient id="beam" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#3b82f6" stop-opacity="0.5"/><stop offset="1" stop-color="#3b82f6" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="360" rx="16" fill="url(#bg)"/>
+  <rect x="1" y="1" width="638" height="358" rx="15" stroke="#1e293b" stroke-width="2"/>
+  <text x="28" y="40" fill="#60a5fa" font-family="ui-monospace,monospace" font-size="13">AI MACHINE VISION CELL</text>
+  <text x="28" y="58" fill="#64748b" font-family="ui-monospace,monospace" font-size="10">Camera → IPC Inference → PLC → Actuator</text>
+  <!-- conveyor -->
+  <rect x="60" y="250" width="360" height="28" rx="6" fill="#1e293b" stroke="#334155"/>
+  <g stroke="#475569" stroke-width="2">
+    <line x1="90" y1="250" x2="90" y2="278"/><line x1="140" y1="250" x2="140" y2="278"/>
+    <line x1="190" y1="250" x2="190" y2="278"/><line x1="240" y1="250" x2="240" y2="278"/>
+    <line x1="290" y1="250" x2="290" y2="278"/><line x1="340" y1="250" x2="340" y2="278"/>
+  </g>
+  <!-- parts -->
+  <rect x="110" y="228" width="36" height="22" rx="3" fill="#334155" stroke="#64748b"/>
+  <rect x="210" y="228" width="36" height="22" rx="3" fill="#334155" stroke="#3b82f6"/>
+  <rect x="310" y="228" width="36" height="22" rx="3" fill="#064e3b" stroke="#10b981"/>
+  <!-- camera gantry -->
+  <rect x="190" y="100" width="76" height="40" rx="6" fill="#0f172a" stroke="#3b82f6" stroke-width="2"/>
+  <text x="202" y="125" fill="#93c5fd" font-size="11" font-family="ui-monospace,monospace">CAMERA</text>
+  <path d="M228 140 L228 200 L200 228 L256 228 Z" fill="url(#beam)"/>
+  <rect x="216" y="140" width="24" height="18" rx="3" fill="#1e293b" stroke="#60a5fa"/>
+  <!-- IPC box -->
+  <rect x="460" y="80" width="150" height="120" rx="10" fill="#020617" stroke="#10b981" stroke-width="1.5"/>
+  <text x="476" y="108" fill="#34d399" font-size="11" font-family="ui-monospace,monospace">IPC · AI</text>
+  <rect x="476" y="120" width="118" height="10" rx="2" fill="#064e3b"/>
+  <rect x="476" y="120" width="90" height="10" rx="2" fill="#10b981" opacity="0.7"/>
+  <text x="476" y="150" fill="#94a3b8" font-size="10" font-family="ui-monospace,monospace">model: yolo-edge</text>
+  <text x="476" y="168" fill="#94a3b8" font-size="10" font-family="ui-monospace,monospace">infer: 12ms</text>
+  <text x="476" y="186" fill="#a7f3d0" font-size="10" font-family="ui-monospace,monospace">result: PASS</text>
+  <!-- PLC -->
+  <rect x="460" y="220" width="150" height="80" rx="10" fill="#020617" stroke="#3b82f6"/>
+  <text x="476" y="248" fill="#60a5fa" font-size="11" font-family="ui-monospace,monospace">PLC I/O</text>
+  <text x="476" y="270" fill="#94a3b8" font-size="10" font-family="ui-monospace,monospace">DO: REJECT=0</text>
+  <text x="476" y="288" fill="#94a3b8" font-size="10" font-family="ui-monospace,monospace">DI: TRIG=1</text>
+  <!-- arrows -->
+  <path d="M266 120 H450" stroke="#3b82f6" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#a)"/>
+  <path d="M535 200 V220" stroke="#10b981" stroke-width="1.5"/>
+  <defs>
+    <marker id="a" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#3b82f6"/></marker>
+  </defs>
+</svg>

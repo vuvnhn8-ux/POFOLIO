@@ -1,0 +1,29 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Hero from '../components/Hero.astro';
+import About from '../components/About.astro';
+import Systems from '../components/Systems.astro';
+import CaseStudies from '../components/CaseStudies.astro';
+import Beyond from '../components/Beyond.astro';
+import Certifications from '../components/Certifications.astro';
+import Contact from '../components/Contact.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<BaseLayout>
+  <Nav />
+  <main id="main">
+    <Hero />
+    <About />
+    <Systems />
+    <CaseStudies />
+    <Beyond />
+    <Certifications />
+    <Contact />
+  </main>
+  <Footer />
+  <script>
+    import '../scripts/i18n.ts';
+  </script>
+</BaseLayout>
