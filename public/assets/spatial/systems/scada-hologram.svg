@@ -1,0 +1,167 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" fill="none" role="img" aria-labelledby="t">
+  <title id="t">SCADA hologram — realtime monitoring simulation</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="640" y2="360" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0a0f24"/><stop offset="1" stop-color="#101738"/>
+    </linearGradient>
+    <linearGradient id="holo" x1="0" y1="0" x2="1" y2="0">
+      <stop stop-color="#6366f1"/><stop offset="0.55" stop-color="#22d3ee"/><stop offset="1" stop-color="#a78bfa"/>
+    </linearGradient>
+    <linearGradient id="trend" x1="0" y1="0" x2="1" y2="0">
+      <stop stop-color="#22d3ee"/><stop offset="1" stop-color="#818cf8"/>
+    </linearGradient>
+    <linearGradient id="trend2" x1="0" y1="0" x2="1" y2="0">
+      <stop stop-color="#a78bfa"/><stop offset="1" stop-color="#6366f1"/>
+    </linearGradient>
+    <filter id="glow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="3.5" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <pattern id="gr" width="36" height="36" patternUnits="userSpaceOnUse">
+      <path d="M36 0H0V36" stroke="#6366f1" stroke-opacity="0.07" fill="none"/>
+    </pattern>
+  </defs>
+
+  <rect width="640" height="360" rx="18" fill="url(#bg)"/>
+  <rect width="640" height="360" rx="18" fill="url(#gr)"/>
+  <rect x="0.5" y="0.5" width="639" height="359" rx="17.5" stroke="#ffffff" stroke-opacity="0.1"/>
+
+  <!-- ambient dust -->
+  <circle cx="90" cy="300" r="1.6" fill="#22d3ee" opacity="0.35">
+    <animateMotion dur="14s" repeatCount="indefinite" path="M90 300 C 140 270, 200 330, 260 290"/>
+  </circle>
+  <circle cx="560" cy="80" r="1.4" fill="#a78bfa" opacity="0.3">
+    <animateMotion dur="18s" repeatCount="indefinite" path="M560 80 C 500 120, 560 160, 480 200"/>
+  </circle>
+
+  <!-- header -->
+  <rect x="20" y="16" width="600" height="34" rx="10" fill="#ffffff" fill-opacity="0.05" stroke="#ffffff" stroke-opacity="0.1"/>
+  <circle cx="38" cy="33" r="4" fill="#f87171" fill-opacity="0.8"/><circle cx="54" cy="33" r="4" fill="#fbbf24" fill-opacity="0.8"/><circle cx="70" cy="33" r="4" fill="#34d399" fill-opacity="0.8"/>
+  <text x="92" y="37" fill="#8b93c9" font-family="ui-monospace,monospace" font-size="11">SCADA · DIGITAL TWIN · LINE-A</text>
+  <circle cx="556" cy="33" r="3.5" fill="#22d3ee" filter="url(#glow)">
+    <animate attributeName="opacity" values="1;0.25;1" dur="2s" repeatCount="indefinite"/>
+  </circle>
+  <text x="564" y="37" fill="#22d3ee" font-family="ui-monospace,monospace" font-size="10">LIVE</text>
+
+  <!-- process flow -->
+  <rect x="20" y="64" width="296" height="158" rx="14" fill="#ffffff" fill-opacity="0.04" stroke="#ffffff" stroke-opacity="0.1"/>
+  <text x="36" y="88" fill="#818cf8" font-family="ui-monospace,monospace" font-size="10">PROCESS FLOW</text>
+  <rect x="40" y="112" width="52" height="76" rx="8" stroke="#818cf8" stroke-opacity="0.8" fill="#6366f1" fill-opacity="0.1"/>
+  <rect x="45" y="154" width="42" height="30" rx="5" fill="#6366f1" fill-opacity="0.35">
+    <animate attributeName="height" values="30;22;30" dur="7s" repeatCount="indefinite"/>
+    <animate attributeName="y" values="154;162;154" dur="7s" repeatCount="indefinite"/>
+  </rect>
+  <text x="40" y="204" fill="#8b93c9" font-size="9" font-family="ui-monospace,monospace">TANK-01</text>
+  <path d="M92 150 H124" stroke="url(#holo)" stroke-width="1.6" stroke-dasharray="5 5">
+    <animate attributeName="stroke-dashoffset" from="0" to="-40" dur="2.5s" repeatCount="indefinite"/>
+  </path>
+  <circle r="3" fill="#22d3ee" filter="url(#glow)">
+    <animateMotion dur="5s" repeatCount="indefinite" path="M92 150 H124"/>
+  </circle>
+  <circle cx="146" cy="150" r="30" stroke="#22d3ee" stroke-opacity="0.9" fill="#22d3ee" fill-opacity="0.08"/>
+  <circle cx="146" cy="150" r="15" fill="#22d3ee" fill-opacity="0.3">
+    <animate attributeName="r" values="13;17;13" dur="4s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="146" cy="150" r="20" fill="none" stroke="#22d3ee" stroke-opacity="0.35" stroke-width="1.2">
+    <animate attributeName="r" values="20;34" dur="4s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.4;0" dur="4s" repeatCount="indefinite"/>
+  </circle>
+  <text x="133" y="154" fill="#a5f3fc" font-size="10" font-family="ui-monospace,monospace">MIX</text>
+  <path d="M176 150 H206" stroke="url(#holo)" stroke-width="1.6" stroke-dasharray="5 5">
+    <animate attributeName="stroke-dashoffset" from="0" to="-40" dur="2.5s" repeatCount="indefinite"/>
+  </path>
+  <circle r="3" fill="#a78bfa" filter="url(#glow)">
+    <animateMotion dur="4s" repeatCount="indefinite" path="M176 150 H206"/>
+  </circle>
+  <rect x="206" y="112" width="82" height="76" rx="10" stroke="#a78bfa" stroke-opacity="0.8" fill="#a78bfa" fill-opacity="0.08"/>
+  <path d="M224 150 h46 M247 127 v46" stroke="#c4b5fd" stroke-opacity="0.8" stroke-width="1.4"/>
+  <text x="222" y="204" fill="#8b93c9" font-size="9" font-family="ui-monospace,monospace">REACTOR-01</text>
+  <circle cx="288" cy="162" r="3" fill="#a78bfa" filter="url(#glow)">
+    <animate attributeName="opacity" values="1;0.15;1" dur="2.2s" repeatCount="indefinite"/>
+  </circle>
+
+  <!-- KPI glass cards -->
+  <rect x="332" y="64" width="288" height="158" rx="14" fill="#ffffff" fill-opacity="0.04" stroke="#ffffff" stroke-opacity="0.1"/>
+  <text x="348" y="88" fill="#22d3ee" font-family="ui-monospace,monospace" font-size="10">KPI · REALTIME</text>
+  <g font-family="ui-sans-serif,system-ui" font-weight="700">
+    <rect x="348" y="100" width="124" height="52" rx="10" fill="#ffffff" fill-opacity="0.06" stroke="#ffffff" stroke-opacity="0.12"/>
+    <text x="360" y="119" fill="#8b93c9" font-size="9" font-weight="500" font-family="ui-monospace,monospace">OEE</text>
+    <text x="360" y="141" fill="#ffffff" font-size="19">
+      94.2%
+      <animate attributeName="opacity" values="1;1;0;0;1" keyTimes="0;0.35;0.5;0.85;1" dur="8s" repeatCount="indefinite"/>
+    </text>
+    <text x="360" y="141" fill="#ffffff" font-size="19">
+      94.3%
+      <animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.35;0.5;0.85;1" dur="8s" repeatCount="indefinite"/>
+    </text>
+    <rect x="484" y="100" width="124" height="52" rx="10" fill="#ffffff" fill-opacity="0.06" stroke="#ffffff" stroke-opacity="0.12"/>
+    <text x="496" y="119" fill="#8b93c9" font-size="9" font-weight="500" font-family="ui-monospace,monospace">CYCLE</text>
+    <text x="496" y="141" fill="#7dd3fc" font-size="19">
+      1.8s
+      <animate attributeName="opacity" values="1;1;0;0;1" keyTimes="0;0.45;0.55;0.95;1" dur="10s" repeatCount="indefinite"/>
+    </text>
+    <text x="496" y="141" fill="#7dd3fc" font-size="19">
+      1.7s
+      <animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.45;0.55;0.95;1" dur="10s" repeatCount="indefinite"/>
+    </text>
+    <rect x="348" y="162" width="124" height="52" rx="10" fill="#ffffff" fill-opacity="0.06" stroke="#ffffff" stroke-opacity="0.12"/>
+    <text x="360" y="181" fill="#8b93c9" font-size="9" font-weight="500" font-family="ui-monospace,monospace">ALARMS</text>
+    <circle cx="468" cy="177" r="3" fill="#34d399">
+      <animate attributeName="opacity" values="1;0.2;1" dur="3s" repeatCount="indefinite"/>
+    </circle>
+    <text x="360" y="203" fill="#34d399" font-size="19">0</text>
+    <rect x="484" y="162" width="124" height="52" rx="10" fill="#ffffff" fill-opacity="0.06" stroke="#ffffff" stroke-opacity="0.12"/>
+    <text x="496" y="181" fill="#8b93c9" font-size="9" font-weight="500" font-family="ui-monospace,monospace">YIELD</text>
+    <text x="496" y="203" fill="#c4b5fd" font-size="19">
+      99.7%
+      <animate attributeName="opacity" values="1;1;0;0;1" keyTimes="0;0.55;0.65;0.95;1" dur="12s" repeatCount="indefinite"/>
+    </text>
+    <text x="496" y="203" fill="#c4b5fd" font-size="19">
+      99.6%
+      <animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.55;0.65;0.95;1" dur="12s" repeatCount="indefinite"/>
+    </text>
+  </g>
+
+  <!-- trend: scrolling waveform -->
+  <rect x="20" y="236" width="600" height="72" rx="14" fill="#ffffff" fill-opacity="0.04" stroke="#ffffff" stroke-opacity="0.1"/>
+  <text x="36" y="258" fill="#8b93c9" font-family="ui-monospace,monospace" font-size="10">TREND · TEMP / PRESSURE / FLOW</text>
+  <g>
+    <animateTransform attributeName="transform" type="translate" values="0 0; -560 0" dur="14s" repeatCount="indefinite"/>
+    <polyline points="36,296 76,288 116,292 156,280 196,286 236,272 276,284 316,268 356,278 396,264 436,274 476,262 516,270 556,258 596,266"
+      stroke="url(#trend)" stroke-width="2.5" fill="none" filter="url(#glow)"/>
+    <polyline points="596,266 636,258 676,262 716,250 756,256 796,242 836,254 876,238 916,248 956,234 996,244 1036,232 1076,240 1116,228 1156,236"
+      stroke="url(#trend)" stroke-width="2.5" fill="none" filter="url(#glow)"/>
+    <polyline points="36,306 76,302 116,304 156,298 196,301 236,296 276,300 316,294 356,298 396,291 436,295 476,290 516,293 556,287 596,290"
+      stroke="url(#trend2)" stroke-width="1.6" fill="none" opacity="0.5"/>
+    <polyline points="596,290 636,284 676,287 716,281 756,284 796,279 836,283 876,277 916,281 956,274 996,278 1036,273 1076,276 1116,270 1156,273"
+      stroke="url(#trend2)" stroke-width="1.6" fill="none" opacity="0.5"/>
+  </g>
+  <rect x="604" y="248" width="2" height="50" fill="#22d3ee" opacity="0.25"/>
+  <circle cx="604" cy="258" r="3" fill="#22d3ee" filter="url(#glow)">
+    <animate attributeName="opacity" values="1;0.4;1" dur="1.6s" repeatCount="indefinite"/>
+  </circle>
+
+  <!-- machine status chips -->
+  <g font-family="ui-monospace,monospace" font-size="9">
+    <rect x="20" y="322" width="140" height="22" rx="11" fill="#ffffff" fill-opacity="0.05" stroke="#ffffff" stroke-opacity="0.1"/>
+    <circle cx="36" cy="333" r="3.5" fill="#34d399">
+      <animate attributeName="opacity" values="1;0.3;1" dur="2.4s" repeatCount="indefinite"/>
+    </circle>
+    <text x="48" y="336" fill="#aab0d8">ROBOT-01 RUN</text>
+    <rect x="172" y="322" width="140" height="22" rx="11" fill="#ffffff" fill-opacity="0.05" stroke="#ffffff" stroke-opacity="0.1"/>
+    <circle cx="188" cy="333" r="3.5" fill="#34d399">
+      <animate attributeName="opacity" values="1;0.3;1" dur="3s" repeatCount="indefinite"/>
+    </circle>
+    <text x="200" y="336" fill="#aab0d8">PLC-A LINK OK</text>
+    <rect x="324" y="322" width="140" height="22" rx="11" fill="#ffffff" fill-opacity="0.05" stroke="#ffffff" stroke-opacity="0.1"/>
+    <circle cx="340" cy="333" r="3.5" fill="#22d3ee">
+      <animate attributeName="opacity" values="0.3;1;0.3" dur="1.8s" repeatCount="indefinite"/>
+    </circle>
+    <text x="352" y="336" fill="#aab0d8">AGV-02 MOVING</text>
+    <rect x="476" y="322" width="144" height="22" rx="11" fill="#ffffff" fill-opacity="0.05" stroke="#ffffff" stroke-opacity="0.1"/>
+    <circle cx="492" cy="333" r="3.5" fill="#a78bfa">
+      <animate attributeName="opacity" values="0.7;1;0.7" dur="3.4s" repeatCount="indefinite"/>
+    </circle>
+    <text x="504" y="336" fill="#aab0d8">MES SYNC 100%</text>
+  </g>
+</svg>

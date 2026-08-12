@@ -12,22 +12,17 @@ const links = [
 ] as const;
 ---
 
-<header class="fixed inset-x-0 top-0 z-50 border-b border-slate-800/80 bg-slate-950/80 backdrop-blur-xl">
+<header class="fixed inset-x-0 top-0 z-50 px-4 pt-4 sm:px-6">
   <nav
-    class="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:px-6 lg:px-8"
+    class="glass mx-auto flex max-w-5xl items-center justify-between gap-3 rounded-2xl px-4 py-2.5"
     aria-label="Primary"
   >
     <a
       href="#top"
-      class="group flex min-w-0 items-center gap-2.5 font-semibold tracking-tight text-slate-100 transition hover:text-emerald-400"
+      class="spatial-btn flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#1a1a2e] text-xs font-bold text-white shadow-lg shadow-indigo-950/20"
+      aria-label="Home"
     >
-      <span
-        class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-emerald-400 to-lime-400 text-xs font-bold text-slate-950 shadow-lg shadow-emerald-500/30"
-        aria-hidden="true"
-      >
-        {profile.brandInitials}
-      </span>
-      <span class="hidden truncate sm:inline">{profile.brandName}</span>
+      {profile.brandInitials}
     </a>
 
     <ul class="hidden items-center gap-0.5 lg:flex">
@@ -36,7 +31,7 @@ const links = [
           <li>
             <a
               href={link.href}
-              class="rounded-lg px-2.5 py-2 text-sm font-medium text-slate-400 transition hover:bg-slate-800/60 hover:text-slate-100"
+              class="spatial-btn rounded-xl px-3 py-2 text-sm font-medium text-slate-600 hover:bg-white/70 hover:text-slate-900"
               data-i18n={link.key}
             >
               {link.label}
@@ -46,10 +41,9 @@ const links = [
       }
     </ul>
 
-    <div class="flex items-center gap-1.5 sm:gap-2">
-      <!-- Language switcher -->
+    <div class="flex items-center gap-2">
       <div
-        class="flex items-center rounded-lg border border-slate-700 bg-slate-900/80 p-0.5"
+        class="glass-subtle flex items-center rounded-xl p-0.5"
         role="group"
         aria-label="Language"
       >
@@ -57,7 +51,7 @@ const links = [
           langs.map((lang) => (
             <button
               type="button"
-              class="lang-btn rounded-md px-2 py-1 text-[11px] font-bold tracking-wide text-slate-400 transition hover:text-white data-[active=true]:bg-emerald-600 data-[active=true]:text-white"
+              class="lang-btn rounded-lg px-2 py-1 text-[11px] font-bold tracking-wide text-slate-500 transition hover:text-slate-900 data-[active=true]:bg-white data-[active=true]:text-slate-900 data-[active=true]:shadow-sm"
               data-lang-set={lang}
               data-active={lang === 'en' ? 'true' : 'false'}
               aria-pressed={lang === 'en' ? 'true' : 'false'}
@@ -71,7 +65,7 @@ const links = [
       <a
         href={profile.cvPath}
         download
-        class="hidden items-center gap-1.5 rounded-lg border border-slate-700 bg-slate-900/80 px-3 py-2 text-sm font-medium text-slate-200 transition hover:border-emerald-500/50 hover:bg-slate-800 hover:text-white md:inline-flex"
+        class="spatial-btn hidden items-center gap-1.5 rounded-xl border border-white/60 bg-white/50 px-3 py-2 text-sm font-medium text-slate-700 hover:bg-white md:inline-flex"
         data-i18n="nav.downloadCv"
       >
         <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
@@ -81,7 +75,7 @@ const links = [
       </a>
       <a
         href="#contact"
-        class="inline-flex items-center rounded-lg bg-gradient-to-r from-emerald-500 to-lime-400 px-3.5 py-2 text-sm font-bold text-slate-950 shadow-lg shadow-emerald-500/30 transition hover:from-emerald-400 hover:to-lime-300"
+        class="spatial-btn inline-flex items-center rounded-xl bg-[#1a1a2e] px-3.5 py-2 text-sm font-semibold text-white shadow-lg shadow-indigo-950/25 hover:bg-[#2a2a45]"
         data-i18n="nav.contact"
       >
         {t.nav.contact}
@@ -90,7 +84,7 @@ const links = [
       <button
         type="button"
         id="menu-toggle"
-        class="inline-flex items-center justify-center rounded-lg border border-slate-700 p-2 text-slate-300 lg:hidden"
+        class="spatial-btn inline-flex items-center justify-center rounded-xl border border-white/60 bg-white/50 p-2 text-slate-600 lg:hidden"
         aria-expanded="false"
         aria-controls="mobile-menu"
         aria-label={t.nav.openMenu}
@@ -106,14 +100,14 @@ const links = [
     </div>
   </nav>
 
-  <div id="mobile-menu" class="hidden border-t border-slate-800 bg-slate-950 lg:hidden" hidden>
-    <ul class="mx-auto flex max-w-6xl flex-col gap-1 px-4 py-3 sm:px-6">
+  <div id="mobile-menu" class="glass mx-auto mt-2 hidden max-w-5xl rounded-2xl lg:hidden" hidden>
+    <ul class="flex flex-col gap-1 p-3">
       {
         links.map((link) => (
           <li>
             <a
               href={link.href}
-              class="mobile-link block rounded-lg px-3 py-2.5 text-sm font-medium text-slate-300 transition hover:bg-slate-800 hover:text-white"
+              class="mobile-link block rounded-xl px-3 py-2.5 text-sm font-medium text-slate-600 hover:bg-white/70 hover:text-slate-900"
               data-i18n={link.key}
             >
               {link.label}
@@ -125,7 +119,7 @@ const links = [
         <a
           href={profile.cvPath}
           download
-          class="mobile-link mt-1 flex items-center gap-2 rounded-lg border border-slate-700 px-3 py-2.5 text-sm font-medium text-slate-200"
+          class="mobile-link mt-1 flex items-center gap-2 rounded-xl border border-white/60 bg-white/50 px-3 py-2.5 text-sm font-medium text-slate-700"
           data-i18n="nav.downloadCv"
         >
           {t.nav.downloadCv}

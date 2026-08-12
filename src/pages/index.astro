@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import SpatialBackground from '../components/SpatialBackground.astro';
 import Nav from '../components/Nav.astro';
 import Hero from '../components/Hero.astro';
 import About from '../components/About.astro';
@@ -12,6 +13,7 @@ import Footer from '../components/Footer.astro';
 ---
 
 <BaseLayout>
+  <SpatialBackground />
   <Nav />
   <main id="main">
     <Hero />
@@ -25,5 +27,6 @@ import Footer from '../components/Footer.astro';
   <Footer />
   <script>
     import '../scripts/i18n.ts';
+    import '../scripts/spatial.ts';
   </script>
 </BaseLayout>

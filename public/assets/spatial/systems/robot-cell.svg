@@ -1,0 +1,138 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" fill="none" role="img" aria-labelledby="t">
+  <title id="t">Robot cell digital twin — pick and place simulation</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="640" y2="360" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0a0f24"/><stop offset="1" stop-color="#101738"/>
+    </linearGradient>
+    <linearGradient id="holo" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#6366f1"/><stop offset="0.5" stop-color="#22d3ee"/><stop offset="1" stop-color="#a78bfa"/>
+    </linearGradient>
+    <filter id="glow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="3" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <pattern id="gr" width="36" height="36" patternUnits="userSpaceOnUse">
+      <path d="M36 0H0V36" stroke="#6366f1" stroke-opacity="0.07" fill="none"/>
+    </pattern>
+  </defs>
+
+  <rect width="640" height="360" rx="18" fill="url(#bg)"/>
+  <rect width="640" height="360" rx="18" fill="url(#gr)"/>
+  <rect x="0.5" y="0.5" width="639" height="359" rx="17.5" stroke="#ffffff" stroke-opacity="0.1"/>
+
+  <!-- ambient dust -->
+  <circle cx="200" cy="60" r="1.5" fill="#22d3ee" opacity="0.3">
+    <animateMotion dur="17s" repeatCount="indefinite" path="M200 60 C 250 120, 160 180, 220 240"/>
+  </circle>
+  <circle cx="580" cy="200" r="1.4" fill="#a78bfa" opacity="0.3">
+    <animateMotion dur="21s" repeatCount="indefinite" path="M580 200 C 540 260, 600 300, 560 340"/>
+  </circle>
+
+  <text x="28" y="36" fill="#8b93c9" font-family="ui-monospace,monospace" font-size="11">ROBOT CELL · DIGITAL TWIN</text>
+  <circle cx="536" cy="33" r="3.5" fill="#34d399" filter="url(#glow)">
+    <animate attributeName="opacity" values="1;0.25;1" dur="2s" repeatCount="indefinite"/>
+  </circle>
+  <text x="544" y="37" fill="#34d399" font-family="ui-monospace,monospace" font-size="10">RUN</text>
+
+  <!-- safety zone (pulsing) -->
+  <rect x="40" y="70" width="360" height="236" rx="16" stroke="#818cf8" stroke-dasharray="8 7" fill="#6366f1" fill-opacity="0.03">
+    <animate attributeName="stroke-opacity" values="0.35;0.6;0.35" dur="6s" repeatCount="indefinite"/>
+  </rect>
+  <text x="58" y="94" fill="#8b93c9" font-family="ui-monospace,monospace" font-size="9">SAFETY ZONE</text>
+
+  <!-- pedestal + placed part -->
+  <rect x="226" y="148" width="48" height="38" rx="6" stroke="#22d3ee" stroke-opacity="0.8" fill="#22d3ee" fill-opacity="0.07"/>
+  <path d="M232 170 h36 M232 178 h36 M250 148 v38" stroke="#22d3ee" stroke-opacity="0.25" stroke-width="1"/>
+  <text x="213" y="142" fill="#8b93c9" font-family="ui-monospace,monospace" font-size="8">OUT</text>
+  <rect x="240" y="136" width="20" height="12" rx="3" stroke="#34d399" stroke-opacity="0.9" fill="#34d399" fill-opacity="0.15">
+    <animate attributeName="opacity" values="0;0;1;1" keyTimes="0;0.48;0.55;1" dur="6s" repeatCount="indefinite"/>
+  </rect>
+
+  <!-- conveyor with part arriving for pick -->
+  <rect x="70" y="262" width="300" height="18" rx="5" fill="#ffffff" fill-opacity="0.05" stroke="#ffffff" stroke-opacity="0.15"/>
+  <g stroke="#5b6399" stroke-width="1.6" opacity="0.8">
+    <line x1="100" y1="262" x2="100" y2="280"/><line x1="150" y1="262" x2="150" y2="280"/>
+    <line x1="200" y1="262" x2="200" y2="280"/><line x1="250" y1="262" x2="250" y2="280"/>
+    <line x1="300" y1="262" x2="300" y2="280"/><line x1="350" y1="262" x2="350" y2="280"/>
+  </g>
+  <rect x="150" y="244" width="16" height="18" rx="3" stroke="#22d3ee" stroke-opacity="0.9" fill="#22d3ee" fill-opacity="0.12">
+    <animate attributeName="x" values="150;222;222;150" keyTimes="0;0.08;0.42;1" dur="6s" repeatCount="indefinite" calcMode="spline" keySplines="0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1"/>
+    <animate attributeName="opacity" values="1;1;0;0;0;1" keyTimes="0;0.08;0.1;0.42;0.97;1" dur="6s" repeatCount="indefinite"/>
+  </rect>
+
+  <!-- motion trail pick -> place -->
+  <path d="M230 238 C 240 220, 246 200, 250 160" stroke="#22d3ee" stroke-width="1.4" stroke-dasharray="3 6" opacity="0.28" fill="none">
+    <animate attributeName="stroke-dashoffset" values="0;-72" dur="6s" repeatCount="indefinite"/>
+  </path>
+
+  <!-- robot arm: synchronized 6s pick & place cycle -->
+  <g stroke="url(#holo)" stroke-width="2.6" stroke-linecap="round" filter="url(#glow)">
+    <ellipse cx="140" cy="258" rx="46" ry="9" stroke="none" fill="#6366f1" fill-opacity="0.15"/>
+    <rect x="118" y="228" width="44" height="30" rx="6" fill="#101738" stroke-width="2"/>
+    <g>
+      <animateTransform attributeName="transform" type="rotate"
+        values="25;11.8;11.8;31.6;31.6;25;25"
+        keyTimes="0;0.08;0.16;0.4;0.5;0.74;1" dur="6s" repeatCount="indefinite"
+        calcMode="spline" keySplines="0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1"/>
+      <line x1="0" y1="0" x2="0" y2="-64"/>
+      <circle cx="0" cy="0" r="7" fill="#101738" stroke-width="2.5"/>
+      <g transform="translate(0 -64)">
+        <g>
+          <animateTransform attributeName="transform" type="rotate"
+            values="40;119;119;60.4;60.4;40;40"
+            keyTimes="0;0.08;0.16;0.4;0.5;0.74;1" dur="6s" repeatCount="indefinite"
+            calcMode="spline" keySplines="0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1"/>
+          <line x1="0" y1="0" x2="0" y2="-88"/>
+          <circle cx="0" cy="0" r="6" fill="#101738" stroke-width="2.5"/>
+          <circle cx="0" cy="-88" r="3.5" fill="#101738" stroke-width="2"/>
+          <g>
+            <animate attributeName="opacity" values="1;1;0;0;1;1;1" keyTimes="0;0.1;0.14;0.45;0.5;0.8;1" dur="6s" repeatCount="indefinite"/>
+            <path d="M0 -88 L-5 -98 M0 -88 L5 -98" stroke-width="2.2"/>
+          </g>
+          <g>
+            <animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0;0.1;0.14;0.45;0.5;0.8;1" dur="6s" repeatCount="indefinite"/>
+            <path d="M0 -88 L-2 -96 M0 -88 L2 -96" stroke-width="2.2"/>
+          </g>
+          <rect x="-8" y="-108" width="16" height="9" rx="2" stroke="#22d3ee" stroke-opacity="0.9" fill="#22d3ee" fill-opacity="0.2">
+            <animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.11;0.14;0.45;0.48;1" dur="6s" repeatCount="indefinite"/>
+          </rect>
+        </g>
+      </g>
+    </g>
+  </g>
+
+  <!-- comm lines robot -> controller -->
+  <path d="M262 116 C 340 96, 390 100, 436 112" stroke="url(#holo)" stroke-width="1.2" stroke-dasharray="4 6"/>
+  <circle r="3.5" fill="#22d3ee" filter="url(#glow)">
+    <animateMotion dur="5s" repeatCount="indefinite" path="M262 116 C 340 96, 390 100, 436 112"/>
+  </circle>
+  <circle r="3" fill="#a78bfa" filter="url(#glow)">
+    <animateMotion dur="7s" begin="-3s" repeatCount="indefinite" path="M436 240 C 380 250, 330 250, 300 242"/>
+  </circle>
+
+  <!-- controller panel -->
+  <rect x="436" y="70" width="180" height="236" rx="16" fill="#ffffff" fill-opacity="0.05" stroke="#ffffff" stroke-opacity="0.12"/>
+  <text x="454" y="96" fill="#a5b4fc" font-family="ui-monospace,monospace" font-size="10">CONTROLLER</text>
+  <g font-family="ui-monospace,monospace" font-size="10">
+    <rect x="452" y="110" width="148" height="38" rx="10" fill="#ffffff" fill-opacity="0.06" stroke="#ffffff" stroke-opacity="0.12"/>
+    <circle cx="466" cy="129" r="2.5" fill="#22d3ee">
+      <animate attributeName="opacity" values="1;0.3;1" dur="1.5s" repeatCount="indefinite"/>
+    </circle>
+    <text x="474" y="133" fill="#aab0d8">JOB: PICK-01</text>
+    <rect x="452" y="158" width="148" height="38" rx="10" fill="#34d399" fill-opacity="0.08" stroke="#34d399" stroke-opacity="0.5"/>
+    <circle cx="466" cy="177" r="2.5" fill="#34d399">
+      <animate attributeName="opacity" values="1;0.2;1" dur="2.4s" repeatCount="indefinite"/>
+    </circle>
+    <text x="474" y="181" fill="#6ee7b7">STATUS: RUN</text>
+    <rect x="452" y="206" width="148" height="38" rx="10" fill="#22d3ee" fill-opacity="0.08" stroke="#22d3ee" stroke-opacity="0.5"/>
+    <circle cx="466" cy="225" r="2.5" fill="#22d3ee">
+      <animate attributeName="opacity" values="0.4;1;0.4" dur="1.8s" repeatCount="indefinite"/>
+    </circle>
+    <text x="474" y="229" fill="#7dd3fc">PLC LINK: OK</text>
+    <rect x="452" y="254" width="148" height="38" rx="10" fill="#ffffff" fill-opacity="0.06" stroke="#ffffff" stroke-opacity="0.12"/>
+    <circle cx="466" cy="273" r="2.5" fill="#a78bfa">
+      <animate attributeName="opacity" values="0.7;1;0.7" dur="3.2s" repeatCount="indefinite"/>
+    </circle>
+    <text x="474" y="277" fill="#c4b5fd">MES: SYNCED</text>
+  </g>
+</svg>

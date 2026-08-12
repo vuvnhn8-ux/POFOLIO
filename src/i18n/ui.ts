@@ -87,22 +87,22 @@ export const ui = {
         {
           title: 'SCADA / HMI',
           desc: 'Realtime plant overview, KPI, alarms, and process trends for operators and engineers.',
-          image: '/images/sys-scada.svg',
+          image: '/assets/spatial/systems/scada-hologram.svg',
         },
         {
           title: 'AI + PLC Loop',
           desc: 'Sensors → AI model → PLC decisions → actuators — closed-loop control and optimization.',
-          image: '/images/sys-ai-plc.svg',
+          image: '/assets/spatial/systems/ai-plc-loop.svg',
         },
         {
           title: 'Robot + PLC Cell',
           desc: 'Yaskawa handling with safety zones, recipe jobs, and PLC orchestration.',
-          image: '/images/sys-robot.svg',
+          image: '/assets/spatial/systems/robot-cell.svg',
         },
         {
           title: 'Plant Stack',
           desc: 'Field → PLC Control → SCADA → Enterprise — the ladder toward full factory automation.',
-          image: '/images/sys-plant.svg',
+          image: '/assets/spatial/systems/factory-stack.svg',
         },
       ],
     },
@@ -122,7 +122,7 @@ export const ui = {
           title: 'SCADA + AI Process Monitoring Line',
           industry: 'Process Manufacturing',
           tags: ['SCADA', 'PLC', 'Industrial AI', 'Python', 'Historian'],
-          image: '/images/sys-scada.svg',
+          image: '/assets/spatial/systems/scada-hologram.svg',
           problem:
             'Operators lacked a unified view of line health; alarms were noisy and process drifts were detected too late, causing unplanned stops.',
           solution:
@@ -139,7 +139,7 @@ export const ui = {
           title: 'PLC-Orchestrated Robot Handling Cell',
           industry: 'Electronics Manufacturing',
           tags: ['PLC', 'Yaskawa Robotics', 'SCADA', 'Safety Interlock'],
-          image: '/images/sys-robot.svg',
+          image: '/assets/spatial/systems/robot-cell.svg',
           problem:
             'SKU changes made fixed automation uneconomical; repetitive handling limited throughput and blocked higher automation levels.',
           solution:
@@ -156,7 +156,7 @@ export const ui = {
           title: 'Plant-Level SCADA & PLC Standardization',
           industry: 'Multi-site Manufacturing',
           tags: ['SCADA', 'PLC Standards', 'AI Roadmap', 'MES Integration'],
-          image: '/images/sys-plant.svg',
+          image: '/assets/spatial/systems/factory-stack.svg',
           problem:
             'Sites automated in silos; no shared SCADA tag model or PLC standard to scale AI and multi-line control across the plant network.',
           solution:
@@ -316,22 +316,22 @@ export const ui = {
         {
           title: 'SCADA / HMI',
           desc: 'オペレータと技術者向けのリアルタイム概況、KPI、アラーム、トレンド。',
-          image: '/images/sys-scada.svg',
+          image: '/assets/spatial/systems/scada-hologram.svg',
         },
         {
           title: 'AI + PLC ループ',
           desc: 'センサ → AIモデル → PLC判断 → アクチュエータ。クローズドループ制御と最適化。',
-          image: '/images/sys-ai-plc.svg',
+          image: '/assets/spatial/systems/ai-plc-loop.svg',
         },
         {
           title: 'ロボット + PLC セル',
           desc: '安全ゾーン、ジョブレシピ、PLC連携を備えた安川ハンドリング。',
-          image: '/images/sys-robot.svg',
+          image: '/assets/spatial/systems/robot-cell.svg',
         },
         {
           title: 'プラントスタック',
           desc: 'フィールド → PLC制御 → SCADA → エンタープライズ。工場全体自動化への梯子。',
-          image: '/images/sys-plant.svg',
+          image: '/assets/spatial/systems/factory-stack.svg',
         },
       ],
     },
@@ -351,7 +351,7 @@ export const ui = {
           title: 'SCADA + AI プロセス監視ライン',
           industry: 'プロセス製造',
           tags: ['SCADA', 'PLC', 'Industrial AI', 'Python', 'Historian'],
-          image: '/images/sys-scada.svg',
+          image: '/assets/spatial/systems/scada-hologram.svg',
           problem:
             'ライン健全性の統一ビューがなく、アラームが過剰でプロセスドリフトの検知が遅れ、計画外停止が発生していました。',
           solution:
@@ -368,7 +368,7 @@ export const ui = {
           title: 'PLC主導のロボットハンドリングセル',
           industry: '電子機器製造',
           tags: ['PLC', 'Yaskawa Robotics', 'SCADA', 'Safety Interlock'],
-          image: '/images/sys-robot.svg',
+          image: '/assets/spatial/systems/robot-cell.svg',
           problem:
             'SKU変更が多く固定自動化が非経済的。反復ハンドリングがスループットを制限し、自動化レベルの向上を阻んでいました。',
           solution:
@@ -385,7 +385,7 @@ export const ui = {
           title: 'プラント級 SCADA & PLC 標準化',
           industry: '多拠点製造',
           tags: ['SCADA', 'PLC Standards', 'AI Roadmap', 'MES Integration'],
-          image: '/images/sys-plant.svg',
+          image: '/assets/spatial/systems/factory-stack.svg',
           problem:
             '拠点ごとにサイロ化。AIと多ライン制御を拡張する共通SCADAタグモデル／PLC標準がありませんでした。',
           solution:
@@ -545,22 +545,22 @@ export const ui = {
         {
           title: 'SCADA / HMI',
           desc: 'Tổng quan realtime, KPI, alarm và trend cho operator và kỹ sư.',
-          image: '/images/sys-scada.svg',
+          image: '/assets/spatial/systems/scada-hologram.svg',
         },
         {
           title: 'AI + PLC Loop',
           desc: 'Cảm biến → model AI → quyết định PLC → actuator — điều khiển & tối ưu vòng kín.',
-          image: '/images/sys-ai-plc.svg',
+          image: '/assets/spatial/systems/ai-plc-loop.svg',
         },
         {
           title: 'Robot + PLC Cell',
           desc: 'Handling Yaskawa với vùng an toàn, job recipe và điều phối PLC.',
-          image: '/images/sys-robot.svg',
+          image: '/assets/spatial/systems/robot-cell.svg',
         },
         {
           title: 'Plant Stack',
           desc: 'Field → PLC Control → SCADA → Enterprise — nấc thang tới full factory automation.',
-          image: '/images/sys-plant.svg',
+          image: '/assets/spatial/systems/factory-stack.svg',
         },
       ],
     },
@@ -580,7 +580,7 @@ export const ui = {
           title: 'Giám sát quy trình SCADA + AI',
           industry: 'Sản xuất process',
           tags: ['SCADA', 'PLC', 'Industrial AI', 'Python', 'Historian'],
-          image: '/images/sys-scada.svg',
+          image: '/assets/spatial/systems/scada-hologram.svg',
           problem:
             'Operator thiếu cái nhìn thống nhất về sức khỏe line; alarm ồn, phát hiện drift muộn gây dừng ngoài kế hoạch.',
           solution:
@@ -597,7 +597,7 @@ export const ui = {
           title: 'Cell handling robot điều phối bằng PLC',
           industry: 'Sản xuất điện tử',
           tags: ['PLC', 'Yaskawa Robotics', 'SCADA', 'Safety Interlock'],
-          image: '/images/sys-robot.svg',
+          image: '/assets/spatial/systems/robot-cell.svg',
           problem:
             'SKU thay đổi liên tục khiến tự động hóa cố định kém kinh tế; handling lặp hạn chế throughput và cấp độ tự động hóa.',
           solution:
@@ -614,7 +614,7 @@ export const ui = {
           title: 'Chuẩn hóa SCADA & PLC cấp nhà máy',
           industry: 'Sản xuất đa nhà máy',
           tags: ['SCADA', 'PLC Standards', 'AI Roadmap', 'MES Integration'],
-          image: '/images/sys-plant.svg',
+          image: '/assets/spatial/systems/factory-stack.svg',
           problem:
             'Các site tự động hóa theo silo; thiếu mô hình tag SCADA và chuẩn PLC chung để mở rộng AI và điều khiển đa line.',
           solution:

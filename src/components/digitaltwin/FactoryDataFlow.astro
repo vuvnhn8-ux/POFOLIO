@@ -1,0 +1,372 @@
+---
+// Digital Twin simulation: factory data flow up and down the ISA-95 stack.
+// SMIL only. Upward data packets FIELD→PLC→SCADA→MES/AI→CLOUD.
+// Downward control packets CLOUD→MES/AI→SCADA→PLC→FIELD.
+// Each layer glows on packet arrival. Bidirectional flow on 3 bus columns.
+const font = "ui-monospace, SFMono-Regular, Cascadia Mono, Consolas, monospace";
+
+// Layer Y centres (rect top + 24):
+//   CLOUD      : y=52+24  = 76
+//   MES/AI     : y=108+24 = 132
+//   SCADA      : y=164+24 = 188
+//   PLC CONTROL: y=220+24 = 244
+//   FIELD DEVICE: y=276+24= 300
+//
+// Upward packet paths go from y=322 to y=56 (top of CLOUD).
+// Downward packet paths go from y=56 to y=322.
+//
+// Timing — upward bus (left col x=280):   5s per trip
+//   FIELD arrives    0.12 → PLC 0.28 → SCADA 0.44 → MES 0.60 → CLOUD 0.76 → out 1.0
+// Timing — downward bus (right col x=440): 5s offset
+//   CLOUD departs 0.0 → MES 0.16 → SCADA 0.32 → PLC 0.48 → FIELD 0.64 → out 0.80
+//
+// Each layer has two glow rects — one triggered by upward pass, one by downward pass.
+---
+<svg
+  viewBox="0 0 640 360"
+  xmlns="http://www.w3.org/2000/svg"
+  role="img"
+  aria-label="Factory data flow simulation"
+  class="block aspect-[16/9] h-auto w-full transition duration-700 group-hover:scale-[1.03]"
+  font-family={font}
+>
+  <defs>
+    <linearGradient id="dt-fd-bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0d1430" />
+      <stop offset="1" stop-color="#0a1024" />
+    </linearGradient>
+    <!-- glow filter for packets -->
+    <filter id="dt-fd-pglow" x="-120%" y="-120%" width="340%" height="340%">
+      <feGaussianBlur stdDeviation="2.5" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <rect width="640" height="360" fill="url(#dt-fd-bg)" />
+  <g stroke="#1e2a55" stroke-width="1" opacity="0.5">
+    <line x1="0" y1="90" x2="640" y2="90" />
+    <line x1="0" y1="180" x2="640" y2="180" />
+    <line x1="0" y1="270" x2="640" y2="270" />
+    <line x1="160" y1="0" x2="160" y2="360" />
+    <line x1="320" y1="0" x2="320" y2="360" />
+    <line x1="480" y1="0" x2="480" y2="360" />
+  </g>
+
+  <!-- header -->
+  <g>
+    <text x="40" y="26" fill="#7dd3fc" font-size="12" font-weight="700" letter-spacing="1">FACTORY DATA FLOW</text>
+    <text x="40" y="42" fill="#64748b" font-size="10">ISA-95 STACK &middot; BIDIRECTIONAL DATA BUS &middot; CLOUD UPLINK</text>
+    <rect x="548" y="16" width="64" height="20" rx="10" fill="#0f1a33" stroke="#22d3ee" stroke-width="1" />
+    <text x="556" y="30" fill="#22d3ee" font-size="10" letter-spacing="1">UPLINK</text>
+  </g>
+
+  <!-- vertical axis label -->
+  <text x="22" y="190" fill="#475569" font-size="9" letter-spacing="2"
+    transform="rotate(-90 22 190)" text-anchor="middle">ISA-95 DATA BUS</text>
+
+  <!-- Bus column guide lines -->
+  <!-- Left col x=280: upward data -->
+  <!-- Middle col x=360: bidirectional mix -->
+  <!-- Right col x=440: downward control -->
+  <g stroke="#1e2a55" stroke-width="1" stroke-dasharray="2 6">
+    <line x1="280" y1="322" x2="280" y2="56" />
+    <line x1="360" y1="322" x2="360" y2="56" />
+    <line x1="440" y1="322" x2="440" y2="56" />
+  </g>
+  <!-- Bus direction labels -->
+  <text x="280" y="340" text-anchor="middle" fill="#334155" font-size="8">DATA ↑</text>
+  <text x="360" y="340" text-anchor="middle" fill="#334155" font-size="8">MIX</text>
+  <text x="440" y="340" text-anchor="middle" fill="#334155" font-size="8">CTRL ↓</text>
+
+  <!-- ================================================================ -->
+  <!-- LAYER BANDS                                                        -->
+  <!-- Each band has: base rect, upward-glow rect, downward-glow rect    -->
+  <!-- ================================================================ -->
+
+  <!-- ── L5 CLOUD (top) y=52–100 ── -->
+  <g>
+    <rect x="40" y="52" width="480" height="48" rx="8" fill="#10163a" stroke="#2b3a66" stroke-width="1" />
+    <!-- upward data arrives: ~t=0.60×5s = 3.0s → keyTime 0.60 in 5s loop -->
+    <rect x="40" y="52" width="480" height="48" rx="8" fill="none" stroke="#22d3ee" stroke-width="2" opacity="0">
+      <animate attributeName="opacity"
+        values="0;0;0;0;0;0.9;0.6;0.2;0;0;0"
+        keyTimes="0;0.1;0.2;0.3;0.58;0.62;0.66;0.72;0.80;0.9;1"
+        dur="5s" repeatCount="indefinite" />
+    </rect>
+    <!-- downward control departs: glow as command is issued -->
+    <rect x="40" y="52" width="480" height="48" rx="8" fill="none" stroke="#a78bfa" stroke-width="2" opacity="0">
+      <animate attributeName="opacity"
+        values="0.7;0.4;0.1;0;0;0;0;0;0;0;0.7"
+        keyTimes="0;0.04;0.08;0.12;0.2;0.4;0.6;0.7;0.8;0.96;1"
+        dur="5s" repeatCount="indefinite" />
+    </rect>
+    <text x="58" y="72" fill="#e2e8f0" font-size="11" font-weight="700">CLOUD</text>
+    <!-- status cycles: RECEIVING → PROCESSING → DISPATCHING → IDLE -->
+    <text x="58" y="88" fill="#64748b" font-size="9">
+      <animate attributeName="textContent"
+        values="CMD DISPATCH;CMD DISPATCH;EDGE + CLOUD STORE;EDGE + CLOUD STORE;DATA RECEIVED;PROCESSING...;CMD DISPATCH"
+        keyTimes="0;0.04;0.10;0.58;0.62;0.68;0.76"
+        dur="5s" repeatCount="indefinite" />
+      CMD DISPATCH
+    </text>
+    <!-- cloud icon -->
+    <g transform="translate(472 76)" stroke="#22d3ee" stroke-width="1.4" fill="none">
+      <ellipse cx="-8" cy="2" rx="8" ry="5" />
+      <ellipse cx="3" cy="-2" rx="9" ry="7" />
+      <ellipse cx="9" cy="3" rx="6" ry="4" />
+    </g>
+    <rect x="400" y="69" width="52" height="18" rx="4" fill="#0f1a33" stroke="#1e2a55" />
+    <text x="426" y="81" text-anchor="middle" fill="#94a3b8" font-size="8">AI METRICS</text>
+  </g>
+  <text x="544" y="88" fill="#64748b" font-size="8">KPI &middot; MODELS</text>
+
+  <!-- ── L4 MES / AI y=108–156 ── -->
+  <g>
+    <rect x="40" y="108" width="480" height="48" rx="8" fill="#10163a" stroke="#2b3a66" stroke-width="1" />
+    <!-- upward data arrives: ~keyTime 0.50 -->
+    <rect x="40" y="108" width="480" height="48" rx="8" fill="none" stroke="#a78bfa" stroke-width="2" opacity="0">
+      <animate attributeName="opacity"
+        values="0;0;0;0;0.9;0.6;0.2;0;0;0;0"
+        keyTimes="0;0.1;0.2;0.47;0.52;0.58;0.64;0.72;0.8;0.9;1"
+        dur="5s" repeatCount="indefinite" />
+    </rect>
+    <!-- downward control arrives: ~keyTime 0.16 -->
+    <rect x="40" y="108" width="480" height="48" rx="8" fill="none" stroke="#c4b5fd" stroke-width="2" opacity="0">
+      <animate attributeName="opacity"
+        values="0;0;0.9;0.5;0.1;0;0;0;0;0;0"
+        keyTimes="0;0.14;0.18;0.22;0.28;0.36;0.5;0.6;0.7;0.8;1"
+        dur="5s" repeatCount="indefinite" />
+    </rect>
+    <text x="58" y="128" fill="#e2e8f0" font-size="11" font-weight="700">MES / AI</text>
+    <text x="58" y="144" fill="#64748b" font-size="9">
+      <animate attributeName="textContent"
+        values="CMD RELAY;CMD RELAY;ORCHESTRATOR + DNN;ORCHESTRATOR + DNN;DATA RECEIVED;OPTIMIZING...;CMD RELAY"
+        keyTimes="0;0.04;0.10;0.47;0.52;0.58;0.66"
+        dur="5s" repeatCount="indefinite" />
+      CMD RELAY
+    </text>
+    <!-- chip icon -->
+    <g transform="translate(472 132)" stroke="#a78bfa" stroke-width="1.2" fill="none">
+      <rect x="-10" y="-9" width="20" height="18" rx="2" />
+      <line x1="-6" y1="-13" x2="-6" y2="-9" />
+      <line x1="0" y1="-13" x2="0" y2="-9" />
+      <line x1="6" y1="-13" x2="6" y2="-9" />
+      <line x1="-6" y1="9" x2="-6" y2="13" />
+      <line x1="0" y1="9" x2="0" y2="13" />
+      <line x1="6" y1="9" x2="6" y2="13" />
+    </g>
+    <rect x="400" y="125" width="52" height="18" rx="4" fill="#0f1a33" stroke="#1e2a55" />
+    <text x="426" y="137" text-anchor="middle" fill="#94a3b8" font-size="8">KPI / AI</text>
+  </g>
+  <text x="544" y="144" fill="#64748b" font-size="8">PREDICT &middot; OPTIMIZE</text>
+
+  <!-- ── L3 SCADA y=164–212 ── -->
+  <g>
+    <rect x="40" y="164" width="480" height="48" rx="8" fill="#10163a" stroke="#2b3a66" stroke-width="1" />
+    <!-- upward data arrives: ~keyTime 0.40 -->
+    <rect x="40" y="164" width="480" height="48" rx="8" fill="none" stroke="#22d3ee" stroke-width="2" opacity="0">
+      <animate attributeName="opacity"
+        values="0;0;0;0.9;0.6;0.2;0;0;0;0;0"
+        keyTimes="0;0.1;0.37;0.42;0.48;0.54;0.62;0.72;0.8;0.9;1"
+        dur="5s" repeatCount="indefinite" />
+    </rect>
+    <!-- downward control arrives: ~keyTime 0.32 -->
+    <rect x="40" y="164" width="480" height="48" rx="8" fill="none" stroke="#7dd3fc" stroke-width="2" opacity="0">
+      <animate attributeName="opacity"
+        values="0;0;0;0;0;0.9;0.5;0.1;0;0;0"
+        keyTimes="0;0.14;0.18;0.22;0.30;0.34;0.38;0.44;0.52;0.7;1"
+        dur="5s" repeatCount="indefinite" />
+    </rect>
+    <text x="58" y="184" fill="#e2e8f0" font-size="11" font-weight="700">SCADA</text>
+    <text x="58" y="200" fill="#64748b" font-size="9">
+      <animate attributeName="textContent"
+        values="CTRL RELAY;CTRL RELAY;SUPERVISION + HISTORIAN;SUPERVISION + HISTORIAN;DATA RECEIVED;ALARMING;CTRL RELAY"
+        keyTimes="0;0.04;0.10;0.37;0.42;0.48;0.56"
+        dur="5s" repeatCount="indefinite" />
+      CTRL RELAY
+    </text>
+    <!-- monitor icon -->
+    <g transform="translate(472 188)" stroke="#22d3ee" stroke-width="1.2" fill="none">
+      <rect x="-12" y="-9" width="24" height="16" rx="2" />
+      <line x1="-4" y1="7" x2="-4" y2="11" />
+      <line x1="4" y1="7" x2="4" y2="11" />
+      <line x1="-9" y1="11" x2="9" y2="11" />
+      <path d="M-6 3 L-2 6 L2 1 L6 4" stroke-width="1.4" />
+    </g>
+    <rect x="400" y="181" width="52" height="18" rx="4" fill="#0f1a33" stroke="#1e2a55" />
+    <text x="426" y="193" text-anchor="middle" fill="#94a3b8" font-size="8">TELEMETRY</text>
+  </g>
+  <text x="544" y="200" fill="#64748b" font-size="8">TRENDS &middot; ALARMS</text>
+
+  <!-- ── L2 PLC CONTROL y=220–268 ── -->
+  <g>
+    <rect x="40" y="220" width="480" height="48" rx="8" fill="#10163a" stroke="#2b3a66" stroke-width="1" />
+    <!-- upward data arrives: ~keyTime 0.28 -->
+    <rect x="40" y="220" width="480" height="48" rx="8" fill="none" stroke="#4ade80" stroke-width="2" opacity="0">
+      <animate attributeName="opacity"
+        values="0;0;0.9;0.6;0.2;0;0;0;0;0;0"
+        keyTimes="0;0.25;0.30;0.36;0.42;0.50;0.62;0.72;0.8;0.9;1"
+        dur="5s" repeatCount="indefinite" />
+    </rect>
+    <!-- downward control arrives: ~keyTime 0.48 -->
+    <rect x="40" y="220" width="480" height="48" rx="8" fill="none" stroke="#34d399" stroke-width="2" opacity="0">
+      <animate attributeName="opacity"
+        values="0;0;0;0;0;0;0;0.9;0.5;0.1;0"
+        keyTimes="0;0.14;0.18;0.22;0.30;0.34;0.45;0.50;0.56;0.62;0.70"
+        dur="5s" repeatCount="indefinite" />
+    </rect>
+    <text x="58" y="240" fill="#e2e8f0" font-size="11" font-weight="700">PLC CONTROL</text>
+    <text x="58" y="256" fill="#64748b" font-size="9">
+      <animate attributeName="textContent"
+        values="CMD EXEC;L70 CPU + I/O + SAFETY;L70 CPU + I/O + SAFETY;DATA TX;CMD EXEC"
+        keyTimes="0;0.10;0.30;0.36;0.50"
+        dur="5s" repeatCount="indefinite" />
+      CMD EXEC
+    </text>
+    <!-- rack icon -->
+    <g transform="translate(472 244)" stroke="#4ade80" stroke-width="1.2" fill="none">
+      <rect x="-12" y="-10" width="24" height="20" rx="2" />
+      <circle cx="-6" cy="-4" r="1.5" fill="#4ade80" stroke="none" />
+      <circle cx="0" cy="-4" r="1.5" fill="#4ade80" stroke="none" />
+      <circle cx="6" cy="-4" r="1.5" fill="#4ade80" stroke="none" />
+      <line x1="-8" y1="2" x2="8" y2="2" />
+      <line x1="-8" y1="6" x2="8" y2="6" />
+    </g>
+    <rect x="400" y="237" width="52" height="18" rx="4" fill="#0f1a33" stroke="#1e2a55" />
+    <text x="426" y="249" text-anchor="middle" fill="#94a3b8" font-size="8">TAG STREAM</text>
+  </g>
+  <text x="544" y="256" fill="#64748b" font-size="8">CONTROL &middot; COMMAND</text>
+
+  <!-- ── L1 FIELD DEVICE (bottom) y=276–324 ── -->
+  <g>
+    <rect x="40" y="276" width="480" height="48" rx="8" fill="#10163a" stroke="#2b3a66" stroke-width="1" />
+    <!-- upward data departs (packet leaves, brief glow) -->
+    <rect x="40" y="276" width="480" height="48" rx="8" fill="none" stroke="#fbbf24" stroke-width="2" opacity="0">
+      <animate attributeName="opacity"
+        values="0.7;0.4;0.1;0;0;0;0;0;0;0;0.7"
+        keyTimes="0;0.04;0.08;0.12;0.2;0.4;0.6;0.7;0.8;0.96;1"
+        dur="5s" repeatCount="indefinite" />
+    </rect>
+    <!-- downward control arrives: ~keyTime 0.64 -->
+    <rect x="40" y="276" width="480" height="48" rx="8" fill="none" stroke="#fde68a" stroke-width="2" opacity="0">
+      <animate attributeName="opacity"
+        values="0;0;0;0;0;0;0;0;0.9;0.5;0.1"
+        keyTimes="0;0.14;0.18;0.22;0.30;0.40;0.50;0.62;0.66;0.72;0.80"
+        dur="5s" repeatCount="indefinite" />
+    </rect>
+    <text x="58" y="296" fill="#e2e8f0" font-size="11" font-weight="700">FIELD DEVICE</text>
+    <text x="58" y="312" fill="#64748b" font-size="9">
+      <animate attributeName="textContent"
+        values="ACTUATING;ACTUATING;SENSORS &middot; VFD &middot; ROBOTS;SENSORS &middot; VFD &middot; ROBOTS;TX DATA;ACTUATING"
+        keyTimes="0;0.04;0.10;0.64;0.70;0.80"
+        dur="5s" repeatCount="indefinite" />
+      TX DATA
+    </text>
+    <!-- sensor icon -->
+    <g transform="translate(472 300)" stroke="#fbbf24" stroke-width="1.2" fill="none">
+      <circle cx="0" cy="0" r="9" />
+      <circle cx="0" cy="0" r="4" />
+      <line x1="0" y1="-13" x2="0" y2="-9" />
+      <line x1="0" y1="9" x2="0" y2="13" />
+      <line x1="-13" y1="0" x2="-9" y2="0" />
+      <line x1="9" y1="0" x2="13" y2="0" />
+    </g>
+    <rect x="400" y="293" width="52" height="18" rx="4" fill="#0f1a33" stroke="#1e2a55" />
+    <text x="426" y="305" text-anchor="middle" fill="#94a3b8" font-size="8">RAW I/O</text>
+  </g>
+  <text x="544" y="312" fill="#64748b" font-size="8">mV &middot; 24V &middot; BUS</text>
+
+  <!-- ================================================================ -->
+  <!-- UPWARD DATA PACKETS (FIELD → CLOUD) — left bus x=280             -->
+  <!-- 5s loop: travel from y=320 to y=58                               -->
+  <!-- ================================================================ -->
+
+  <!-- Primary upward packet (cyan) -->
+  <circle r="3.5" fill="#22d3ee" filter="url(#dt-fd-pglow)">
+    <animateMotion dur="5s" repeatCount="indefinite" calcMode="linear">
+      <mpath><path d="M280 320 L280 58" /></mpath>
+    </animateMotion>
+  </circle>
+
+  <!-- Second upward packet — offset half period -->
+  <circle r="3" fill="#22d3ee" opacity="0.7" filter="url(#dt-fd-pglow)">
+    <animateMotion dur="5s" begin="-2.5s" repeatCount="indefinite" calcMode="linear">
+      <mpath><path d="M280 320 L280 58" /></mpath>
+    </animateMotion>
+  </circle>
+
+  <!-- Upward packet on middle bus x=360 (purple, sensor data) -->
+  <circle r="3" fill="#a78bfa" filter="url(#dt-fd-pglow)">
+    <animateMotion dur="5s" begin="-1.2s" repeatCount="indefinite" calcMode="linear">
+      <mpath><path d="M360 320 L360 58" /></mpath>
+    </animateMotion>
+  </circle>
+
+  <!-- Upward packet on middle bus x=360 — offset -->
+  <circle r="2.5" fill="#a78bfa" opacity="0.6" filter="url(#dt-fd-pglow)">
+    <animateMotion dur="5s" begin="-3.7s" repeatCount="indefinite" calcMode="linear">
+      <mpath><path d="M360 320 L360 58" /></mpath>
+    </animateMotion>
+  </circle>
+
+  <!-- ================================================================ -->
+  <!-- DOWNWARD CONTROL PACKETS (CLOUD → FIELD) — right bus x=440       -->
+  <!-- 5s loop: travel from y=58 to y=320                               -->
+  <!-- ================================================================ -->
+
+  <!-- Primary downward packet (purple/violet) -->
+  <circle r="3.5" fill="#c4b5fd" filter="url(#dt-fd-pglow)">
+    <animateMotion dur="5s" repeatCount="indefinite" calcMode="linear">
+      <mpath><path d="M440 58 L440 320" /></mpath>
+    </animateMotion>
+  </circle>
+
+  <!-- Second downward packet — offset -->
+  <circle r="3" fill="#a78bfa" opacity="0.7" filter="url(#dt-fd-pglow)">
+    <animateMotion dur="5s" begin="-2.5s" repeatCount="indefinite" calcMode="linear">
+      <mpath><path d="M440 58 L440 320" /></mpath>
+    </animateMotion>
+  </circle>
+
+  <!-- Downward packet on middle bus x=360 (green, setpoint/command) -->
+  <circle r="3" fill="#4ade80" filter="url(#dt-fd-pglow)">
+    <animateMotion dur="5s" begin="-0.8s" repeatCount="indefinite" calcMode="linear">
+      <mpath><path d="M360 58 L360 320" /></mpath>
+    </animateMotion>
+  </circle>
+
+  <!-- Downward packet on middle bus x=360 — offset -->
+  <circle r="2.5" fill="#34d399" opacity="0.6" filter="url(#dt-fd-pglow)">
+    <animateMotion dur="5s" begin="-3.3s" repeatCount="indefinite" calcMode="linear">
+      <mpath><path d="M360 58 L360 320" /></mpath>
+    </animateMotion>
+  </circle>
+
+  <!-- ================================================================ -->
+  <!-- DIRECTION ARROWS on bus lines (static, show flow direction)      -->
+  <!-- ================================================================ -->
+  <!-- Upward arrows on left bus x=280 -->
+  <g fill="#22d3ee" opacity="0.35">
+    <polygon points="280,270 277,278 283,278" />
+    <polygon points="280,210 277,218 283,218" />
+    <polygon points="280,150 277,158 283,158" />
+    <polygon points="280,90 277,98 283,98" />
+  </g>
+  <!-- Downward arrows on right bus x=440 -->
+  <g fill="#a78bfa" opacity="0.35">
+    <polygon points="440,110 437,102 443,102" />
+    <polygon points="440,170 437,162 443,162" />
+    <polygon points="440,230 437,222 443,222" />
+    <polygon points="440,290 437,282 443,282" />
+  </g>
+  <!-- Mixed arrows on middle bus x=360 (both directions) -->
+  <g fill="#64748b" opacity="0.25">
+    <polygon points="360,240 357,248 363,248" />
+    <polygon points="360,150 357,142 363,142" />
+  </g>
+
+  <!-- Footer -->
+  <text x="40" y="344" fill="#475569" font-size="9">
+    FIELD I/O &rarr; PLC &rarr; SCADA &rarr; MES/AI &rarr; CLOUD &middot; 120 tags/s &middot; CLOUD &rarr; FIELD CONTROL
+  </text>
+</svg>

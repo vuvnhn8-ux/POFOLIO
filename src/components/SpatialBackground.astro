@@ -1,0 +1,109 @@
+---
+// Global Spatial UI background — Apple Vision Pro inspired workspace.
+// Mounted once behind the whole site (fixed, z-index -1).
+// Layers: soft atmosphere, faint CAD grid, ambient glow, a hidden-AR
+// SVG hint layer, floating light particles, glass sheen, vignette and a
+// clearly-visible animated engineer character. Purely decorative —
+// never intercepts pointer events.
+import AnimatedEngineerBackground from './AnimatedEngineerBackground.astro';
+---
+
+<div class="spatial-bg" aria-hidden="true">
+  <!-- Depth 0: soft gradient atmosphere (white / light blue / subtle purple) -->
+  <div class="spatial-bg__atmosphere"></div>
+
+  <!-- Depth 0: faint engineering / CAD grid -->
+  <div class="spatial-bg__grid" data-parallax="0.4"></div>
+
+  <!-- Depth 1: ambient glow halos -->
+  <div class="spatial-bg__glows" data-parallax="0.7">
+    <div class="spatial-bg__glow spatial-bg__glow--blue"></div>
+    <div class="spatial-bg__glow spatial-bg__glow--violet"></div>
+    <div class="spatial-bg__glow spatial-bg__glow--cyan"></div>
+    <div class="spatial-bg__glow spatial-bg__glow--core"></div>
+  </div>
+
+  <!-- Hidden AR hint layer: faint blueprint frame, circuit paths, thin robot arm outline, data points -->
+  <svg class="spatial-bg__ar" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" fill="none">
+    <defs>
+      <linearGradient id="ar-grad" x1="0" y1="0" x2="1" y2="1">
+        <stop stop-color="#6366f1"/><stop offset="0.5" stop-color="#22d3ee"/><stop offset="1" stop-color="#a78bfa"/>
+      </linearGradient>
+    </defs>
+    <g stroke="url(#ar-grad)" stroke-opacity="0.35">
+      <!-- blueprint frame + corner ticks -->
+      <rect x="120" y="120" width="1360" height="620" rx="16" stroke-width="1.2" stroke-dasharray="2 7"/>
+      <path d="M120 176 v-56 h56 M1544 64 h56 v56 M120 724 v56 h56 M1544 780 h56 v-56" stroke-width="1.2"/>
+      <!-- dimension line -->
+      <path d="M170 170 h700 M186 156 v28 M856 156 v28" stroke-width="1"/>
+      <circle cx="870" cy="170" r="1.5" fill="#22d3ee"/>
+      <circle cx="184" cy="170" r="1.5" fill="#a78bfa"/>
+      <!-- crosshair markers -->
+      <path d="M1360 220 v20 M1350 230 h20" stroke-width="1"/>
+      <path d="M360 680 v20 M350 690 h20" stroke-width="1"/>
+      <!-- circuit paths -->
+      <path d="M320 420 h220 c 60 0 80 60 140 60 h320 c 50 0 70 -40 120 -40 h140" stroke-width="1.1"/>
+      <path d="M420 340 v-80 h240" stroke-width="1"/>
+      <path d="M1120 560 c -40 -90 -20 -200 60 -240 h160" stroke-width="1"/>
+      <!-- thin robotic arm outline -->
+      <g stroke-width="1.2" stroke-linecap="round">
+        <ellipse cx="1330" cy="760" rx="70" ry="14"/>
+        <rect x="1306" y="716" width="48" height="44" rx="6"/>
+        <line x1="1330" y1="716" x2="1330" y2="640"/>
+        <circle cx="1330" cy="640" r="7"/>
+        <line x1="1330" y1="640" x2="1250" y2="590"/>
+        <circle cx="1250" cy="590" r="6"/>
+        <line x1="1250" y1="590" x2="1180" y2="620"/>
+        <path d="M1180 620 l-12 10 M1180 620 l4 16" stroke-width="1"/>
+      </g>
+      <!-- small data points -->
+      <g fill="#22d3ee">
+        <circle cx="560" cy="480" r="2"/><circle cx="720" cy="540" r="2"/>
+        <circle cx="980" cy="500" r="2"/><circle cx="1080" cy="580" r="2"/>
+        <circle cx="620" cy="260" r="2"/><circle cx="480" cy="600" r="2"/>
+        <circle cx="1280" cy="430" r="2"/><circle cx="700" cy="760" r="2"/>
+      </g>
+      <!-- slow data packets travelling the circuit -->
+      <circle r="2.2" fill="#22d3ee">
+        <animateMotion dur="40s" repeatCount="indefinite" path="M320 420 h220 c 60 0 80 60 140 60 h320 c 50 0 70 -40 120 -40 h140"/>
+      </circle>
+      <circle r="1.8" fill="#a78bfa">
+        <animateMotion dur="55s" begin="-20s" repeatCount="indefinite" path="M320 420 h220 c 60 0 80 60 140 60 h320 c 50 0 70 -40 120 -40 h140"/>
+      </circle>
+      <circle r="1.6" fill="#6366f1">
+        <animateMotion dur="48s" begin="-33s" repeatCount="indefinite" path="M1120 560 c -40 -90 -20 -200 60 -240 h160"/>
+      </circle>
+    </g>
+  </svg>
+
+  <!-- glass sheen / reflection -->
+  <div class="spatial-bg__sheen"></div>
+
+  <!-- Depth 2: floating light particles -->
+  <div class="spatial-bg__particles" data-parallax="1">
+    <span style="--x:5%;  --y:14%; --s:3px;  --c:#6366f1; --o:0.16; --d:26s; --dx:16px;  --dy:-24px"></span>
+    <span style="--x:11%; --y:58%; --s:2px;  --c:#8b5cf6; --o:0.12; --d:32s; --dx:-14px; --dy:-18px"></span>
+    <span style="--x:19%; --y:32%; --s:2.5px;--c:#38bdf8; --o:0.14; --d:24s; --dx:18px;  --dy:-28px"></span>
+    <span style="--x:27%; --y:76%; --s:2px;  --c:#ffffff; --o:0.13; --d:36s; --dx:-12px; --dy:-16px"></span>
+    <span style="--x:35%; --y:12%; --s:3px;  --c:#6366f1; --o:0.12; --d:29s; --dx:12px;  --dy:-30px"></span>
+    <span style="--x:43%; --y:52%; --s:2px;  --c:#8b5cf6; --o:0.10; --d:34s; --dx:-16px; --dy:-20px"></span>
+    <span style="--x:51%; --y:24%; --s:2.5px;--c:#38bdf8; --o:0.15; --d:27s; --dx:14px;  --dy:-26px"></span>
+    <span style="--x:58%; --y:68%; --s:2px;  --c:#ffffff; --o:0.12; --d:38s; --dx:-18px; --dy:-14px"></span>
+    <span style="--x:65%; --y:14%; --s:3px;  --c:#6366f1; --o:0.14; --d:28s; --dx:10px;  --dy:-32px"></span>
+    <span style="--x:72%; --y:46%; --s:2px;  --c:#8b5cf6; --o:0.11; --d:35s; --dx:-14px; --dy:-22px"></span>
+    <span style="--x:79%; --y:30%; --s:2.5px;--c:#38bdf8; --o:0.15; --d:23s; --dx:16px;  --dy:-20px"></span>
+    <span style="--x:85%; --y:72%; --s:2px;  --c:#ffffff; --o:0.12; --d:40s; --dx:-10px; --dy:-18px"></span>
+    <span style="--x:92%; --y:18%; --s:3px;  --c:#6366f1; --o:0.13; --d:31s; --dx:14px;  --dy:-26px"></span>
+    <span style="--x:96%; --y:56%; --s:2px;  --c:#8b5cf6; --o:0.10; --d:37s; --dx:-12px; --dy:-20px"></span>
+    <span style="--x:33%; --y:88%; --s:2px;  --c:#6366f1; --o:0.10; --d:30s; --dx:12px;  --dy:-14px"></span>
+    <span style="--x:64%; --y:90%; --s:2px;  --c:#8b5cf6; --o:0.09; --d:39s; --dx:-16px; --dy:-12px"></span>
+    <span style="--x:47%; --y:38%; --s:2px;  --c:#ffffff; --o:0.11; --d:33s; --dx:14px;  --dy:-20px"></span>
+    <span style="--x:82%; --y:84%; --s:2.5px;--c:#38bdf8; --o:0.12; --d:41s; --dx:-10px; --dy:-18px"></span>
+  </div>
+
+  <!-- Soft edge vignette -->
+  <div class="spatial-bg__vignette"></div>
+
+  <!-- Clearly-visible animated automation engineer at work -->
+  <AnimatedEngineerBackground />
+</div>

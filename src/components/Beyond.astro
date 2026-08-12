@@ -4,50 +4,49 @@ import { ui } from '../i18n/ui';
 const t = ui.en;
 ---
 
-<section
-  id="beyond"
-  class="border-t border-slate-800/60 py-20 sm:py-24"
-  aria-labelledby="beyond-heading"
->
+<section id="beyond" class="py-20 sm:py-24" aria-labelledby="beyond-heading">
   <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
     <div class="grid gap-12 lg:grid-cols-5 lg:gap-16">
+
+      <!-- Left: text content (unchanged) -->
       <div class="lg:col-span-2">
-        <p class="text-sm font-semibold uppercase tracking-widest text-emerald-400" data-i18n="beyond.kicker">{t.beyond.kicker}</p>
-        <h2 id="beyond-heading" class="mt-2 text-3xl font-bold tracking-tight text-white sm:text-4xl" data-i18n="beyond.title">
+        <p class="text-sm font-semibold uppercase tracking-widest text-indigo-500" data-i18n="beyond.kicker">{t.beyond.kicker}</p>
+        <h2 id="beyond-heading" class="mt-2 text-3xl font-bold tracking-tight text-[#15152a] sm:text-4xl" data-i18n="beyond.title">
           {t.beyond.title}
         </h2>
-        <p class="mt-4 text-base leading-relaxed text-slate-400 sm:text-lg" data-i18n="beyond.intro">
+        <p class="mt-4 text-base leading-relaxed text-slate-500 sm:text-lg" data-i18n="beyond.intro">
           {t.beyond.intro}
         </p>
 
-        <h3 class="mt-8 text-sm font-bold uppercase tracking-wider text-slate-300" data-i18n="beyond.mindsetTitle">
+        <h3 class="mt-8 text-sm font-bold uppercase tracking-wider text-slate-700" data-i18n="beyond.mindsetTitle">
           {t.beyond.mindsetTitle}
         </h3>
         <ul class="mt-4 space-y-3">
-          {
-            t.beyond.mindset.map((item, i) => (
-              <li class="flex items-start gap-2.5 text-sm text-slate-300">
-                <svg class="mt-0.5 h-5 w-5 shrink-0 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-                </svg>
-                <span data-i18n={`beyond.mindset.${i}`}>{item}</span>
-              </li>
-            ))
-          }
+          {t.beyond.mindset.map((item, i) => (
+            <li class="flex items-start gap-2.5 text-sm text-slate-600">
+              <svg class="mt-0.5 h-5 w-5 shrink-0 text-indigo-500" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+              <span data-i18n={`beyond.mindset.${i}`}>{item}</span>
+            </li>
+          ))}
         </ul>
       </div>
 
+      <!-- Right: gallery with puzzle-assembly animation -->
       <div class="lg:col-span-3">
-        <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4">
-          {
-            t.beyond.gallery.map((photo, i) => (
-              <figure
-                class:list={[
-                  'group relative overflow-hidden rounded-xl border border-slate-800 bg-slate-900',
-                  i === 0 || i === 3 ? 'sm:col-span-1 sm:row-span-1 aspect-[3/4]' : 'aspect-square',
-                  i === 0 ? 'col-span-2 aspect-[16/10] sm:col-span-2 sm:aspect-[16/10]' : '',
-                ]}
-              >
+        <div class="grid grid-cols-2 gap-4 sm:grid-cols-3">
+          {t.beyond.gallery.map((photo, i) => (
+            <figure
+              class:list={[
+                'beyond-card glass spatial-card group relative overflow-hidden rounded-3xl p-1.5',
+                i === 0 || i === 3 ? 'aspect-[3/4]' : 'aspect-square',
+                i === 0 ? 'col-span-2 aspect-[16/10] sm:col-span-2' : '',
+              ]}
+            >
+              <!-- puzzle overlay container — same size as image, pointer-events none -->
+              <div class="puzzle-host relative h-full w-full overflow-hidden rounded-[1.2rem]">
                 <img
                   src={photo.src}
                   alt={photo.alt}
@@ -55,17 +54,169 @@ const t = ui.en;
                   height="800"
                   loading="lazy"
                   decoding="async"
-                  class="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                  class="puzzle-img h-full w-full object-cover transition duration-700 group-hover:scale-105"
                   data-i18n-alt={`beyond.gallery.${i}.alt`}
                 />
-                <figcaption class="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-slate-950/90 via-slate-950/40 to-transparent px-3 pb-3 pt-10">
-                  <span class="text-xs font-medium text-slate-200" data-i18n={`beyond.gallery.${i}.label`}>{photo.label}</span>
+                <!-- 3×3 tile grid drawn over the image in CSS -->
+                <div class="puzzle-tiles" aria-hidden="true">
+                  {Array.from({length: 9}).map((_, t) => (
+                    <div class="puzzle-tile" data-tile={t}></div>
+                  ))}
+                </div>
+                <figcaption class="pointer-events-none absolute inset-x-0 bottom-0
+                  bg-gradient-to-t from-black/60 via-black/20 to-transparent
+                  px-3 pb-3 pt-10 z-10">
+                  <span class="text-xs font-medium text-white"
+                    data-i18n={`beyond.gallery.${i}.label`}>{photo.label}</span>
                 </figcaption>
-              </figure>
-            ))
-          }
+              </div>
+            </figure>
+          ))}
         </div>
       </div>
+
     </div>
   </div>
 </section>
+
+<style>
+/* ─────────────────────────────────────────────────────────────
+   PUZZLE TILE SYSTEM
+   Strategy: 9 absolutely-positioned tiles, each the same size
+   as 1/3 of the container. Each tile starts at a small random
+   offset + tiny rotation, opacity 0. On .is-assembled they
+   animate to exact grid position (CSS transform: none).
+   The real image underneath is always present — tiles act as
+   glass/frosted covers that dissolve away as they "lock in".
+   This avoids complex image-cropping and works with lazy-loaded imgs.
+   ───────────────────────────────────────────────────────────── */
+
+.puzzle-host {
+  position: relative;
+}
+
+/* Tile grid: 3 columns × 3 rows, each 33.333% of container */
+.puzzle-tiles {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  z-index: 5;
+  pointer-events: none;
+}
+
+.puzzle-tile {
+  /* Each tile covers its grid cell with a glass tint */
+  background: rgba(12, 18, 38, 0.55);
+  border: 1px solid rgba(99, 102, 241, 0.18);
+  /* Start displaced — JS will set individual --dx/--dy/--dr per tile */
+  transform: translate(var(--dx, 0px), var(--dy, 0px)) rotate(var(--dr, 0deg));
+  opacity: 1;
+  will-change: transform, opacity;
+  transition:
+    transform 0.75s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity   0.65s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* When assembled: tile moves to exact position and fades to fully transparent */
+.puzzle-host.is-assembled .puzzle-tile {
+  transform: translate(0, 0) rotate(0deg);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Stagger each tile's transition-delay via data-tile attribute */
+.puzzle-host.is-assembled .puzzle-tile[data-tile="0"] { transition-delay: 0.00s; }
+.puzzle-host.is-assembled .puzzle-tile[data-tile="1"] { transition-delay: 0.06s; }
+.puzzle-host.is-assembled .puzzle-tile[data-tile="2"] { transition-delay: 0.12s; }
+.puzzle-host.is-assembled .puzzle-tile[data-tile="3"] { transition-delay: 0.08s; }
+.puzzle-host.is-assembled .puzzle-tile[data-tile="4"] { transition-delay: 0.16s; }
+.puzzle-host.is-assembled .puzzle-tile[data-tile="5"] { transition-delay: 0.10s; }
+.puzzle-host.is-assembled .puzzle-tile[data-tile="6"] { transition-delay: 0.14s; }
+.puzzle-host.is-assembled .puzzle-tile[data-tile="7"] { transition-delay: 0.04s; }
+.puzzle-host.is-assembled .puzzle-tile[data-tile="8"] { transition-delay: 0.18s; }
+
+/* ── Card hover: subtle lift + deeper shadow ── */
+.beyond-card {
+  transition:
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.beyond-card:hover {
+  transform: translateY(-6px) scale(1.012);
+  box-shadow:
+    0 2px 4px rgba(30, 27, 75, 0.04),
+    0 20px 56px -16px rgba(30, 27, 75, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.92);
+}
+
+/* Reduced motion: skip animation, show image immediately */
+@media (prefers-reduced-motion: reduce) {
+  .puzzle-tile        { transition: none; opacity: 0; }
+  .beyond-card:hover  { transform: none; }
+}
+</style>
+
+<script>
+(function () {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    // Skip animation entirely — just hide tiles immediately
+    document.querySelectorAll('.puzzle-host').forEach(host => {
+      host.querySelectorAll('.puzzle-tile').forEach(t => {
+        (t as HTMLElement).style.opacity = '0';
+      });
+    });
+    return;
+  }
+
+  // Offset pool: each tile gets a small deterministic offset based on its index
+  // so adjacent tiles spread in different directions (no chaos, controlled feel)
+  const OFFSETS = [
+    [-14, -12,  2],  // tile 0: top-left    → nudge up-left
+    [  0, -16,  0],  // tile 1: top-centre  → nudge up
+    [ 14, -12, -2],  // tile 2: top-right   → nudge up-right
+    [-18,   0,  3],  // tile 3: mid-left    → nudge left
+    [  0,   0,  0],  // tile 4: centre      → slight scale only
+    [ 18,   0, -3],  // tile 5: mid-right   → nudge right
+    [-14,  12, -2],  // tile 6: bot-left    → nudge down-left
+    [  0,  16,  0],  // tile 7: bot-centre  → nudge down
+    [ 14,  12,  2],  // tile 8: bot-right   → nudge down-right
+  ] as const;
+
+  function initHost(host: Element) {
+    const tiles = host.querySelectorAll<HTMLElement>('.puzzle-tile');
+    tiles.forEach((tile, i) => {
+      const [dx, dy, dr] = OFFSETS[i] ?? [0, 0, 0];
+      tile.style.setProperty('--dx', `${dx}px`);
+      tile.style.setProperty('--dy', `${dy}px`);
+      tile.style.setProperty('--dr', `${dr}deg`);
+    });
+  }
+
+  function assemble(host: Element) {
+    (host as HTMLElement).classList.add('is-assembled');
+  }
+
+  // Initialize all hosts on load
+  const hosts = document.querySelectorAll('.puzzle-host');
+  hosts.forEach(initHost);
+
+  // IntersectionObserver: trigger assembly when card enters viewport
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          // Small delay so user sees the displaced state briefly
+          const host = entry.target;
+          setTimeout(() => assemble(host), 180);
+          observer.unobserve(host);
+        }
+      });
+    },
+    { threshold: 0.25 }
+  );
+
+  hosts.forEach(host => observer.observe(host));
+})();
+</script>

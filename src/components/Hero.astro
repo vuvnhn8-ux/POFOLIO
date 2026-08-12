@@ -4,78 +4,47 @@ import { profile, ui } from '../i18n/ui';
 const t = ui.en;
 
 const socials = [
-  {
-    href: profile.linkedInUrl,
-    label: 'LinkedIn',
-    hover: 'hover:border-[#0A66C2]/60 hover:text-[#0A66C2]',
-    icon: 'linkedin',
-  },
-  {
-    href: profile.facebookUrl,
-    label: 'Facebook',
-    hover: 'hover:border-[#1877F2]/60 hover:text-[#1877F2]',
-    icon: 'facebook',
-  },
-  {
-    href: profile.instagramUrl,
-    label: 'Instagram',
-    hover: 'hover:border-pink-500/50 hover:text-pink-400',
-    icon: 'instagram',
-  },
-  {
-    href: profile.whatsappUrl,
-    label: 'WhatsApp',
-    hover: 'hover:border-[#25D366]/60 hover:text-[#25D366]',
-    icon: 'whatsapp',
-  },
+  { href: profile.linkedInUrl, label: 'LinkedIn', icon: 'linkedin' },
+  { href: profile.facebookUrl, label: 'Facebook', icon: 'facebook' },
+  { href: profile.instagramUrl, label: 'Instagram', icon: 'instagram' },
+  { href: profile.whatsappUrl, label: 'WhatsApp', icon: 'whatsapp' },
 ] as const;
 ---
 
 <section
   id="top"
-  class="relative overflow-hidden bg-grid pt-28 pb-20 sm:pt-32 sm:pb-28"
+  class="relative overflow-hidden pt-32 pb-20 sm:pt-40 sm:pb-28"
   aria-labelledby="hero-heading"
 >
-  <div
-    class="pointer-events-none absolute -top-32 left-1/2 h-[420px] w-[720px] -translate-x-1/2 rounded-full bg-blue-600/15 blur-3xl"
-    aria-hidden="true"
-  ></div>
-  <div
-    class="pointer-events-none absolute bottom-0 right-0 h-64 w-64 rounded-full bg-emerald-500/10 blur-3xl"
-    aria-hidden="true"
-  ></div>
-
-  <div class="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-    <div class="grid items-center gap-10 lg:grid-cols-[1.05fr_360px] lg:gap-12 xl:grid-cols-[1fr_400px]">
+  <div class="relative z-10 mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+    <div class="grid items-center gap-12 lg:grid-cols-[1.1fr_380px] lg:gap-14 xl:grid-cols-[1fr_420px]">
       <div class="max-w-3xl">
         <p
-          class="mb-5 inline-flex items-center gap-2 rounded-full border border-blue-500/30 bg-blue-500/10 px-3.5 py-1.5 text-xs font-medium tracking-wide text-blue-300 sm:text-sm"
+          class="glass-subtle mb-6 inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-semibold tracking-wide text-slate-600 sm:text-sm"
         >
           <span class="relative flex h-2 w-2" aria-hidden="true">
-            <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60"></span>
-            <span class="relative inline-flex h-2 w-2 rounded-full bg-emerald-400"></span>
+            <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-indigo-400 opacity-60"></span>
+            <span class="relative inline-flex h-2 w-2 rounded-full bg-indigo-500"></span>
           </span>
           <span data-i18n="hero.badge">{t.hero.badge}</span>
         </p>
 
-        <p class="mb-2 text-base font-medium text-slate-400 sm:text-lg" data-i18n="hero.greeting">
+        <p class="mb-2 text-base font-medium text-slate-500 sm:text-lg" data-i18n="hero.greeting">
           {t.hero.greeting}
         </p>
 
         <h1
           id="hero-heading"
-          class="text-5xl font-extrabold leading-[1.1] tracking-tight text-white sm:text-6xl lg:text-7xl"
+          class="text-5xl font-extrabold leading-[1.05] tracking-tight text-[#15152a] sm:text-6xl lg:text-7xl"
         >
-          <span class="bg-gradient-to-r from-blue-400 to-emerald-400 bg-clip-text text-transparent" data-i18n="hero.name">
-            {t.hero.name}
-          </span>
+          <span class="text-spatial-accent" data-i18n="hero.name">{t.hero.name}</span>
         </h1>
 
-        <p class="mt-4 max-w-xl text-xl font-semibold leading-snug text-slate-200 sm:text-2xl" data-i18n="hero.tagline">
+        <p class="mt-4 max-w-xl text-xl font-semibold leading-snug text-slate-700 sm:text-2xl" data-i18n="hero.tagline">
           {t.hero.tagline}
         </p>
 
-        <p class="mt-5 max-w-2xl text-base leading-relaxed text-slate-400 sm:text-lg" data-i18n="hero.sub">
+        <p class="mt-5 max-w-2xl text-base leading-relaxed text-slate-500 sm:text-lg" data-i18n="hero.sub">
           {t.hero.sub}
         </p>
 
@@ -83,7 +52,7 @@ const socials = [
           <div class="flex flex-wrap items-center gap-3">
             <a
               href="#case-studies"
-              class="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-600/30 transition hover:bg-blue-500 glow-blue"
+              class="spatial-btn inline-flex items-center justify-center gap-2 rounded-2xl bg-[#1a1a2e] px-6 py-3 text-sm font-semibold text-white shadow-xl shadow-indigo-950/25 hover:bg-[#2a2a45]"
             >
               <span data-i18n="hero.ctaPrimary">{t.hero.ctaPrimary}</span>
               <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
@@ -92,7 +61,7 @@ const socials = [
             </a>
             <a
               href="#contact"
-              class="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-700 bg-slate-900/60 px-6 py-3 text-sm font-semibold text-slate-200 transition hover:border-slate-500 hover:bg-slate-800"
+              class="spatial-btn inline-flex items-center justify-center gap-2 rounded-2xl border border-white/70 bg-white/60 px-6 py-3 text-sm font-semibold text-slate-700 backdrop-blur-xl hover:bg-white"
               data-i18n="nav.contact"
             >
               {ui.en.nav.contact}
@@ -106,10 +75,7 @@ const socials = [
                   href={s.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  class:list={[
-                    'inline-flex h-11 w-11 items-center justify-center rounded-xl border border-slate-700 bg-slate-900/60 text-slate-300 transition hover:bg-slate-800',
-                    s.hover,
-                  ]}
+                  class="spatial-btn inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-white/70 bg-white/60 text-slate-600 backdrop-blur-xl hover:bg-white hover:text-slate-900"
                   aria-label={s.label}
                   title={s.label}
                 >
@@ -139,21 +105,21 @@ const socials = [
           </div>
         </div>
 
-        <dl class="mt-12 grid grid-cols-2 gap-4 border-t border-slate-800/80 pt-8 sm:grid-cols-3 sm:gap-6">
-          <div>
-            <dt class="text-xs font-medium uppercase tracking-wider text-slate-500" data-i18n="hero.expLabel">{t.hero.expLabel}</dt>
-            <dd class="mt-1 text-2xl font-bold text-white" data-i18n="hero.expValue">{t.hero.expValue}</dd>
+        <dl class="mt-12 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4">
+          <div class="glass spatial-card p-4">
+            <dt class="text-[11px] font-medium uppercase tracking-wider text-slate-500" data-i18n="hero.expLabel">{t.hero.expLabel}</dt>
+            <dd class="mt-1 text-2xl font-bold text-[#15152a]" data-i18n="hero.expValue">{t.hero.expValue}</dd>
             <dd class="text-xs text-slate-500" data-i18n="hero.expNote">{t.hero.expNote}</dd>
           </div>
-          <div>
-            <dt class="text-xs font-medium uppercase tracking-wider text-slate-500" data-i18n="hero.focusLabel">{t.hero.focusLabel}</dt>
-            <dd class="mt-1 text-2xl font-bold text-white" data-i18n="hero.focusValue">{t.hero.focusValue}</dd>
+          <div class="glass spatial-card p-4">
+            <dt class="text-[11px] font-medium uppercase tracking-wider text-slate-500" data-i18n="hero.focusLabel">{t.hero.focusLabel}</dt>
+            <dd class="mt-1 text-xl font-bold text-[#15152a] sm:text-2xl" data-i18n="hero.focusValue">{t.hero.focusValue}</dd>
             <dd class="text-xs text-slate-500" data-i18n="hero.focusNote">{t.hero.focusNote}</dd>
           </div>
-          <div class="col-span-2 sm:col-span-1">
-            <dt class="text-xs font-medium uppercase tracking-wider text-slate-500" data-i18n="hero.goalLabel">{t.hero.goalLabel}</dt>
-            <dd class="mt-1 flex items-center gap-2 text-2xl font-bold text-emerald-400">
-              <span class="h-2.5 w-2.5 rounded-full bg-emerald-400" aria-hidden="true"></span>
+          <div class="glass spatial-card col-span-2 p-4 sm:col-span-1">
+            <dt class="text-[11px] font-medium uppercase tracking-wider text-slate-500" data-i18n="hero.goalLabel">{t.hero.goalLabel}</dt>
+            <dd class="mt-1 flex items-center gap-2 text-2xl font-bold text-indigo-600">
+              <span class="h-2.5 w-2.5 rounded-full bg-indigo-500" aria-hidden="true"></span>
               <span data-i18n="hero.goalValue">{t.hero.goalValue}</span>
             </dd>
             <dd class="text-xs text-slate-500" data-i18n="hero.goalNote">{t.hero.goalNote}</dd>
@@ -161,20 +127,19 @@ const socials = [
         </dl>
       </div>
 
-      <div class="relative mx-auto w-full max-w-sm lg:max-w-none">
-        <div class="absolute -inset-4 rounded-[2rem] bg-gradient-to-br from-blue-500/30 to-emerald-500/20 blur-2xl" aria-hidden="true"></div>
-        <div class="relative overflow-hidden rounded-[1.75rem] border border-slate-700/80 bg-slate-900 shadow-2xl shadow-blue-950/40">
-          <img
-            src={profile.portrait}
-            alt={profile.brandName}
-            width="800"
-            height="1000"
-            class="aspect-[4/5] w-full object-cover object-top"
-            fetchpriority="high"
-          />
-          <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-slate-950 via-slate-950/55 to-transparent p-5 pt-20">
-            <p class="text-base font-semibold text-white">{profile.brandName}</p>
-            <p class="text-sm text-slate-400" data-i18n="hero.focusNote">{t.hero.focusNote}</p>
+      <div class="relative mx-auto w-full max-w-sm lg:max-w-none" data-parallax="0.5">
+        <div class="float-y">
+          <div class="glass-deep spatial-card overflow-hidden rounded-[2rem] p-2.5">
+            <div class="overflow-hidden rounded-[1.6rem]">
+              <img
+                src={profile.portrait}
+                alt=""
+                width="800"
+                height="1000"
+                class="aspect-[4/5] w-full object-cover object-top"
+                fetchpriority="high"
+              />
+            </div>
           </div>
         </div>
       </div>

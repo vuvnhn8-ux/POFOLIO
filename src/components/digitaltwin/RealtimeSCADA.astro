@@ -1,0 +1,357 @@
+---
+// Digital Twin simulation: live SCADA / HMI monitoring.
+// SMIL only. Clipped scrolling trends, smooth industrial waveforms, live KPIs, alarm, telemetry.
+const font = "ui-monospace, SFMono-Regular, Cascadia Mono, Consolas, monospace";
+---
+<svg
+  viewBox="0 0 640 360"
+  xmlns="http://www.w3.org/2000/svg"
+  role="img"
+  aria-label="Realtime SCADA monitoring simulation"
+  class="block aspect-[16/9] h-auto w-full transition duration-700 group-hover:scale-[1.03]"
+  font-family={font}
+>
+  <defs>
+    <linearGradient id="dt-sc-bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0d1430" />
+      <stop offset="1" stop-color="#0a1024" />
+    </linearGradient>
+
+    <!--
+      CRITICAL: clipPath strictly confines the trend lines to the chart interior.
+      Chart area: x=24, y=52, w=400, h=196 (to y=248).
+      Inner safe zone keeps lines off the edges: x=25 y=66 w=396 h=178 (to y=244).
+      This prevents any line from escaping the chart or touching the HI ALM label.
+    -->
+    <clipPath id="dt-sc-trend-clip">
+      <rect x="25" y="66" width="395" height="176" />
+    </clipPath>
+  </defs>
+
+  <!-- background -->
+  <rect width="640" height="360" fill="url(#dt-sc-bg)" />
+  <g stroke="#1e2a55" stroke-width="1" opacity="0.6">
+    <line x1="0" y1="90" x2="640" y2="90" />
+    <line x1="0" y1="180" x2="640" y2="180" />
+    <line x1="0" y1="270" x2="640" y2="270" />
+    <line x1="160" y1="0" x2="160" y2="360" />
+    <line x1="320" y1="0" x2="320" y2="360" />
+    <line x1="480" y1="0" x2="480" y2="360" />
+  </g>
+
+  <!-- title bar -->
+  <g>
+    <text x="24" y="26" fill="#7dd3fc" font-size="12" font-weight="700" letter-spacing="1">SCADA LIVE &middot; LINE 04</text>
+    <text x="24" y="42" fill="#64748b" font-size="10">OPERATOR VIEW &middot; TAG BUS 120/s</text>
+    <circle cx="544" cy="24" r="3" fill="#f87171">
+      <animate attributeName="opacity" values="1;0.1;1" dur="1s" repeatCount="indefinite" />
+    </circle>
+    <text x="554" y="28" fill="#94a3b8" font-size="10">07:45</text>
+    <text x="582" y="28" fill="#22d3ee" font-size="10">:12</text>
+    <text x="602" y="28" fill="#64748b" font-size="10">JST</text>
+  </g>
+
+  <!-- ===== TREND CHART FRAME ===== -->
+  <!-- Chart background and border — drawn BEFORE clip group so border is always on top -->
+  <rect x="24" y="52" width="400" height="196" rx="8" fill="#0c1226" stroke="#1e2a55" stroke-width="1" />
+
+  <!-- chart interior grid (inside frame, not clipped — these are fixed reference lines) -->
+  <g stroke="#151d3a" stroke-width="1">
+    <!-- horizontal grid lines at y=82,112,142,172,202,232 -->
+    <line x1="26" y1="82"  x2="422" y2="82"  />
+    <line x1="26" y1="112" x2="422" y2="112" />
+    <line x1="26" y1="142" x2="422" y2="142" />
+    <line x1="26" y1="172" x2="422" y2="172" />
+    <line x1="26" y1="202" x2="422" y2="202" />
+    <line x1="26" y1="232" x2="422" y2="232" />
+    <!-- vertical time divisions -->
+    <line x1="104" y1="66" x2="104" y2="246" />
+    <line x1="184" y1="66" x2="184" y2="246" />
+    <line x1="264" y1="66" x2="264" y2="246" />
+    <line x1="344" y1="66" x2="344" y2="246" />
+  </g>
+
+  <!-- HI alarm threshold — drawn outside clip so label is always visible -->
+  <line x1="26" y1="80" x2="413" y2="80" stroke="#f87171" stroke-width="1" stroke-dasharray="5 5" opacity="0.6">
+    <animate attributeName="stroke-opacity" values="0.35;0.75;0.35" dur="1.6s" repeatCount="indefinite" />
+  </line>
+  <text x="30" y="78" fill="#f87171" font-size="8">HI ALM</text>
+
+  <!-- legend -->
+  <rect x="318" y="56" width="58" height="16" rx="4" fill="#0f1a33" />
+  <line x1="326" y1="64" x2="340" y2="64" stroke="#22d3ee" stroke-width="2" />
+  <text x="344" y="67" fill="#94a3b8" font-size="8">TEMP</text>
+  <rect x="380" y="56" width="36" height="16" rx="4" fill="#0f1a33" />
+  <line x1="386" y1="64" x2="398" y2="64" stroke="#fbbf24" stroke-width="2" />
+  <text x="401" y="67" fill="#94a3b8" font-size="8">PRES</text>
+
+  <!--
+    SCROLLING TRENDS — strictly clipped.
+
+    Strategy:
+    - Chart x range: 26 to 422 (396px wide)
+    - Waveform is 800px wide (2× chart width) so one period covers the full chart.
+    - animateTransform translates from 0 to -400 over the period, then resets — seamless loop.
+    - All y values are in range 90–230 (safe band within 66–242 clip region).
+    - Waveform designed to look like a real slow-process industrial trend:
+        TEMP: smooth sinusoidal drift with minor perturbations, range 110–210
+        PRES: slower drift, slightly different phase, range 120–200
+    - Two copies of the polyline placed 400px apart for seamless tile.
+  -->
+
+  <!-- TEMP trace (cyan) — clipped -->
+  <g clip-path="url(#dt-sc-trend-clip)">
+    <g>
+      <animateTransform attributeName="transform" type="translate"
+        values="26,0; -374,0"
+        dur="10s"
+        repeatCount="indefinite"
+        calcMode="linear" />
+      <!--
+        Waveform tile: 400px wide, y values in 110–210 range.
+        Smooth sinusoidal-ish industrial process: stable → gradual rise → plateau → gentle fall → repeat
+      -->
+      <!-- Copy 1 -->
+      <polyline
+        points="
+          0,170  20,168  40,164  60,158  80,150  100,144  120,140  140,138  160,138
+          180,140  200,144  220,148  240,152  260,155  280,156  300,154  320,150
+          340,146  360,142  380,140  400,140
+        "
+        fill="none"
+        stroke="#22d3ee"
+        stroke-width="2"
+        stroke-linejoin="round"
+        stroke-linecap="round"
+      />
+      <!-- Copy 2 — placed 400px to the right for seamless tiling -->
+      <polyline
+        points="
+          400,140  420,140  440,142  460,146  480,152  500,158  520,163  540,167
+          560,170  580,171  600,170  620,167  640,162  660,156  680,150  700,145
+          720,141  740,139  760,138  780,140  800,142
+        "
+        fill="none"
+        stroke="#22d3ee"
+        stroke-width="2"
+        stroke-linejoin="round"
+        stroke-linecap="round"
+      />
+    </g>
+  </g>
+
+  <!-- PRES trace (amber) — clipped -->
+  <g clip-path="url(#dt-sc-trend-clip)">
+    <g>
+      <animateTransform attributeName="transform" type="translate"
+        values="26,0; -374,0"
+        dur="14s"
+        begin="-4s"
+        repeatCount="indefinite"
+        calcMode="linear" />
+      <!-- Slower pressure trend, gentle wave, range 130–195 -->
+      <!-- Copy 1 -->
+      <polyline
+        points="
+          0,175  25,173  50,170  75,166  100,162  125,158  150,156  175,155
+          200,156  225,158  250,161  275,165  300,169  325,172  350,174  375,175  400,175
+        "
+        fill="none"
+        stroke="#fbbf24"
+        stroke-width="2"
+        opacity="0.85"
+        stroke-linejoin="round"
+        stroke-linecap="round"
+      />
+      <!-- Copy 2 -->
+      <polyline
+        points="
+          400,175  425,174  450,172  475,169  500,165  525,161  550,158
+          575,156  600,156  625,157  650,160  675,164  700,168  725,172
+          750,174  775,175  800,175
+        "
+        fill="none"
+        stroke="#fbbf24"
+        stroke-width="2"
+        opacity="0.85"
+        stroke-linejoin="round"
+        stroke-linecap="round"
+      />
+    </g>
+  </g>
+
+  <!-- live cursor at right edge -->
+  <line x1="418" y1="66" x2="418" y2="244" stroke="#334155" stroke-width="1" stroke-dasharray="2 4" />
+
+  <!-- live dots at cursor — clip-path protects them too -->
+  <circle cx="418" cy="140" r="5" fill="#22d3ee" opacity="0.12">
+    <animate attributeName="opacity" values="0.08;0.2;0.08" dur="1s" repeatCount="indefinite" />
+  </circle>
+  <circle cx="418" cy="140" r="2.5" fill="#22d3ee" />
+  <circle cx="418" cy="175" r="5" fill="#fbbf24" opacity="0.12">
+    <animate attributeName="opacity" values="0.08;0.2;0.08" dur="1.3s" repeatCount="indefinite" />
+  </circle>
+  <circle cx="418" cy="175" r="2.5" fill="#fbbf24" />
+
+  <!-- Chart border drawn on top to mask any sub-pixel overflow -->
+  <rect x="24" y="52" width="400" height="196" rx="8" fill="none" stroke="#1e2a55" stroke-width="2" />
+
+  <!-- ===== LIVE KPI PANEL ===== -->
+  <g>
+    <rect x="440" y="52" width="180" height="196" rx="8" fill="#0c1226" stroke="#1e2a55" stroke-width="1" />
+    <text x="452" y="70" fill="#64748b" font-size="9" letter-spacing="1.5">LIVE KPIs</text>
+
+    <!-- KPI 1: TANK_T -->
+    <g>
+      <text x="452" y="94" fill="#64748b" font-size="9">TANK_T</text>
+      <g font-size="16" font-weight="700" fill="#22d3ee">
+        <text x="452" y="116" opacity="1">
+          <animate attributeName="opacity" values="1;1;0;0;0;0" keyTimes="0;0.33;0.34;0.66;0.67;1" dur="3.6s" repeatCount="indefinite" />
+          61.4
+        </text>
+        <text x="452" y="116" opacity="0">
+          <animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.33;0.34;0.66;0.67;1" dur="3.6s" repeatCount="indefinite" />
+          62.1
+        </text>
+        <text x="452" y="116" opacity="0">
+          <animate attributeName="opacity" values="0;0;0;0;1;1" keyTimes="0;0.33;0.34;0.66;0.67;1" dur="3.6s" repeatCount="indefinite" />
+          60.8
+        </text>
+      </g>
+      <text x="504" y="116" fill="#64748b" font-size="10">°C</text>
+      <circle cx="606" cy="112" r="3" fill="#22d3ee" opacity="0.5" />
+    </g>
+
+    <!-- KPI 2: LINE_SPD -->
+    <g>
+      <text x="452" y="142" fill="#64748b" font-size="9">LINE_SPD</text>
+      <g font-size="16" font-weight="700" fill="#4ade80">
+        <text x="452" y="164" opacity="1">
+          <animate attributeName="opacity" values="1;1;0;0;0;0" keyTimes="0;0.33;0.34;0.66;0.67;1" dur="3.6s" repeatCount="indefinite" />
+          24.5
+        </text>
+        <text x="452" y="164" opacity="0">
+          <animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.33;0.34;0.66;0.67;1" dur="3.6s" repeatCount="indefinite" />
+          24.9
+        </text>
+        <text x="452" y="164" opacity="0">
+          <animate attributeName="opacity" values="0;0;0;0;1;1" keyTimes="0;0.33;0.34;0.66;0.67;1" dur="3.6s" repeatCount="indefinite" />
+          24.6
+        </text>
+      </g>
+      <text x="504" y="164" fill="#64748b" font-size="10">m/min</text>
+      <circle cx="606" cy="160" r="3" fill="#4ade80" opacity="0.5" />
+    </g>
+
+    <!-- KPI 3: CYCLE_CT -->
+    <g>
+      <text x="452" y="190" fill="#64748b" font-size="9">CYCLE_CT</text>
+      <g font-size="16" font-weight="700" fill="#a78bfa">
+        <text x="452" y="212" opacity="1">
+          <animate attributeName="opacity" values="1;1;0;0;0;0" keyTimes="0;0.33;0.34;0.66;0.67;1" dur="3.6s" repeatCount="indefinite" />
+          4821
+        </text>
+        <text x="452" y="212" opacity="0">
+          <animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.33;0.34;0.66;0.67;1" dur="3.6s" repeatCount="indefinite" />
+          4822
+        </text>
+        <text x="452" y="212" opacity="0">
+          <animate attributeName="opacity" values="0;0;0;0;1;1" keyTimes="0;0.33;0.34;0.66;0.67;1" dur="3.6s" repeatCount="indefinite" />
+          4823
+        </text>
+      </g>
+      <text x="504" y="212" fill="#64748b" font-size="10">cnt</text>
+      <circle cx="606" cy="208" r="3" fill="#a78bfa" opacity="0.5" />
+    </g>
+  </g>
+
+  <!-- alarm banner -->
+  <g>
+    <rect x="440" y="260" width="180" height="76" rx="8" fill="#0c1226" stroke="#1e2a55" stroke-width="1" />
+    <rect x="452" y="270" width="156" height="28" rx="6" fill="#2a1216" stroke="#f87171" stroke-width="1">
+      <animate attributeName="stroke-opacity" values="0.4;1;0.4" dur="0.9s" repeatCount="indefinite" />
+    </rect>
+    <circle cx="466" cy="284" r="3" fill="#f87171">
+      <animate attributeName="opacity" values="1;0.1;1" dur="0.5s" repeatCount="indefinite" />
+    </circle>
+    <text x="476" y="288" fill="#fca5a5" font-size="9" font-weight="700">ALARM LVL_HIGH</text>
+    <text x="452" y="316" fill="#94a3b8" font-size="9">ACK T-102 &middot; SEV 3 &middot; OPEN</text>
+    <text x="560" y="316" fill="#64748b" font-size="8">NORM 5</text>
+  </g>
+
+  <!-- ===== TELEMETRY FLOW STRIP ===== -->
+  <g>
+    <text x="24" y="272" fill="#64748b" font-size="9" letter-spacing="1.5">TELEMETRY FLOW</text>
+
+    <!-- MACHINE box -->
+    <g>
+      <rect x="24" y="280" width="104" height="30" rx="6" fill="#0e1530" stroke="#22d3ee" stroke-width="1" />
+      <text x="36" y="297" fill="#22d3ee" font-size="10" font-weight="700">MACHINE</text>
+      <text x="36" y="307" fill="#64748b" font-size="8">LINE 04</text>
+    </g>
+
+    <!-- arrow MACHINE -> PLC -->
+    <line x1="130" y1="295" x2="150" y2="295" stroke="#3b4c8a" stroke-width="1.5" />
+    <polygon points="152,295 146,292 146,298" fill="#3b4c8a" />
+    <!-- animated packet -->
+    <circle r="2.5" fill="#22d3ee">
+      <animateMotion dur="0.7s" repeatCount="indefinite" calcMode="linear">
+        <mpath>
+          <path d="M132 295 L148 295" />
+        </mpath>
+      </animateMotion>
+    </circle>
+
+    <!-- PLC box -->
+    <g>
+      <rect x="156" y="280" width="104" height="30" rx="6" fill="#0e1530" stroke="#4ade80" stroke-width="1" />
+      <text x="168" y="297" fill="#4ade80" font-size="10" font-weight="700">PLC</text>
+      <text x="168" y="307" fill="#64748b" font-size="8">KV-8000</text>
+    </g>
+
+    <!-- arrow PLC -> SCADA -->
+    <line x1="262" y1="295" x2="282" y2="295" stroke="#3b4c8a" stroke-width="1.5" />
+    <polygon points="284,295 278,292 278,298" fill="#3b4c8a" />
+    <!-- animated packet -->
+    <circle r="2.5" fill="#4ade80">
+      <animateMotion dur="0.7s" begin="0.35s" repeatCount="indefinite" calcMode="linear">
+        <mpath>
+          <path d="M264 295 L280 295" />
+        </mpath>
+      </animateMotion>
+    </circle>
+
+    <!-- SCADA box -->
+    <g>
+      <rect x="288" y="280" width="104" height="30" rx="6" fill="#0e1530" stroke="#a78bfa" stroke-width="1" />
+      <text x="300" y="297" fill="#a78bfa" font-size="10" font-weight="700">SCADA</text>
+      <text x="300" y="307" fill="#64748b" font-size="8">HISTORIAN</text>
+    </g>
+
+    <!-- machine status chips -->
+    <g font-size="9">
+      <g>
+        <rect x="416" y="280" width="100" height="14" rx="4" fill="#0f1a33" stroke="#1e2a55" />
+        <circle cx="428" cy="287" r="2.5" fill="#4ade80" />
+        <text x="436" y="290" fill="#94a3b8">PUMP-01 RUN</text>
+      </g>
+      <g>
+        <rect x="520" y="280" width="100" height="14" rx="4" fill="#0f1a33" stroke="#1e2a55" />
+        <circle cx="532" cy="287" r="2.5" fill="#4ade80" />
+        <text x="540" y="290" fill="#94a3b8">CMPR-02 RUN</text>
+      </g>
+      <g>
+        <rect x="416" y="298" width="100" height="14" rx="4" fill="#0f1a33" stroke="#1e2a55" />
+        <circle cx="428" cy="305" r="2.5" fill="#fbbf24" />
+        <text x="436" y="308" fill="#94a3b8">CV-11 IDLE</text>
+      </g>
+      <g>
+        <rect x="520" y="298" width="100" height="14" rx="4" fill="#2a1216" stroke="#f87171" />
+        <circle cx="532" cy="305" r="2.5" fill="#f87171">
+          <animate attributeName="opacity" values="1;0.1;1" dur="0.6s" repeatCount="indefinite" />
+        </circle>
+        <text x="540" y="308" fill="#fca5a5">CV-12 ALM</text>
+      </g>
+    </g>
+  </g>
+</svg>
