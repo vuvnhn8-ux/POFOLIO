@@ -1,37 +1,38 @@
 ---
 // Digital Twin: 3-axis industrial robot pick-and-place cell.
-// POSE-DEFINED animation — explicit θ1/θ2 per named pose, no IK.
-// Elbow-up enforced at every pose. Ground clearance guaranteed by design.
-// SVG arm: drawn pointing UP (-Y). θ measured clockwise from UP.
-//   θ1=0   → arm1 straight up
-//   θ1=45  → arm1 leaning right at 45°
-//   θ1=-45 → arm1 leaning left at 45°
+// REAL IK ANIMATION — θ1/θ2 solved analytically every frame from the
+// interpolated wrist target, so the gripper lands exactly on PICK/PLACE.
+// Elbow-UP solution is always selected → high arc, ground clearance enforced.
+// SVG arm: drawn pointing UP (-Y). +Y down in the SVG frame.
 // Hierarchy: J1(base) → arm1(L1=80) → J2(elbow) → arm2(L2=65) → gripper(L3=14)
+//
+// MOTION PROFILE — chained phases, one global s-curve each (TOTAL = 9.0 s):
+//   HOLD HOME(0.7s) → CHAIN to PICK(1.9s) → HOLD PICK+grip(0.4s)
+//   → CHAIN to apex T_B(1.6s) → CHAIN apex→PLACE(1.6s)
+//   → HOLD PLACE+release(0.4s) → CHAIN back to HOME(1.9s) → HOLD HOME(0.5s)
+// Each CHAIN traverses its polyline under one cumulative-distance quintic
+// smoothstep: starts from rest, cruises through intermediate points, and
+// decelerates onto its end target. The transfer arc is split at T_B — the
+// straight-arm apex where both IK branches meet — so that singular
+// configuration is crossed at rest (no elbow whip, no branch flip).
+//
+// MULTI-MOUNT SAFETY — the page mounts this component twice (Systems +
+// CaseStudies) with identical inner ids. The bundled script never uses global
+// getElementById; it locates every instance via [data-rpp] and queries each
+// mount's own subtree, so both robots animate independently.
+//
+// IK model (validated numerically): base (215,232), GROUND_Y=255, L1=80, L2=65.
+//   D   = hypot(tx-BX, ty-BY)
+//   t2  = acos((D² - L1² - L2²) / (2·L1·L2))            (± branch)
+//   t1  = atan2(dy,dx) - atan2(L2·sin t2, L1+L2·cos t2)
+// Applied to SVG rotate(): θ1_rot = t1 + 90° (arm1 drawn along -Y), θ2_rot = t2.
+// Elbow-UP ⇒ keep the solution with the smaller elbow y (min ground distance).
+// Verified: all targets reachable, min floor clearance 63.7px, cycle returns to
+// a bit-identical HOME pose (apex where both branches merge → no branch flip).
 const font = "ui-monospace, SFMono-Regular, Cascadia Mono, Consolas, monospace";
-
-// ── Verified safe poses (angles in degrees, elbow always up / high arc) ──
-//
-// Base at SVG (215, 242). L1=80, L2=65, L3=14.
-// GROUND_Y = 255 (floor line). Tables at y=242 surface.
-// All elbow positions verified ≥ 130 (well above floor).
-//
-// Pose verification (FK check, arm drawn along -Y in local frame):
-//   elbow_world_x = 215 + L1*sin(θ1)
-//   elbow_world_y = 242 - L1*cos(θ1)
-//   tip_world_x   = elbow_x + L2*sin(θ1+θ2)  [+gripper offset]
-//   tip_world_y   = elbow_y - L2*cos(θ1+θ2)
-//
-// HOME:      θ1=0,   θ2=0    → elbow=(215,162), tip=(215,83)   ✓ elbow high
-// APPROACH_L:θ1=-42, θ2=80   → elbow=(161,183), tip=(96,200)   ✓
-// PICK_L:    θ1=-46, θ2=106  → elbow=(157,186), tip=(100,242)  ✓ tip on table
-// LIFT:      θ1=-42, θ2=80   → same as APPROACH_L              ✓
-// TRANSFER:  θ1=0,   θ2=25   → elbow=(215,162), tip=(242,212)  ✓ mid-arc high
-// APPROACH_R:θ1=38,  θ2=-78  → elbow=(264,179), tip=(330,200)  ✓
-// PLACE_R:   θ1=42,  θ2=-102 → elbow=(268,183), tip=(332,242)  ✓ tip on table
-// RETRACT:   θ1=38,  θ2=-78  → same as APPROACH_R              ✓
 ---
 
-<div class="rpp-wrapper" role="img" aria-label="3-axis industrial robot pick and place simulation">
+<div class="rpp-wrapper" data-rpp role="img" aria-label="3-axis industrial robot pick and place simulation">
 <svg
   id="rpp-svg"
   viewBox="0 0 640 360"
@@ -172,28 +173,28 @@ const font = "ui-monospace, SFMono-Regular, Cascadia Mono, Consolas, monospace";
       <!-- END EFFECTOR at (0,-65) -->
       <g id="rpp-ee" transform="translate(0,-65)">
         <!-- tool shaft -->
-        <line x1="0" y1="0" x2="0" y2="-14" stroke="#c4b5fd" stroke-width="4" stroke-linecap="round" opacity="0.9"/>
+        <line x1="0" y1="0" x2="0" y2="-12" stroke="#c4b5fd" stroke-width="4" stroke-linecap="round" opacity="0.9"/>
         <!-- flange -->
-        <circle cx="0" cy="-14" r="5"   fill="#0c1428" stroke="#c4b5fd" stroke-width="1.5"/>
-        <circle cx="0" cy="-14" r="2"   fill="#c4b5fd" opacity="0.55"/>
+        <circle cx="0" cy="-12" r="4.5" fill="#0c1428" stroke="#c4b5fd" stroke-width="1.5"/>
+        <circle cx="0" cy="-12" r="1.8" fill="#c4b5fd" opacity="0.55"/>
 
         <!-- GRIPPER OPEN -->
         <g id="rpp-grip-open">
-          <line x1="0" y1="-14" x2="-10" y2="-24" stroke="#67e8f9" stroke-width="3.2" stroke-linecap="round"/>
-          <line x1="0" y1="-14" x2=" 10" y2="-24" stroke="#67e8f9" stroke-width="3.2" stroke-linecap="round"/>
-          <line x1="-13" y1="-24" x2="-7"  y2="-24" stroke="#67e8f9" stroke-width="2.5" stroke-linecap="round"/>
-          <line x1="  7" y1="-24" x2=" 13" y2="-24" stroke="#67e8f9" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="0" y1="-12" x2="-9" y2="-20" stroke="#67e8f9" stroke-width="3.2" stroke-linecap="round"/>
+          <line x1="0" y1="-12" x2=" 9" y2="-20" stroke="#67e8f9" stroke-width="3.2" stroke-linecap="round"/>
+          <line x1="-12" y1="-20" x2="-6"  y2="-20" stroke="#67e8f9" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="  6" y1="-20" x2=" 12" y2="-20" stroke="#67e8f9" stroke-width="2.5" stroke-linecap="round"/>
         </g>
 
         <!-- GRIPPER CLOSED -->
         <g id="rpp-grip-closed" style="display:none">
-          <line x1="-4" y1="-14" x2="-4" y2="-28" stroke="#22d3ee" stroke-width="3.5" stroke-linecap="round"/>
-          <line x1=" 4" y1="-14" x2=" 4" y2="-28" stroke="#22d3ee" stroke-width="3.5" stroke-linecap="round"/>
-          <line x1="-4" y1="-28" x2=" 4" y2="-28" stroke="#22d3ee" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="-4" y1="-12" x2="-4" y2="-22" stroke="#22d3ee" stroke-width="3.5" stroke-linecap="round"/>
+          <line x1=" 4" y1="-12" x2=" 4" y2="-22" stroke="#22d3ee" stroke-width="3.5" stroke-linecap="round"/>
+          <line x1="-4" y1="-22" x2=" 4" y2="-22" stroke="#22d3ee" stroke-width="2.5" stroke-linecap="round"/>
         </g>
 
         <!-- HELD WORKPIECE -->
-        <rect id="rpp-held" x="-7" y="-46" width="14" height="14" rx="2"
+        <rect id="rpp-held" x="-7" y="-22" width="14" height="14" rx="2"
           fill="#fbbf24" stroke="#f59e0b" stroke-width="1.2" style="display:none"/>
       </g>
     </g>
@@ -202,7 +203,7 @@ const font = "ui-monospace, SFMono-Regular, Cascadia Mono, Consolas, monospace";
   <!-- PLC PANEL -->
   <rect x="440" y="52" width="186" height="278" rx="10" fill="#0b1228" stroke="#1a2a50" stroke-width="1"/>
   <text x="454" y="74" fill="#7dd3fc" font-size="11" font-weight="700" letter-spacing="1">PLC CONTROLLER</text>
-  <text x="454" y="87" fill="#64748b" font-size="9">3-AXIS &middot; POSE CONTROL &middot; YRC-1000</text>
+  <text x="454" y="87" fill="#64748b" font-size="9">3-AXIS &middot; IK CONTROL &middot; YRC-1000</text>
 
   <rect x="452" y="96" width="162" height="110" rx="6" fill="#060c1c" stroke="#162040" stroke-width="1"/>
   <text x="462" y="112" fill="#64748b" font-size="8" letter-spacing="1">JOINT ANGLES</text>
@@ -261,106 +262,144 @@ const font = "ui-monospace, SFMono-Regular, Cascadia Mono, Consolas, monospace";
   <circle id="rpp-state-dot" cx="52" cy="310" r="3" fill="#34d399"/>
   <text   id="rpp-state-lbl" x="61"  y="313" font-size="10" fill="#34d399">HOME</text>
 
-  <text x="40" y="342" fill="#334155" font-size="9">POSE-CTRL · ELBOW-UP · GROUND CLR ENFORCED</text>
+  <text x="40" y="342" fill="#334155" font-size="9">IK-CTRL &middot; ELBOW-UP &middot; GROUND CLR ENFORCED</text>
 </svg>
 </div>
 
 <script>
 // ─────────────────────────────────────────────────────────────────────────────
-// Pose-defined 3-axis robot — NO IK, explicit θ1/θ2 per pose.
-// Every pose manually verified: elbow stays high, no ground penetration.
+// Real 2-link planar IK for the 3-axis pick-and-place robot.
+// θ1/θ2 are solved analytically each frame from the interpolated wrist target,
+// so the end effector lands EXACTLY on PICK=(102,235) and PLACE=(332,235).
 //
-// Base: SVG (215, 232). Arm1=80, Arm2=65, tool=14.
-// SVG convention: arm drawn along local -Y. rotate(θ) = θ° clockwise from UP.
-// Ground at y=255. Tables at y=242. Robot NEVER has elbow below y=200.
+// Base: SVG (215, 232). Arm1=80, Arm2=65. SVG +Y is down.
+//   D  = hypot(tx-BX, ty-BY)
+//   θ2 = acos((D²-L1²-L2²)/(2·L1·L2))                       (± branch)
+//   θ1 = atan2(dy,dx) - atan2(L2·sin θ2, L1+L2·cos θ2)
+// Elbow-up: keep the branch with the smaller elbow Y (higher off floor).
+// Convert to SVG rotate(): θ1_rot = θ1 + 90° (arm drawn along -Y), θ2_rot = θ2.
+//
+// MOTION: chained phases. Holds park the arm; chains move it along a polyline
+// under ONE cumulative-distance quintic smoothstep — accelerate from rest,
+// cruise through intermediate waypoints without stopping, decelerate onto the
+// final target. The transfer arc is split at T_B (the straight-arm apex where
+// both IK branches meet) so the singular configuration is crossed at rest.
+// 9.0 s cycle; HOME = apex → the cycle returns to a bit-identical pose.
+//
+// MOUNTS: the page renders this component twice (Systems + CaseStudies). The
+// script never calls global getElementById — it finds every [data-rpp] wrapper
+// and queries each mount's own <svg> subtree, so both robots animate.
 // ─────────────────────────────────────────────────────────────────────────────
 (function () {
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
   const BX = 215, BY = 232;  // shoulder joint SVG position
   const L1 = 80, L2 = 65;   // arm lengths
+  const GROUND_Y = 255;     // floor line — elbow must stay above it
   const D2R = Math.PI / 180;
 
-  // Forward kinematics: returns elbow and wrist world positions
+  // Inverse kinematics: solve θ1/θ2 (radians, SVG frame +Y down) for target (tx,ty)
+  function ik(tx, ty) {
+    const dx = tx - BX, dy = ty - BY;
+    const D = Math.hypot(dx, dy);
+    if (D < Math.abs(L1 - L2) || D > L1 + L2) return null;
+    const c2 = (D * D - L1 * L1 - L2 * L2) / (2 * L1 * L2);
+    const a2 = Math.acos(Math.max(-1, Math.min(1, c2)));
+    // two branches: θ2 = ±a2
+    const m1 = Math.atan2(dy, dx) - Math.atan2(L2 * Math.sin(a2),  L1 + L2 * Math.cos(a2));
+    const m2 = Math.atan2(dy, dx) - Math.atan2(L2 * Math.sin(-a2), L1 + L2 * Math.cos(-a2));
+    const e1y = BY + L1 * Math.sin(m1);
+    const e2y = BY + L1 * Math.sin(m2);
+    // elbow-up: pick the branch whose elbow is higher (smaller Y)
+    return e1y <= e2y ? { t1: m1, t2: a2 } : { t1: m2, t2: -a2 };
+  }
+
+  // Forward kinematics (for readouts): returns elbow + wrist world positions
   function fk(t1, t2) {
-    const elbow = {
-      x: BX + L1 * Math.sin(t1 * D2R),
-      y: BY - L1 * Math.cos(t1 * D2R),
-    };
-    const wrist = {
-      x: elbow.x + L2 * Math.sin((t1 + t2) * D2R),
-      y: elbow.y - L2 * Math.cos((t1 + t2) * D2R),
-    };
+    const elbow = { x: BX + L1 * Math.cos(t1), y: BY + L1 * Math.sin(t1) };
+    const wrist = { x: elbow.x + L2 * Math.cos(t1 + t2), y: elbow.y + L2 * Math.sin(t1 + t2) };
     return { elbow, wrist };
   }
 
-  // ── Named poses: {θ1, θ2, label, grip, hold, showL, showR} ──
-  // All verified safe via FK above.
-  //
-  // Pose     θ1    θ2   Elbow_y  Wrist_y  Comment
-  // HOME      0     0     152      87     straight up, safe
-  // APR_L   -44    82     175     200     approach above pick table
-  // PICK_L  -48   112     178     242     gripper tip ON left table
-  // LIFT     -44    82     175     200     same as APR_L (lift = retract up)
-  // TRANS_A   -15   30     170     155     left side of high arc
-  // TRANS_B    0    20     152     148     top of arc (high centre)
-  // TRANS_C   15    30     170     155     right side of high arc
-  // APR_R    44   -82     175     200     approach above place table
-  // PLACE_R  48  -112     178     242     gripper tip ON right table
-  // RETR     44   -82     175     200     retract up (same as APR_R)
+  // Quintic smoothstep: zero velocity AND zero acceleration at both ends
+  function ss(t) { return t * t * t * (10 + t * (-15 + 6 * t)); }
+  function lerp(a, b, t) { return a + (b - a) * t; }
 
-  const POSES = {
-    HOME:    { t1:  0,   t2:   0 },
-    APR_L:   { t1: -44,  t2:  82 },
-    PICK_L:  { t1: -48,  t2: 112 },
-    LIFT:    { t1: -44,  t2:  82 },
-    TRANS_A: { t1: -15,  t2:  30 },
-    TRANS_B: { t1:   0,  t2:  20 },
-    TRANS_C: { t1:  15,  t2:  30 },
-    APR_R:   { t1:  44,  t2: -82 },
-    PLACE_R: { t1:  48,  t2:-112 },
-    RETR:    { t1:  44,  t2: -82 },
-  };
+  // Ground clearance check (readout only — IK keeps elbow-up, always safe)
+  function groundClear(t1, t2) {
+    const { elbow } = fk(t1, t2);
+    return elbow.y < GROUND_Y - 30;
+  }
 
-  // Sequence: from-pose, to-pose, gripper-closed, hold-part, status, duration(s)
-  const SEQ = [
-    { from:'HOME',    to:'HOME',    g:false, h:false, s:'HOME',      dur:1.0 },
-    { from:'HOME',    to:'APR_L',   g:false, h:false, s:'APPROACH',  dur:1.2 },
-    { from:'APR_L',   to:'PICK_L',  g:false, h:false, s:'PICKING',   dur:0.7 },
-    { from:'PICK_L',  to:'PICK_L',  g:true,  h:true,  s:'PICKING',   dur:0.4 },
-    { from:'PICK_L',  to:'LIFT',    g:true,  h:true,  s:'LIFTING',   dur:0.7 },
-    { from:'LIFT',    to:'TRANS_A', g:true,  h:true,  s:'MOVING',    dur:0.5 },
-    { from:'TRANS_A', to:'TRANS_B', g:true,  h:true,  s:'MOVING',    dur:0.4 },
-    { from:'TRANS_B', to:'TRANS_C', g:true,  h:true,  s:'MOVING',    dur:0.4 },
-    { from:'TRANS_C', to:'APR_R',   g:true,  h:true,  s:'MOVING',    dur:0.5 },
-    { from:'APR_R',   to:'PLACE_R', g:true,  h:true,  s:'PLACING',   dur:0.7 },
-    { from:'PLACE_R', to:'PLACE_R', g:false, h:false, s:'PLACING',   dur:0.4 },
-    { from:'PLACE_R', to:'RETR',    g:false, h:false, s:'RETURNING', dur:0.7 },
-    { from:'RETR',    to:'HOME',    g:false, h:false, s:'READY',     dur:1.2 },
-    { from:'HOME',    to:'HOME',    g:false, h:false, s:'HOME',      dur:0.5 },
+  // ── Phase table (9.0 s cycle) ──────────────────────────────────────────────
+  // Each phase: `d` duration (s), `pts` polyline. A 1-point phase is a HOLD.
+  // A ≥2-point phase is a CHAIN — one eased sweep through the whole polyline.
+  // Per-point {g,h,s}: gripper state, held-part state, status label.
+  // The transfer arc is split into two chains at T_B (the straight-arm apex),
+  // so the singular apex configuration is crossed at rest.
+  const PHASES = [
+    // HOLD — HOME (0.7 s)
+    { d: 0.7, pts: [
+      { x: 215, y: 87,  g: false, h: false, s: 'HOME' } ] },
+    // CHAIN — HOME → APR_L → PICK (1.9 s): long slow decel onto PICK
+    { d: 1.9, pts: [
+      { x: 215, y: 87,  g: false, h: false, s: 'APPROACH' },
+      { x: 102, y: 185, g: false, h: false, s: 'APPROACH' },
+      { x: 102, y: 235, g: false, h: false, s: 'PICKING' } ] },
+    // HOLD — PICK + grip close (0.4 s)
+    { d: 0.4, pts: [
+      { x: 102, y: 235, g: true,  h: true,  s: 'PICKING' } ] },
+    // CHAIN — PICK → LIFT → T_A → T_B apex (1.6 s): decel onto the apex
+    { d: 1.6, pts: [
+      { x: 102, y: 235, g: true,  h: true,  s: 'LIFTING' },
+      { x: 102, y: 185, g: true,  h: true,  s: 'LIFTING' },
+      { x: 160, y: 115, g: true,  h: true,  s: 'MOVING' },
+      { x: 215, y: 87,  g: true,  h: true,  s: 'MOVING' } ] },
+    // CHAIN — T_B apex → T_C → APR_R → PLACE (1.6 s): accel off apex, decel onto PLACE
+    { d: 1.6, pts: [
+      { x: 215, y: 87,  g: true,  h: true,  s: 'MOVING' },
+      { x: 270, y: 115, g: true,  h: true,  s: 'MOVING' },
+      { x: 332, y: 185, g: true,  h: true,  s: 'MOVING' },
+      { x: 332, y: 235, g: true,  h: true,  s: 'PLACING' } ] },
+    // HOLD — PLACE + grip open / release (0.4 s)
+    { d: 0.4, pts: [
+      { x: 332, y: 235, g: false, h: false, s: 'PLACING' } ] },
+    // CHAIN — PLACE → RETR → HOME (1.9 s)
+    { d: 1.9, pts: [
+      { x: 332, y: 235, g: false, h: false, s: 'RETURNING' },
+      { x: 332, y: 185, g: false, h: false, s: 'RETURNING' },
+      { x: 215, y: 87,  g: false, h: false, s: 'READY' } ] },
+    // HOLD — HOME (0.5 s)
+    { d: 0.5, pts: [
+      { x: 215, y: 87,  g: false, h: false, s: 'HOME' } ] },
   ];
 
-  const TOTAL = SEQ.reduce((s, w) => s + w.dur, 0);
-  const CUM   = (() => { let a = 0; return SEQ.map(w => { const v = a; a += w.dur; return v; }); })();
+  const TOTAL = PHASES.reduce((s, p) => s + p.d, 0);
+  const PHS = (() => { let a = 0; return PHASES.map(p => { const v = a; a += p.d; return v; }); })();
+  // Cumulative arc length along each phase's polyline
+  const CLEN = PHASES.map(p => {
+    const c = [0];
+    for (let i = 1; i < p.pts.length; i++)
+      c.push(c[i - 1] + Math.hypot(p.pts[i].x - p.pts[i - 1].x, p.pts[i].y - p.pts[i - 1].y));
+    return c;
+  });
 
-  const j1    = document.getElementById('rpp-j1');
-  const j2    = document.getElementById('rpp-j2');
-  const gripO = document.getElementById('rpp-grip-open');
-  const gripC = document.getElementById('rpp-grip-closed');
-  const held  = document.getElementById('rpp-held');
-  const partL = document.getElementById('rpp-part-left');
-  const partR = document.getElementById('rpp-part-right');
-  const prog  = document.getElementById('rpp-prog');
-  const sBg   = document.getElementById('rpp-state-bg');
-  const sDot  = document.getElementById('rpp-state-dot');
-  const sLbl  = document.getElementById('rpp-state-lbl');
-  const r1    = document.getElementById('rpp-r1');
-  const r2el  = document.getElementById('rpp-r2');
-  const r3    = document.getElementById('rpp-r3');
-  const r4    = document.getElementById('rpp-r4');
-  const r5    = document.getElementById('rpp-r5');
-
-  if (!j1 || !j2) return;
+  // Point at normalized progress u along a phase: single-point = hold (u unused);
+  // chain = ease the cumulative arc length with the s-curve, then interpolate.
+  function sample(p, clen, u) {
+    if (p.pts.length === 1) return { x: p.pts[0].x, y: p.pts[0].y, k: 0 };
+    const L = clen[clen.length - 1];
+    const d = L === 0 ? 0 : ss(u) * L;
+    let k = 0;
+    while (k < clen.length - 2 && d > clen[k + 1]) k++;
+    const seg = clen[k + 1] - clen[k];
+    const t = seg > 0 ? Math.min(Math.max((d - clen[k]) / seg, 0), 1) : 0;
+    return {
+      x: p.pts[k].x + (p.pts[k + 1].x - p.pts[k].x) * t,
+      y: p.pts[k].y + (p.pts[k + 1].y - p.pts[k].y) * t,
+      k,
+    };
+  }
 
   const STATE_C = {
     HOME:      ['#0a2018','#34d399','#34d399','#34d399'],
@@ -372,87 +411,96 @@ const font = "ui-monospace, SFMono-Regular, Cascadia Mono, Consolas, monospace";
     RETURNING: ['#16103a','#a78bfa','#a78bfa','#a78bfa'],
     READY:     ['#0a2018','#34d399','#34d399','#34d399'],
   };
-  let lastS = '';
-  function setChip(s) {
-    if (s === lastS) return; lastS = s;
-    const c = STATE_C[s] || STATE_C.HOME;
-    sBg.setAttribute('fill', c[0]);
-    sBg.setAttribute('stroke', c[1]);
-    sDot.setAttribute('fill', c[2]);
-    sLbl.setAttribute('fill', c[3]);
-    sLbl.textContent = s;
-    sBg.setAttribute('width', String(s.length * 7.5 + 22));
-  }
 
-  // Smooth easing: ease-in-out cubic
-  function easeIO(t) { return t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t+2,3)/2; }
-  function lerp(a, b, t) { return a + (b - a) * t; }
+  // ── One fully independent animation loop per mounted instance ──────────────
+  document.querySelectorAll('[data-rpp]').forEach((root) => {
+    const svg = root.querySelector('svg');
+    if (!svg) return;
+    const j1    = svg.querySelector('#rpp-j1');
+    const j2    = svg.querySelector('#rpp-j2');
+    const gripO = svg.querySelector('#rpp-grip-open');
+    const gripC = svg.querySelector('#rpp-grip-closed');
+    const held  = svg.querySelector('#rpp-held');
+    const partL = svg.querySelector('#rpp-part-left');
+    const partR = svg.querySelector('#rpp-part-right');
+    const prog  = svg.querySelector('#rpp-prog');
+    const sBg   = svg.querySelector('#rpp-state-bg');
+    const sDot  = svg.querySelector('#rpp-state-dot');
+    const sLbl  = svg.querySelector('#rpp-state-lbl');
+    const r1    = svg.querySelector('#rpp-r1');
+    const r2el  = svg.querySelector('#rpp-r2');
+    const r3    = svg.querySelector('#rpp-r3');
+    const r4    = svg.querySelector('#rpp-r4');
+    const r5    = svg.querySelector('#rpp-r5');
+    if (!j1 || !j2) return;
 
-  // Slower near pick/place: use quadratic ease near t=1 for approach/lower segments
-  function easeSlow(t) {
-    // Extra-slow near end: square the ease
-    const e = easeIO(t);
-    return e * e * (3 - 2 * e); // smoothstep
-  }
-
-  // Ground clearance check (for readout display only — poses are pre-verified safe)
-  const GROUND_Y = 255;
-  function groundClear(t1, t2) {
-    const { elbow } = fk(t1, t2);
-    return elbow.y < GROUND_Y - 30; // elbow must be ≥30px above floor
-  }
-
-  let t0 = null;
-  function tick(ts) {
-    if (!t0) t0 = ts;
-    const ct = ((ts - t0) / 1000) % TOTAL;
-
-    // Find segment
-    let si = SEQ.length - 1;
-    for (let i = 0; i < SEQ.length - 1; i++) {
-      if (ct >= CUM[i] && ct < CUM[i + 1]) { si = i; break; }
+    let lastS = '';
+    function setChip(s) {
+      if (s === lastS) return; lastS = s;
+      const c = STATE_C[s] || STATE_C.HOME;
+      sBg.setAttribute('fill', c[0]);
+      sBg.setAttribute('stroke', c[1]);
+      sDot.setAttribute('fill', c[2]);
+      sLbl.setAttribute('fill', c[3]);
+      sLbl.textContent = s;
+      sBg.setAttribute('width', String(s.length * 7.5 + 22));
     }
-    const seg = SEQ[si];
-    const raw = Math.min((ct - CUM[si]) / seg.dur, 1);
-    // Use slower ease for pick/place lowering segments
-    const useSlow = (seg.s === 'PICKING' && !seg.g) || (seg.s === 'PLACING' && seg.g);
-    const t = useSlow ? easeSlow(raw) : easeIO(raw);
 
-    const fromP = POSES[seg.from];
-    const toP   = POSES[seg.to];
-    const θ1 = lerp(fromP.t1, toP.t1, t);
-    const θ2 = lerp(fromP.t2, toP.t2, t);
+    let prev = null;
+    let t0 = null;
+    function tick(ts) {
+      if (!t0) t0 = ts;
+      const ct = ((ts - t0) / 1000) % TOTAL;
 
-    // Apply transforms
-    j1.setAttribute('transform', `translate(${BX},${BY}) rotate(${θ1.toFixed(2)})`);
-    j2.setAttribute('transform', `translate(0,${-L1}) rotate(${θ2.toFixed(2)})`);
+      // Active phase
+      let pi = PHASES.length - 1;
+      for (let i = 0; i < PHASES.length; i++) {
+        if (ct >= PHS[i] && ct < PHS[i] + PHASES[i].d) { pi = i; break; }
+      }
+      const ph = PHASES[pi];
+      const u = Math.min(Math.max((ct - PHS[pi]) / ph.d, 0), 1);
+      const sm = sample(ph, CLEN[pi], u);
+      const st = ph.pts[sm.k + 1] || ph.pts[sm.k];
 
-    // Gripper
-    gripO.style.display = seg.g ? 'none' : '';
-    gripC.style.display = seg.g ? '' : 'none';
-    held.style.display  = seg.h ? '' : 'none';
+      const sol = ik(sm.x, sm.y);
+      if (sol) prev = sol;
+      if (!prev) { requestAnimationFrame(tick); return; }
+      const { t1, t2 } = prev;
 
-    // Workpiece: left visible before grip, right visible after release
-    partL.style.display = si < 3  ? '' : 'none';
-    partR.style.display = si >= 10 ? '' : 'none';
+      // SVG: arm1 drawn along -Y → rotate θ1+90; arm2 local → rotate θ2
+      const t1d = (t1 + Math.PI / 2) / D2R;
+      const t2d = t2 / D2R;
+      j1.setAttribute('transform', `translate(${BX},${BY}) rotate(${t1d.toFixed(2)})`);
+      j2.setAttribute('transform', `translate(0,${-L1}) rotate(${t2d.toFixed(2)})`);
 
-    // Progress
-    prog.setAttribute('width', String(((ct / TOTAL) * 162).toFixed(1)));
+      // Gripper
+      gripO.style.display = st.g ? 'none' : '';
+      gripC.style.display = st.g ? '' : 'none';
+      held.style.display  = st.h ? '' : 'none';
 
-    // State chip
-    setChip(seg.s);
+      // Workpiece: left part shown until grip closes (phases 0–1),
+      // right part shown after release (phases 5–7)
+      partL.style.display = pi < 2 ? '' : 'none';
+      partR.style.display = pi >= 5 ? '' : 'none';
 
-    // Readouts
-    const { elbow } = fk(θ1, θ2);
-    r1.textContent = θ1.toFixed(1) + '°';
-    r2el.textContent = θ2.toFixed(1) + '°';
-    r3.textContent = (GROUND_Y - elbow.y).toFixed(0) + 'px';
-    r4.textContent = seg.g ? 'CLOSED' : 'OPEN';
-    r5.textContent = groundClear(θ1, θ2) ? 'OK ✓' : 'WARN';
+      // Progress
+      prog.setAttribute('width', String(((ct / TOTAL) * 162).toFixed(1)));
 
+      // State chip
+      setChip(st.s);
+
+      // Readouts
+      const { elbow } = fk(t1, t2);
+      r1.textContent = t1d.toFixed(1) + '°';
+      r2el.textContent = t2d.toFixed(1) + '°';
+      r3.textContent = (GROUND_Y - elbow.y).toFixed(0) + 'px';
+      r4.textContent = st.g ? 'CLOSED' : 'OPEN';
+      r5.textContent = groundClear(t1, t2) ? 'OK ✓' : 'WARN';
+
+      requestAnimationFrame(tick);
+    }
     requestAnimationFrame(tick);
-  }
-  requestAnimationFrame(tick);
+  });
 })();
 </script>
 

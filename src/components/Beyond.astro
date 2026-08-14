@@ -34,42 +34,24 @@ const t = ui.en;
         </ul>
       </div>
 
-      <!-- Right: gallery with puzzle-assembly animation -->
+      <!-- Right: three tidy columns flowing top → bottom, shuffled images -->
       <div class="lg:col-span-3">
-        <div class="grid grid-cols-2 gap-4 sm:grid-cols-3">
+        <div class="waterfall" id="beyond-waterfall">
           {t.beyond.gallery.map((photo, i) => (
-            <figure
-              class:list={[
-                'beyond-card glass spatial-card group relative overflow-hidden rounded-3xl p-1.5',
-                i === 0 || i === 3 ? 'aspect-[3/4]' : 'aspect-square',
-                i === 0 ? 'col-span-2 aspect-[16/10] sm:col-span-2' : '',
-              ]}
-            >
-              <!-- puzzle overlay container — same size as image, pointer-events none -->
-              <div class="puzzle-host relative h-full w-full overflow-hidden rounded-[1.2rem]">
-                <img
-                  src={photo.src}
-                  alt={photo.alt}
-                  width="800"
-                  height="800"
-                  loading="lazy"
-                  decoding="async"
-                  class="puzzle-img h-full w-full object-cover transition duration-700 group-hover:scale-105"
-                  data-i18n-alt={`beyond.gallery.${i}.alt`}
-                />
-                <!-- 3×3 tile grid drawn over the image in CSS -->
-                <div class="puzzle-tiles" aria-hidden="true">
-                  {Array.from({length: 9}).map((_, t) => (
-                    <div class="puzzle-tile" data-tile={t}></div>
-                  ))}
-                </div>
-                <figcaption class="pointer-events-none absolute inset-x-0 bottom-0
-                  bg-gradient-to-t from-black/60 via-black/20 to-transparent
-                  px-3 pb-3 pt-10 z-10">
-                  <span class="text-xs font-medium text-white"
-                    data-i18n={`beyond.gallery.${i}.label`}>{photo.label}</span>
-                </figcaption>
-              </div>
+            <figure class="waterfall-card" data-card={i}>
+              <img
+                src={photo.src}
+                alt={photo.alt}
+                width="800"
+                height="800"
+                loading="lazy"
+                decoding="async"
+                class="waterfall-img"
+                data-i18n-alt={`beyond.gallery.${i}.alt`}
+              />
+              <figcaption class="waterfall-caption">
+                <span data-i18n={`beyond.gallery.${i}.label`}>{photo.label}</span>
+              </figcaption>
             </figure>
           ))}
         </div>
@@ -81,142 +63,265 @@ const t = ui.en;
 
 <style>
 /* ─────────────────────────────────────────────────────────────
-   PUZZLE TILE SYSTEM
-   Strategy: 9 absolutely-positioned tiles, each the same size
-   as 1/3 of the container. Each tile starts at a small random
-   offset + tiny rotation, opacity 0. On .is-assembled they
-   animate to exact grid position (CSS transform: none).
-   The real image underneath is always present — tiles act as
-   glass/frosted covers that dissolve away as they "lock in".
-   This avoids complex image-cropping and works with lazy-loaded imgs.
+   FLOWING IMAGE COLUMNS
+   The photo cards are split into 3 tidy vertical lanes that
+   stream continuously from top to bottom — cards enter above
+   the viewport, drift straight down inside their lane with a
+   small in-lane sway, exit below, then recycle invisibly.
+   Pure transform animation (translate3d / rotate / scale) is
+   driven in JS; the image order is shuffled on every load so
+   each reload lands the photos in a different random lane/slot.
    ───────────────────────────────────────────────────────────── */
 
-.puzzle-host {
+.waterfall {
   position: relative;
+  height: 440px;
+  overflow: hidden;
+  border-radius: 24px;
+  isolation: isolate;
+  background:
+    radial-gradient(ellipse 75% 60% at 50% 40%, rgba(99, 102, 241, 0.10), transparent 72%),
+    radial-gradient(ellipse 50% 45% at 14% 18%, rgba(34, 211, 238, 0.08), transparent 70%),
+    radial-gradient(ellipse 50% 45% at 88% 24%, rgba(167, 139, 250, 0.09), transparent 70%),
+    linear-gradient(rgba(99, 102, 241, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(99, 102, 241, 0.045) 1px, transparent 1px),
+    rgba(255, 255, 255, 0.4);
+  background-size: auto, auto, auto, 48px 48px, 48px 48px, auto;
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  box-shadow:
+    0 1px 2px rgba(30, 27, 75, 0.05),
+    0 24px 60px -24px rgba(30, 27, 75, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.85);
 }
 
-/* Tile grid: 3 columns × 3 rows, each 33.333% of container */
-.puzzle-tiles {
+.waterfall-card {
   position: absolute;
-  inset: 0;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(3, 1fr);
-  z-index: 5;
-  pointer-events: none;
-}
-
-.puzzle-tile {
-  /* Each tile covers its grid cell with a glass tint */
-  background: rgba(12, 18, 38, 0.55);
-  border: 1px solid rgba(99, 102, 241, 0.18);
-  /* Start displaced — JS will set individual --dx/--dy/--dr per tile */
-  transform: translate(var(--dx, 0px), var(--dy, 0px)) rotate(var(--dr, 0deg));
-  opacity: 1;
+  top: 0;
+  left: 0;
+  margin: 0;
+  width: clamp(130px, 26vw, 176px);
+  aspect-ratio: 3 / 4;
+  border-radius: 18px;
+  overflow: hidden;
+  opacity: 0; /* JS paints them in on the first frame */
+  background: rgba(255, 255, 255, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  box-shadow:
+    0 2px 6px rgba(30, 27, 75, 0.07),
+    0 18px 44px -18px rgba(30, 27, 75, 0.22);
+  transform-origin: center;
   will-change: transform, opacity;
   transition:
-    transform 0.75s cubic-bezier(0.22, 1, 0.36, 1),
-    opacity   0.65s cubic-bezier(0.22, 1, 0.36, 1);
+    box-shadow 0.35s var(--ease-spatial),
+    border-color 0.35s var(--ease-spatial);
 }
 
-/* When assembled: tile moves to exact position and fades to fully transparent */
-.puzzle-host.is-assembled .puzzle-tile {
-  transform: translate(0, 0) rotate(0deg);
-  opacity: 0;
+.waterfall-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: blur(var(--blur, 0px));
+  transition: filter 0.4s var(--ease-spatial);
+}
+
+/* thin premium frame line around the photo */
+.waterfall-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px rgba(99, 102, 241, 0.16);
   pointer-events: none;
 }
 
-/* Stagger each tile's transition-delay via data-tile attribute */
-.puzzle-host.is-assembled .puzzle-tile[data-tile="0"] { transition-delay: 0.00s; }
-.puzzle-host.is-assembled .puzzle-tile[data-tile="1"] { transition-delay: 0.06s; }
-.puzzle-host.is-assembled .puzzle-tile[data-tile="2"] { transition-delay: 0.12s; }
-.puzzle-host.is-assembled .puzzle-tile[data-tile="3"] { transition-delay: 0.08s; }
-.puzzle-host.is-assembled .puzzle-tile[data-tile="4"] { transition-delay: 0.16s; }
-.puzzle-host.is-assembled .puzzle-tile[data-tile="5"] { transition-delay: 0.10s; }
-.puzzle-host.is-assembled .puzzle-tile[data-tile="6"] { transition-delay: 0.14s; }
-.puzzle-host.is-assembled .puzzle-tile[data-tile="7"] { transition-delay: 0.04s; }
-.puzzle-host.is-assembled .puzzle-tile[data-tile="8"] { transition-delay: 0.18s; }
-
-/* ── Card hover: subtle lift + deeper shadow ── */
-.beyond-card {
-  transition:
-    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
-    box-shadow 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+.waterfall-caption {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  padding: 26px 12px 10px;
+  background: linear-gradient(to top, rgba(15, 18, 40, 0.62), rgba(15, 18, 40, 0.08) 70%, transparent);
+  pointer-events: none;
 }
-.beyond-card:hover {
-  transform: translateY(-6px) scale(1.012);
+
+.waterfall-caption span {
+  display: block;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  color: #ffffff;
+}
+
+/* Hover: JS slows + lifts the hovered card toward the viewer;
+   this CSS supplies the glow treatment only */
+.waterfall-card.is-hovered {
+  border-color: rgba(99, 102, 241, 0.55);
   box-shadow:
-    0 2px 4px rgba(30, 27, 75, 0.04),
-    0 20px 56px -16px rgba(30, 27, 75, 0.22),
-    inset 0 1px 0 rgba(255, 255, 255, 0.92);
+    0 4px 10px rgba(30, 27, 75, 0.1),
+    0 26px 60px -18px rgba(99, 102, 241, 0.38),
+    0 0 0 1px rgba(99, 102, 241, 0.22);
 }
 
-/* Reduced motion: skip animation, show image immediately */
+.waterfall-card.is-hovered .waterfall-img {
+  filter: blur(0);
+}
+
+@media (max-width: 479px) {
+  .waterfall-card { width: clamp(96px, 28vw, 130px); }
+}
+
+@media (min-width: 640px) {
+  .waterfall { height: 500px; }
+}
+
+@media (min-width: 1024px) {
+  .waterfall { height: 540px; }
+}
+
+/* Reduced motion: show a tidy static grid instead of the waterfall */
 @media (prefers-reduced-motion: reduce) {
-  .puzzle-tile        { transition: none; opacity: 0; }
-  .beyond-card:hover  { transform: none; }
+  .waterfall {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    height: auto;
+    overflow: visible;
+    background: none;
+    border: none;
+    box-shadow: none;
+  }
+
+  .waterfall-card {
+    position: static;
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    opacity: 1;
+  }
+}
+
+@media (min-width: 1024px) and (prefers-reduced-motion: reduce) {
+  .waterfall { grid-template-columns: repeat(3, 1fr); }
 }
 </style>
 
 <script>
+// ─────────────────────────────────────────────────────────────────────────────
+// Flowing image columns: the photo cards are split into 3 tidy vertical lanes
+// (left / center / right) that stream continuously from top to bottom. Cards
+// enter above the viewport, drift straight down inside their lane with a small
+// in-lane sway, exit below and recycle invisibly — so no lane ever visibly
+// resets. The card order is shuffled on every load, so the photos land in
+// random lanes/slots each time. Hover slows + lifts the hovered card while the
+// rest keep flowing. Transforms only (translate3d / rotate / scale) →
+// compositor-friendly, ~60fps.
+// ─────────────────────────────────────────────────────────────────────────────
 (function () {
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    // Skip animation entirely — just hide tiles immediately
-    document.querySelectorAll('.puzzle-host').forEach(host => {
-      host.querySelectorAll('.puzzle-tile').forEach(t => {
-        (t as HTMLElement).style.opacity = '0';
-      });
-    });
-    return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  const container = document.getElementById('beyond-waterfall');
+  if (!container) return;
+  const cards = Array.from(container.querySelectorAll<HTMLElement>('.waterfall-card'));
+  if (!cards.length) return;
+
+  // Shuffle the card order → random lane/slot for each photo on every load
+  for (let i = cards.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [cards[i], cards[j]] = [cards[j], cards[i]];
   }
 
-  // Offset pool: each tile gets a small deterministic offset based on its index
-  // so adjacent tiles spread in different directions (no chaos, controlled feel)
-  const OFFSETS = [
-    [-14, -12,  2],  // tile 0: top-left    → nudge up-left
-    [  0, -16,  0],  // tile 1: top-centre  → nudge up
-    [ 14, -12, -2],  // tile 2: top-right   → nudge up-right
-    [-18,   0,  3],  // tile 3: mid-left    → nudge left
-    [  0,   0,  0],  // tile 4: centre      → slight scale only
-    [ 18,   0, -3],  // tile 5: mid-right   → nudge right
-    [-14,  12, -2],  // tile 6: bot-left    → nudge down-left
-    [  0,  16,  0],  // tile 7: bot-centre  → nudge down
-    [ 14,  12,  2],  // tile 8: bot-right   → nudge down-right
-  ] as const;
+  // 3 even lanes; all cards in a lane share its speed so spacing stays tidy
+  const LANES = [
+    { frac: 1 / 6, dur: 14.0, amp: 6, rot: -1.2, wob: 0.30, scl: 1.00, opa: 0.98, blr: 0.0 },
+    { frac: 3 / 6, dur: 16.5, amp: 8, rot:  0.9, wob: 0.36, scl: 1.02, opa: 1.00, blr: 0.0 },
+    { frac: 5 / 6, dur: 15.0, amp: 5, rot: -0.7, wob: 0.33, scl: 0.99, opa: 0.96, blr: 0.4 },
+  ];
 
-  function initHost(host: Element) {
-    const tiles = host.querySelectorAll<HTMLElement>('.puzzle-tile');
-    tiles.forEach((tile, i) => {
-      const [dx, dy, dr] = OFFSETS[i] ?? [0, 0, 0];
-      tile.style.setProperty('--dx', `${dx}px`);
-      tile.style.setProperty('--dy', `${dy}px`);
-      tile.style.setProperty('--dr', `${dr}deg`);
-    });
+  const MARGIN = 24;      // off-screen runway above/below the viewport
+  const HOVER_SLOW = 0.3; // speed multiplier while a card is hovered
+
+  // Round-robin: distribute the shuffled cards evenly across the 3 lanes
+  const laneOf: number[] = [];
+  const slotOf: number[] = [];
+  const laneCounts = [0, 0, 0];
+  cards.forEach((_, i) => {
+    const lane = i % LANES.length;
+    laneOf.push(lane);
+    slotOf.push(laneCounts[lane]++);
+  });
+
+  const cardW: number[] = [];
+  const cardH: number[] = [];
+  cards.forEach((card, i) => {
+    card.style.setProperty('--blur', `${LANES[laneOf[i]].blr}px`);
+    cardW.push(card.offsetWidth);
+    cardH.push(card.offsetHeight);
+  });
+
+  let vh = container.clientHeight;
+  let availW = container.clientWidth;
+  function measure() {
+    vh = container.clientHeight;
+    availW = container.clientWidth;
   }
+  measure();
+  window.addEventListener('resize', measure);
 
-  function assemble(host: Element) {
-    (host as HTMLElement).classList.add('is-assembled');
-  }
+  // Hover: only the hovered card reacts; the rest keep flowing
+  let hovered = -1;
+  cards.forEach((card, i) => {
+    card.addEventListener('mouseenter', () => { hovered = i; });
+    card.addEventListener('mouseleave', () => { if (hovered === i) hovered = -1; });
+  });
+  container.addEventListener('mouseleave', () => { hovered = -1; });
 
-  // Initialize all hosts on load
-  const hosts = document.querySelectorAll('.puzzle-host');
-  hosts.forEach(initHost);
-
-  // IntersectionObserver: trigger assembly when card enters viewport
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          // Small delay so user sees the displaced state briefly
-          const host = entry.target;
-          setTimeout(() => assemble(host), 180);
-          observer.unobserve(host);
-        }
-      });
-    },
-    { threshold: 0.25 }
+  // Only animate while the section is near the viewport
+  let inView = true;
+  const io = new IntersectionObserver(
+    (entries) => { inView = entries[0].isIntersecting; },
+    { rootMargin: '200px' }
   );
+  io.observe(container);
 
-  hosts.forEach(host => observer.observe(host));
+  const times: number[] = cards.map(() => 0);
+  let last = null as number | null;
+  function tick(ts: number) {
+    const now = ts / 1000;
+    if (last === null) last = now;
+    let dt = now - last;
+    last = now;
+    if (dt > 0.05) dt = 0.05; // clamp gaps (tab switch / long frames)
+
+    if (inView) {
+      for (let i = 0; i < cards.length; i++) {
+        const card = cards[i];
+        const lane = LANES[laneOf[i]];
+        const hover = hovered === i;
+
+        times[i] += dt * (hover ? HOVER_SLOW : 1);
+        // slot phase keeps cards in a lane evenly spaced; shared lane speed
+        const p = ((times[i] / lane.dur) + slotOf[i] / laneCounts[laneOf[i]]) % 1;
+
+        // Vertical: enter above the viewport, flow down, exit below, recycle
+        const cycle = vh + cardH[i] + 2 * MARGIN;
+        const y = -cardH[i] - MARGIN + p * cycle;
+        // Gentle in-lane sway
+        const sway = Math.sin(p * Math.PI * 2 * lane.wob + i * 1.7);
+        const x = lane.frac * Math.max(availW - cardW[i], 0) + lane.amp * sway;
+
+        const rot = lane.rot + 0.8 * Math.sin(p * Math.PI * 2 * lane.wob + i * 1.7 + 0.9);
+        const scale = lane.scl * (hover ? 1.12 : 1);
+        const opacity = Math.min(1, Math.max(0.55, lane.opa * (0.85 + 0.15 * Math.sin(p * Math.PI))));
+
+        card.style.transform =
+          `translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, 0) ` +
+          `rotate(${rot.toFixed(2)}deg) scale(${scale.toFixed(3)})`;
+        card.style.opacity = opacity.toFixed(3);
+        card.style.zIndex = String(hover ? 30 : 10);
+        card.classList.toggle('is-hovered', hover);
+      }
+    }
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
 })();
 </script>

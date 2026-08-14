@@ -193,31 +193,11 @@ export const ui = {
       ],
     },
     certs: {
-      kicker: 'Credentials',
-      title: 'Certifications & technical stack',
+      kicker: 'Technical stack',
+      title: 'Technical stack',
       subtitle:
-        'Official licenses plus a stack built for end-to-end Smart Factory delivery — hardware, software, and standards.',
+        'A stack built for end-to-end Smart Factory delivery — hardware, software, and standards.',
       stackTitle: 'Technical stack by domain',
-      licenses: [
-        {
-          name: 'Japan Electrician License',
-          nameJa: '電気工事士',
-          issuer: 'Ministry of Health, Labour and Welfare (JP)',
-          note: 'Official national electrical works qualification',
-        },
-        {
-          name: 'Yaskawa Robot Teaching & Maintenance',
-          nameJa: '安川ロボット',
-          issuer: 'Yaskawa Electric',
-          note: 'Teaching, operation & maintenance certification',
-        },
-        {
-          name: 'Keyence PLC Specialist',
-          nameJa: 'Keyence PLC',
-          issuer: 'Keyence Corporation',
-          note: 'PLC application, I/O & line control specialist',
-        },
-      ],
       categories: [
         {
           title: 'PLC & Control',
@@ -422,31 +402,11 @@ export const ui = {
       ],
     },
     certs: {
-      kicker: '資格・技術',
-      title: '資格とテクニカルスタック',
+      kicker: 'テクニカルスタック',
+      title: 'テクニカルスタック',
       subtitle:
-        '公式資格と、スマートファクトリーのエンドツーエンド構築向けスタック — ハード・ソフト・規格。',
+        'スマートファクトリーのエンドツーエンド構築向けスタック — ハード・ソフト・規格。',
       stackTitle: '領域別テクニカルスタック',
-      licenses: [
-        {
-          name: '第二種電気工事士',
-          nameJa: '電気工事士',
-          issuer: '厚生労働省（日本）',
-          note: '国家資格・電気工事',
-        },
-        {
-          name: '安川ロボット ティーチング＆保守',
-          nameJa: '安川ロボット',
-          issuer: '安川電機',
-          note: 'ティーチング・運転・保守認定',
-        },
-        {
-          name: 'Keyence PLC スペシャリスト',
-          nameJa: 'Keyence PLC',
-          issuer: 'キーエンス',
-          note: 'PLC応用・I/O・ライン制御',
-        },
-      ],
       categories: [
         {
           title: 'PLC & 制御',
@@ -651,31 +611,11 @@ export const ui = {
       ],
     },
     certs: {
-      kicker: 'Chứng chỉ',
-      title: 'Chứng chỉ & technical stack',
+      kicker: 'Technical stack',
+      title: 'Technical stack',
       subtitle:
-        'Chứng chỉ chính thức cùng stack cho triển khai Smart Factory end-to-end — phần cứng, phần mềm và tiêu chuẩn.',
+        'Stack cho triển khai Smart Factory end-to-end — phần cứng, phần mềm và tiêu chuẩn.',
       stackTitle: 'Technical stack theo lĩnh vực',
-      licenses: [
-        {
-          name: 'Chứng chỉ Điện công trình Nhật Bản',
-          nameJa: '電気工事士',
-          issuer: 'Bộ Y tế, Lao động và Phúc lợi (JP)',
-          note: 'Chứng chỉ quốc gia về điện công trình',
-        },
-        {
-          name: 'Yaskawa Robot Teaching & Maintenance',
-          nameJa: '安川ロボット',
-          issuer: 'Yaskawa Electric',
-          note: 'Chứng nhận teaching, vận hành & bảo trì',
-        },
-        {
-          name: 'Keyence PLC Specialist',
-          nameJa: 'Keyence PLC',
-          issuer: 'Keyence Corporation',
-          note: 'Chuyên gia PLC, I/O & điều khiển line',
-        },
-      ],
       categories: [
         {
           title: 'PLC & Điều khiển',
