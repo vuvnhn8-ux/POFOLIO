@@ -1,0 +1,13 @@
+{
+  "name": "polofio-analytics",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Privacy-friendly visitor analytics API + private dashboard for the polofio portfolio. Zero runtime dependencies, requires Node 18+.",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "start": "node server.js"
+  }
+}

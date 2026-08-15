@@ -1,0 +1,25 @@
+# systemd unit for the polofio analytics server.
+# Installed by deploy.sh. Edit paths if you relocate the app dir.
+[Unit]
+Description=polofio analytics server
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=polofio
+Group=polofio
+WorkingDirectory=/opt/polofio-analytics
+EnvironmentFile=/opt/polofio-analytics/.env
+ExecStart=/usr/bin/node server.js
+Restart=always
+RestartSec=3
+
+# hardening
+NoNewPrivileges=true
+ProtectSystem=full
+ProtectHome=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%231a1a2e'/%3E%3Cpath d='M6 17V11m4 6V7m4 10v-4m4 4V9' stroke='%236366f1' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E" />
+    <title>Analytics</title>
+    <link rel="stylesheet" href="/analytics/assets/styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="topbar-title">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <rect width="24" height="24" rx="6" fill="#1a1a2e"/>
+          <path d="M6 17V11m4 6V7m4 10v-4m4 4V9" stroke="#6366f1" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <h1>Portfolio Analytics</h1>
+      </div>
+      <nav class="range-nav" aria-label="Time range">
+        <button type="button" data-range="7">7d</button>
+        <button type="button" data-range="30" class="active">30d</button>
+        <button type="button" data-range="90">90d</button>
+        <button type="button" data-range="0">All</button>
+      </nav>
+      <form method="post" action="/analytics/logout">
+        <button type="submit" class="logout">Sign out</button>
+      </form>
+    </header>
+
+    <main class="wrap" id="app" hidden>
+      <section class="cards" aria-label="Overview">
+        <div class="card"><div class="card-label">Total visits</div><div class="card-value" data-k="visits"></div></div>
+        <div class="card"><div class="card-label">Unique visitors</div><div class="card-value" data-k="unique"></div></div>
+        <div class="card"><div class="card-label">Page views</div><div class="card-value" data-k="pageviews"></div></div>
+        <div class="card"><div class="card-label">Visitors today</div><div class="card-value" data-k="today"></div></div>
+        <div class="card"><div class="card-label">Visitors this week</div><div class="card-value" data-k="week"></div></div>
+        <div class="card"><div class="card-label">Visitors this month</div><div class="card-value" data-k="month"></div></div>
+      </section>
+
+      <section class="grid-charts" aria-label="Charts">
+        <div class="panel">
+          <h2>Visitors over time</h2>
+          <canvas data-chart="visitors" height="220"></canvas>
+        </div>
+        <div class="panel">
+          <h2>Page views over time</h2>
+          <canvas data-chart="pageviews" height="220"></canvas>
+        </div>
+        <div class="panel">
+          <h2>Geographic distribution</h2>
+          <canvas data-chart="geo" height="220"></canvas>
+        </div>
+        <div class="panel">
+          <h2>Traffic sources</h2>
+          <div class="donut-wrap">
+            <canvas data-chart="sources" height="220"></canvas>
+            <ul class="legend" data-legend="sources"></ul>
+          </div>
+        </div>
+        <div class="panel">
+          <h2>Devices</h2>
+          <div class="donut-wrap">
+            <canvas data-chart="devices" height="220"></canvas>
+            <ul class="legend" data-legend="devices"></ul>
+          </div>
+        </div>
+        <div class="panel">
+          <h2>Browsers &amp; OS</h2>
+          <div class="split-bars">
+            <canvas data-chart="browsers" height="180"></canvas>
+            <canvas data-chart="os" height="180"></canvas>
+          </div>
+        </div>
+      </section>
+
+      <section class="grid-lists" aria-label="Breakdowns">
+        <div class="panel">
+          <h2>Top pages</h2>
+          <table class="mini-table">
+            <thead><tr><th>Page</th><th>Views</th></tr></thead>
+            <tbody data-list="topPages"></tbody>
+          </table>
+        </div>
+        <div class="panel">
+          <h2>Top countries</h2>
+          <table class="mini-table">
+            <thead><tr><th>Country</th><th>Visits</th></tr></thead>
+            <tbody data-list="topCountries"></tbody>
+          </table>
+        </div>
+        <div class="panel">
+          <h2>Top cities</h2>
+          <table class="mini-table">
+            <thead><tr><th>City</th><th>Visits</th></tr></thead>
+            <tbody data-list="topCities"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2>Recent visits</h2>
+        <div class="table-scroll">
+          <table class="recent-table">
+            <thead>
+              <tr>
+                <th>Time</th><th>Page</th><th>Source</th><th>Country</th><th>City</th>
+                <th>Device</th><th>Browser</th><th>OS</th><th>Duration</th><th>Screen</th>
+              </tr>
+            </thead>
+            <tbody data-list="recent"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <footer class="foot">
+        Privacy-friendly analytics. No cookies, no fingerprinting. IP addresses are hashed, never stored in plain form.
+      </footer>
+    </main>
+
+    <script src="/analytics/assets/dashboard.js"></script>
+  </body>
+</html>

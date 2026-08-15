@@ -15,6 +15,10 @@ pnpm-debug.log*
 .env
 .env.production
 
+# analytics runtime data (never commit visitor logs)
+analytics/data/
+analytics/.env
+
 # macOS
 .DS_Store
 
