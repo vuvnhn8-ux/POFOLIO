@@ -5,7 +5,7 @@
 // Production default is the deployed analytics server. For local dev,
 // override it: PUBLIC_ANALYTICS_URL=http://localhost:8787 npm run dev
 
-const ENDPOINT = (import.meta.env.PUBLIC_ANALYTICS_URL as string | undefined) || 'https://analytics.hoangvuvan.xyz';
+const ENDPOINT = (import.meta.env.PUBLIC_ANALYTICS_URL as string | undefined) || '';
 
 const HEARTBEAT_MS = 30_000;
 const CID_KEY = 'pa_cid';

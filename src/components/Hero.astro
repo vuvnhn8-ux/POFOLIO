@@ -130,7 +130,7 @@ const socials = [
       <div class="relative mx-auto w-full max-w-sm lg:max-w-none" data-parallax="0.5">
         <div class="float-y">
           <div class="glass-deep spatial-card overflow-hidden rounded-[2rem] p-2.5">
-            <div class="overflow-hidden rounded-[1.6rem]">
+            <div class="relative overflow-hidden rounded-[1.6rem]">
               <img
                 src={profile.portrait}
                 alt=""
@@ -139,6 +139,16 @@ const socials = [
                 class="aspect-[4/5] w-full object-cover object-top"
                 fetchpriority="high"
               />
+              <a
+                href="/analytics/login"
+                class="absolute bottom-3 right-3 flex h-6 w-6 items-center justify-center rounded-full bg-black/30 opacity-0 backdrop-blur-sm transition-opacity duration-300 hover:bg-black/50 hover:opacity-100 sm:bottom-4 sm:right-4 sm:h-7 sm:w-7"
+                title="Analytics"
+                aria-label="Analytics login"
+              >
+                <svg class="h-3 w-3 text-white/70" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                  <path d="M6 17V11m4 6V7m4 10v-4m4 4V9" />
+                </svg>
+              </a>
             </div>
           </div>
         </div>
