@@ -16,6 +16,7 @@ export const profile = {
   facebookUrl: 'https://www.facebook.com/vuvnhn',
   instagramUrl: 'https://www.instagram.com/riceskrtttricemoney/',
   whatsappUrl: 'https://wa.me/817090122965',
+  githubUrl: 'https://github.com/vuvnhn8-ux',
   cvPath: '/public/cv.pdf',
   portrait: '/images/personal-11.jpg',
 };
