@@ -240,6 +240,170 @@
     text-align: center;
   }
 
+  .download-btn {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: linear-gradient(135deg, #0f2c59, #1a5276);
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    padding: 12px 20px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(15, 44, 89, 0.35);
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: transform 0.2s, box-shadow 0.2s;
+    font-family: 'Be Vietnam Pro', 'Segoe UI', sans-serif;
+  }
+
+  .download-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(15, 44, 89, 0.45);
+  }
+
+  .download-btn:active {
+    transform: translateY(0);
+  }
+
+  @media print {
+    .download-btn { display: none !important; }
+  }
+
+  .project-item {
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px dashed #cfd8e3;
+  }
+
+  .project-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+  }
+
+  .project-name {
+    font-weight: 600;
+    font-size: 12.5px;
+    color: var(--primary);
+  }
+
+  .project-desc {
+    font-size: 12px;
+    color: var(--text);
+    margin-top: 2px;
+  }
+
+  .project-tech {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 1px;
+  }
+
+  .project-link {
+    font-size: 11px;
+    margin-top: 2px;
+  }
+
+  .project-link a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  .project-link a:hover {
+    text-decoration: underline;
+  }
+
+  .blink {
+    animation: blink-anim 1.2s steps(2, start) infinite;
+    color: #e74c3c;
+    font-size: 11px;
+    font-weight: 700;
+    margin-left: 6px;
+  }
+
+  @keyframes blink-anim {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.2; }
+  }
+
+  .skill-category {
+    margin-bottom: 8px;
+  }
+
+  .skill-category strong {
+    display: block;
+    font-size: 10.5px;
+    color: var(--accent);
+    margin-bottom: 3px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+  }
+
+  .skill-category .skill-list li {
+    padding: 4px 0;
+  }
+
+  .workflow {
+    font-size: 12px;
+    color: var(--text);
+    margin: 8px 0;
+    line-height: 1.6;
+  }
+
+  .workflow .flow {
+    display: block;
+    font-weight: 600;
+    color: var(--primary);
+    font-size: 11.5px;
+    margin-bottom: 3px;
+  }
+
+  @media screen and (max-width: 768px) {
+    .header {
+      grid-template-columns: 1fr;
+      text-align: center;
+      padding: 24px 20px;
+    }
+
+    .photo-wrap {
+      justify-self: center;
+      order: -1;
+      margin-bottom: 8px;
+    }
+
+    .header-meta {
+      grid-template-columns: 1fr;
+      text-align: center;
+    }
+
+    .body {
+      grid-template-columns: 1fr;
+    }
+
+    .sidebar {
+      border-right: none;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .main {
+      padding: 20px 18px 28px;
+    }
+
+    h1 { font-size: 22px; }
+    h2 { font-size: 12px; }
+    .summary { font-size: 12px; }
+    .job li, .skill-list li { font-size: 11.5px; }
+    .project-name { font-size: 12px; }
+    .project-desc { font-size: 11px; }
+    .project-tech { font-size: 10.5px; }
+    .blink { font-size: 10px; }
+  }
+
   @media print {
     body { background: #fff; }
     .page { margin: 0; box-shadow: none; max-width: 100%; }
@@ -252,9 +416,9 @@
   <header class="header">
     <div>
       <h1>VŨ VĂN HOÀNG</h1>
-      <div class="role">Kỹ sư Thiết kế Điều khiển · FA / PLC / Hệ thống Robot</div>
+      <div class="role">Kỹ sư Thiết kế Điều khiển · FA / PLC / Phát triển Phần mềm</div>
       <div class="header-meta">
-        <span>📅 Sinh: 20/08/2000 (25 tuổi)</span>
+        <span>📅 Sinh: 20/08/2000 (26 tuổi)</span>
         <span>🌏 Quốc tịch: Việt Nam</span>
         <span>📍 〒412-0043 Gotemba, Shizuoka, Nhật Bản</span>
         <span>📞 070-9012-2965</span>
@@ -303,18 +467,54 @@
       </ul>
 
       <h2>Kỹ năng chuyên môn</h2>
-      <ul class="skill-list">
-        <li>Lập trình PLC (KEYENCE / Mitsubishi / Omron)</li>
-        <li>Thiết kế HMI / Màn hình cảm ứng</li>
-        <li>Dạy robot (Yaskawa SCARA, IAI)</li>
-        <li>Safety PLC</li>
-        <li>Xử lý ảnh AI</li>
-        <li>C# / Python / C++</li>
-        <li>Thiết kế &amp; lắp ráp tủ điện, đấu dây</li>
-        <li>Hệ thống FA / Nhà máy thông minh</li>
-        <li>IO-Link / Kiểm tra I/O</li>
-        <li>Giám sát thi công thiết bị điện</li>
-      </ul>
+      <div class="skill-category">
+        <strong>Tự động hóa / Công nghiệp</strong>
+        <ul class="skill-list">
+          <li>Lập trình PLC (KEYENCE / Mitsubishi / Omron)</li>
+          <li>Thiết kế HMI / Màn hình cảm ứng</li>
+          <li>Dạy robot (Yaskawa SCARA, IAI)</li>
+          <li>Safety PLC</li>
+          <li>Xử lý ảnh AI</li>
+          <li>Thiết kế &amp; lắp ráp tủ điện, đấu dây</li>
+          <li>IO-Link / Kiểm tra I/O</li>
+          <li>Hệ thống FA / Nhà máy thông minh</li>
+        </ul>
+      </div>
+      <div class="skill-category">
+        <strong>Phát triển Phần mềm</strong>
+        <ul class="skill-list">
+          <li>C# / .NET / WPF</li>
+          <li>Python / C++</li>
+          <li>TypeScript / JavaScript</li>
+          <li>REST API / SQL</li>
+        </ul>
+      </div>
+      <div class="skill-category">
+        <strong>AI Hỗ trợ Phát triển / Vibe Coding</strong>
+        <ul class="skill-list">
+          <li>Claude Code, OpenAI Codex, OpenCode</li>
+          <li>Google AI Studio / Gemini</li>
+          <li>AI hỗ trợ kiến trúc &amp; tạo mã</li>
+          <li>AI hỗ trợ debug &amp; tạo test</li>
+          <li>Prompt Engineering</li>
+        </ul>
+      </div>
+      <div class="skill-category">
+        <strong>DevOps / Công cụ</strong>
+        <ul class="skill-list">
+          <li>Git / GitHub</li>
+          <li>Docker / Linux</li>
+        </ul>
+      </div>
+
+      <h2>AI Hỗ trợ Phát triển</h2>
+      <p class="summary">
+        Kinh nghiệm thực tế sử dụng AI coding assistants (Claude Code, Codex, Gemini) như
+        công cụ hỗ trợ phát triển xuyên suốt vòng đời phần mềm — từ thiết kế kiến trúc,
+        tạo mã, debugging, testing đến triển khai. AI tăng tốc prototyping và lặp lại,
+        trong khi judgment kỹ thuật của con người đảm bảo chất lượng mã nguồn,
+        khả năng bảo trì và sẵn sàng triển khai trên môi trường production.
+      </p>
 
       <h2>Chứng chỉ &amp; Bằng lái</h2>
       <ul class="cert-list">
@@ -338,13 +538,53 @@
     <main class="main">
       <h2>Tóm tắt nghề nghiệp</h2>
       <p class="summary">
-        Kỹ sư Thiết kế Điều khiển với hơn 3 năm kinh nghiệm R&amp;D trong lĩnh vực Tự động hóa nhà máy (FA).
-        Chuyên sâu về xử lý ảnh AI, điều khiển robot và xây dựng hệ thống PLC.
-        Kết hợp nền tảng kỹ thuật điện vững chắc với chứng chỉ dạy robot Yaskawa và kỹ năng PLC đa hãng
-        (KEYENCE, Mitsubishi, Omron) để nắm bắt chính xác vấn đề hiện trường và đề xuất giải pháp
-        nhà máy thông minh tối ưu, giá trị cao.
-        Định hướng phát triển: Solution Engineer, Technical Consultant hoặc Bridge Engineer.
+        Kỹ sư Thiết kế Điều khiển với hơn 3 năm kinh nghiệm R&amp;D thực tế trong Tự động hóa nhà
+        máy (FA) tại môi trường sản xuất Nhật Bản. Thành thạo xây dựng hệ thống PLC, xử lý ảnh
+        AI và điều khiển robot đa hãng (KEYENCE, Mitsubishi, Omron, Yaskawa). Đang mở rộng sang
+        phát triển phần mềm (C# / Python / C++) với kinh nghiệm thực tế sử dụng AI hỗ trợ phát
+        triển — xây dựng ứng dụng và prototype từ yêu cầu đến triển khai. Kết hợp chuyên sâu
+        tự động hóa với khả năng phát triển phần mềm để kết nối phần cứng điều khiển và giải
+        pháp số nhà máy thông minh. Hướng tới vị trí Solution Engineer, Technical Consultant
+        hoặc Bridge Engineer.
       </p>
+
+      <h2>Dự án</h2>
+
+      <div class="project-item">
+        <div class="project-name">ReMarket <span class="project-link"><a href="https://remarket.hoangvuvan.xyz/" target="_blank">🌐 remarket.hoangvuvan.xyz</a></span> <span class="blink">← Click</span></div>
+        <div class="project-desc">Sàn thương mại điện tử đồ cũ</div>
+        <div class="project-tech">Phát triển Web Full-stack &middot; Phát triển hỗ trợ AI</div>
+      </div>
+
+      <div class="project-item">
+        <div class="project-name">HATSCADA <span class="project-link"><a href="https://hatscada.hoangvuvan.xyz/" target="_blank">🌐 hatscada.hoangvuvan.xyz</a></span> <span class="blink">← Click</span></div>
+        <div class="project-desc">Hệ thống giám sát nhà máy SCADA thời gian thực với tích hợp PLC</div>
+        <div class="project-tech">C#, .NET, Truyền thông PLC, Giám sát Web</div>
+      </div>
+
+      <div class="project-item">
+        <div class="project-name">TubeMake <span class="project-link"><a href="https://tubemake.hoangvuvan.xyz/" target="_blank">🌐 tubemake.hoangvuvan.xyz</a></span> <span class="blink">← Click</span></div>
+        <div class="project-desc">Nền tảng tạo video AI tự động</div>
+        <div class="project-tech">Python, API AI/Video, Tự động hóa &middot; Phát triển hỗ trợ AI</div>
+      </div>
+
+      <div class="project-item">
+        <div class="project-name">AutoCut <span class="project-link"><a href="https://autocut.hoangvuvan.xyz/" target="_blank">🌐 autocut.hoangvuvan.xyz</a></span> <span class="blink">← Click</span></div>
+        <div class="project-desc">Công cụ cắt video tự động từ link YouTube</div>
+        <div class="project-tech">Python, Xử lý video, YouTube API &middot; Phát triển hỗ trợ AI</div>
+      </div>
+
+      <div class="project-item">
+        <div class="project-name">Portfolio <span class="project-link"><a href="https://portfolio.hoangvuvan.xyz/" target="_blank">🌐 portfolio.hoangvuvan.xyz</a></span> <span class="blink">← Click</span></div>
+        <div class="project-desc">Website portfolio cá nhân</div>
+        <div class="project-tech">HTML, CSS, JavaScript</div>
+      </div>
+
+      <h2>Quy trình Phát triển với AI</h2>
+      <div class="workflow">
+        <span class="flow">Yêu cầu → Kiến trúc hỗ trợ AI → Tạo mã → Review → Testing → Git/GitHub → Triển khai</span>
+        Sử dụng Claude Code, Codex và Gemini như công cụ hỗ trợ phát triển, đồng thời chịu trách nhiệm đầy đủ về quyết định kiến trúc, chất lượng mã nguồn, debugging, testing và triển khai production.
+      </div>
 
       <h2>Kinh nghiệm làm việc</h2>
 
@@ -443,11 +683,11 @@
       <p class="summary">
         Trong ngành FA tại Nhật Bản, tôi đã tham gia R&amp;D về xử lý ảnh AI, robot công nghiệp và hệ thống PLC
         hơn 3 năm. Trong tương lai, tôi mong muốn phát huy thành tích phát triển cùng nền tảng kỹ thuật
-        (C# / Python / C++, thiết kế điều khiển) ở vai trò <strong>Solution Engineer</strong>,
-        <strong>Technical Consultant</strong> hoặc <strong>Bridge Engineer</strong> —
-        không chỉ dừng ở phát triển sản phẩm/chức năng, mà đề xuất giải pháp và thiết kế hệ thống giải quyết
-        bài toán hiện trường, đồng thời trở thành cầu nối giao tiếp kỹ thuật trong môi trường toàn cầu,
-        góp phần thúc đẩy nhà máy thông minh và tăng trưởng kinh doanh.
+        (C# / Python / C++, thiết kế điều khiển, phát triển phần mềm hỗ trợ AI) ở vai trò
+        <strong>Solution Engineer</strong>, <strong>Technical Consultant</strong> hoặc
+        <strong>Bridge Engineer</strong> — không chỉ dừng ở phát triển sản phẩm/chức năng, mà đề xuất
+        giải pháp và thiết kế hệ thống giải quyết bài toán hiện trường, đồng thời trở thành cầu nối
+        giao tiếp kỹ thuật trong môi trường toàn cầu, góp phần thúc đẩy nhà máy thông minh và tăng trưởng kinh doanh.
       </p>
 
       <h2>Tự giới thiệu</h2>
@@ -465,5 +705,6 @@
     </main>
   </div>
 </div>
+<button class="download-btn" onclick="window.print()">⬇ Tải PDF</button>
 </body>
 </html>

@@ -246,6 +246,40 @@
     text-align: center;
   }
 
+  .download-btn {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: linear-gradient(135deg, #0f2c59, #1a5276);
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    padding: 12px 20px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(15, 44, 89, 0.35);
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: transform 0.2s, box-shadow 0.2s;
+    font-family: 'Noto Sans JP', 'Yu Gothic', 'Meiryo', sans-serif;
+  }
+
+  .download-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(15, 44, 89, 0.45);
+  }
+
+  .download-btn:active {
+    transform: translateY(0);
+  }
+
+  @media print {
+    .download-btn { display: none !important; }
+  }
+
   table.basic {
     width: 100%;
     border-collapse: collapse;
@@ -264,6 +298,136 @@
     font-weight: 500;
   }
 
+  .project-item {
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px dashed #cfd8e3;
+  }
+
+  .project-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+  }
+
+  .project-name {
+    font-weight: 600;
+    font-size: 12.5px;
+    color: var(--primary);
+  }
+
+  .project-desc {
+    font-size: 12px;
+    color: var(--text);
+    margin-top: 2px;
+  }
+
+  .project-tech {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 1px;
+  }
+
+  .project-link {
+    font-size: 11px;
+    margin-top: 2px;
+  }
+
+  .project-link a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  .project-link a:hover {
+    text-decoration: underline;
+  }
+
+  .blink {
+    animation: blink-anim 1.2s steps(2, start) infinite;
+    color: #e74c3c;
+    font-size: 11px;
+    font-weight: 700;
+    margin-left: 6px;
+  }
+
+  @keyframes blink-anim {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.2; }
+  }
+
+  .skill-category {
+    margin-bottom: 8px;
+  }
+
+  .skill-category strong {
+    display: block;
+    font-size: 10.5px;
+    color: var(--accent);
+    margin-bottom: 3px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+  }
+
+  .skill-category .skill-list li {
+    padding: 4px 0;
+  }
+
+  .workflow {
+    font-size: 12px;
+    color: var(--text);
+    margin: 8px 0;
+    line-height: 1.6;
+  }
+
+  .workflow .flow {
+    display: block;
+    font-weight: 600;
+    color: var(--primary);
+    font-size: 11.5px;
+    margin-bottom: 3px;
+  }
+
+  @media screen and (max-width: 768px) {
+    .header {
+      grid-template-columns: 1fr;
+      text-align: center;
+      padding: 24px 20px;
+    }
+
+    .photo-wrap {
+      justify-self: center;
+      order: -1;
+      margin-bottom: 8px;
+    }
+
+    .header-meta {
+      grid-template-columns: 1fr;
+      text-align: center;
+    }
+
+    .body {
+      grid-template-columns: 1fr;
+    }
+
+    .sidebar {
+      border-right: none;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .main {
+      padding: 20px 18px 28px;
+    }
+
+    h1 { font-size: 22px; }
+    h2 { font-size: 12px; letter-spacing: 1px; }
+    .summary { font-size: 12px; }
+    .job li, .skill-list li { font-size: 11.5px; }
+    .project-name { font-size: 12px; }
+    .project-desc { font-size: 11px; }
+    .project-tech { font-size: 10.5px; }
+    .blink { font-size: 10px; }
+  }
+
   @media print {
     body { background: #fff; }
     .page { margin: 0; box-shadow: none; max-width: 100%; }
@@ -277,9 +441,9 @@
     <div>
       <div class="kana">ヴ　ヴァン　ホアン</div>
       <h1>VU VAN HOANG</h1>
-      <div class="role">制御設計エンジニア ／ FA・PLC・ロボットシステム</div>
+      <div class="role">制御設計エンジニア ／ FA・PLC・ソフトウェア開発・Vibe Coding</div>
       <div class="header-meta">
-        <span>📅 生年月日：2000年8月20日（満25歳）</span>
+        <span>📅 生年月日：2000年8月20日（満26歳）</span>
         <span>🌏 国籍：ベトナム</span>
         <span>📍 〒412-0043 静岡県御殿場市</span>
         <span>📞 070-9012-2965</span>
@@ -329,18 +493,52 @@
       </ul>
 
       <h2>スキル</h2>
-      <ul class="skill-list">
-        <li>PLCプログラミング（キーエンス／三菱／オムロン）</li>
-        <li>HMI・タッチパネル設計</li>
-        <li>ロボットティーチング（安川SCARA、IAI）</li>
-        <li>セーフティPLC</li>
-        <li>AI画像処理</li>
-        <li>C# ／ Python ／ C++</li>
-        <li>制御盤設計・組立・配線</li>
-        <li>FA・スマートファクトリー構築</li>
-        <li>IO-Link ／ I/Oチェック</li>
-        <li>電気設備施工監督・検査</li>
-      </ul>
+      <div class="skill-category">
+        <strong>自動化 / 産業</strong>
+        <ul class="skill-list">
+          <li>PLCプログラミング（キーエンス／三菱／オムロン）</li>
+          <li>HMI・タッチパネル設計</li>
+          <li>ロボットティーチング（安川SCARA、IAI）</li>
+          <li>セーフティPLC</li>
+          <li>AI画像処理</li>
+          <li>制御盤設計・組立・配線</li>
+          <li>IO-Link ／ I/Oチェック</li>
+          <li>FA・スマートファクトリー構築</li>
+        </ul>
+      </div>
+      <div class="skill-category">
+        <strong>ソフトウェア開発</strong>
+        <ul class="skill-list">
+          <li>C# ／ .NET ／ WPF</li>
+          <li>Python ／ C++</li>
+          <li>TypeScript ／ JavaScript</li>
+          <li>REST API ／ SQL</li>
+        </ul>
+      </div>
+      <div class="skill-category">
+        <strong>AI支援開発 / Vibe Coding</strong>
+        <ul class="skill-list">
+          <li>Claude Code、OpenAI Codex、OpenCode</li>
+          <li>Google AI Studio / Gemini</li>
+          <li>AI支援アーキテクチャ・コード生成</li>
+          <li>AI支援デバッグ・テスト生成</li>
+          <li>プロンプトエンジニアリング</li>
+        </ul>
+      </div>
+      <div class="skill-category">
+        <strong>DevOps / ツール</strong>
+        <ul class="skill-list">
+          <li>Git / GitHub</li>
+          <li>Docker / Linux</li>
+        </ul>
+      </div>
+
+      <h2>AI支援開発</h2>
+      <p class="summary">
+        Claude Code、Codex、Gemini等のAIコーディングアシスタントを開発ライフサイクル全体で実務活用。
+        アーキテクチャ設計、コード生成、デバッグ、テスト、デプロイメントまで一貫して対応。
+        AIが開発スピードを向上させ、人間の技術的判断がコード品質・保守性・本番環境への適合を担保します。
+      </p>
 
       <h2>免許・資格</h2>
       <ul class="cert-list">
@@ -364,11 +562,51 @@
     <main class="main">
       <h2>職務要約</h2>
       <p class="summary">
-        FA（工場自動化）分野における3年以上のR&amp;D経験と、AI画像処理・ロボット制御・PLCシステム構築の
-        専門知識を活かし、グローバル市場向けテクニカルセールス／プリセールスとして貢献します。
-        技術的なバックグラウンド（電気工事士、安川ロボット資格等）を強みに、顧客の現場課題を正確に把握し、
-        最適かつ高付加価値なスマートファクトリーソリューションを提案・実現します。
+        日本の製造業界で3年以上のFA（工場自動化）R&amp;D実務経験を持つ制御設計エンジニアです。
+        PLCシステム構築、AI画像処理、ロボット制御（キーエンス、三菱、オムロン、安川）に精通しています。
+        C#／Python／C++を用いたソフトウェア開発スキルと、Claude Code、Codex、Google AI Studioを活用した
+        AI支援開発ワークフローの実務経験を持ち、要件定義からプロトタイプ構築、テスト、デプロイメントまで
+        一貫して対応可能です。自動化ハードウェアとスマートファクトリーソリューションの架け橋となることを
+        目指しています。
       </p>
+
+      <h2>プロジェクト</h2>
+
+      <div class="project-item">
+        <div class="project-name">ReMarket <span class="project-link"><a href="https://remarket.hoangvuvan.xyz/" target="_blank">🌐 remarket.hoangvuvan.xyz</a></span> <span class="blink">← Click</span></div>
+        <div class="project-desc">中古品マーケットプレイスWebプラットフォーム</div>
+        <div class="project-tech">フルスタックWeb開発 &middot; AI支援開発</div>
+      </div>
+
+      <div class="project-item">
+        <div class="project-name">HATSCADA <span class="project-link"><a href="https://hatscada.hoangvuvan.xyz/" target="_blank">🌐 hatscada.hoangvuvan.xyz</a></span> <span class="blink">← Click</span></div>
+        <div class="project-desc">PLC連携リアルタイム工場監視SCADAシステム</div>
+        <div class="project-tech">C#、.NET、PLC通信、Webベース監視</div>
+      </div>
+
+      <div class="project-item">
+        <div class="project-name">TubeMake <span class="project-link"><a href="https://tubemake.hoangvuvan.xyz/" target="_blank">🌐 tubemake.hoangvuvan.xyz</a></span> <span class="blink">← Click</span></div>
+        <div class="project-desc">AI活用自動動画作成プラットフォーム</div>
+        <div class="project-tech">Python、AI/動画API、自動化 &middot; AI支援開発</div>
+      </div>
+
+      <div class="project-item">
+        <div class="project-name">AutoCut <span class="project-link"><a href="https://autocut.hoangvuvan.xyz/" target="_blank">🌐 autocut.hoangvuvan.xyz</a></span> <span class="blink">← Click</span></div>
+        <div class="project-desc">YouTubeリンクからの自動動画カットツール</div>
+        <div class="project-tech">Python、動画処理、YouTube API &middot; AI支援開発</div>
+      </div>
+
+      <div class="project-item">
+        <div class="project-name">Portfolio <span class="project-link"><a href="https://portfolio.hoangvuvan.xyz/" target="_blank">🌐 portfolio.hoangvuvan.xyz</a></span> <span class="blink">← Click</span></div>
+        <div class="project-desc">個人ポートフォリオWebサイト</div>
+        <div class="project-tech">HTML、CSS、JavaScript</div>
+      </div>
+
+      <h2>AI開発ワークフロー</h2>
+      <div class="workflow">
+        <span class="flow">要件定義 → AI支援アーキテクチャ設計 → コード生成 → レビュー → テスト → Git/GitHub → デプロイメント</span>
+        Claude Code、Codex、Geminiを開発コパイロットとして活用し、アーキテクチャ決定、コード品質管理、デバッグ、テスト、本番デプロイメントの責任を自ら担います。
+      </div>
 
       <h2>職歴</h2>
 
@@ -466,7 +704,7 @@
       <h2>志望動機・本人希望</h2>
       <p class="summary">
         日本のFA業界において、AI画像処理、産業用ロボット、PLCシステム等のR&amp;D開発に3年以上従事してまいりました。
-        今後はこれまでの開発実績および技術的バックグラウンド（C#／Python／C++、制御設計）を活かし、
+        今後はこれまでの開発実績および技術的バックグラウンド（C#／Python／C++、制御設計、AI支援ソフトウェア開発）を活かし、
         <strong>ソリューションエンジニア</strong>、<strong>技術コンサルタント</strong>、
         <strong>ブリッジエンジニア</strong>としてより広い領域で活躍したいと考えております。
         単なる製品・機能開発にとどまらず、現場の課題解決に向けた技術提案やシステム設計、
@@ -490,5 +728,6 @@
     </main>
   </div>
 </div>
+<button class="download-btn" onclick="window.print()">⬇ PDFダウンロード</button>
 </body>
 </html>
