@@ -11,7 +11,7 @@ export const langLabels: Record<Lang, string> = {
 export const profile = {
   brandName: 'HOANGAUTOMATION',
   brandInitials: 'HAT',
-  email: 'vuvnhn8@gmail.com',
+  email: 'contact@hoangvuvan.xyz',
   linkedInUrl: 'https://www.linkedin.com/in/%E3%83%9B%E3%82%A2%E3%83%B3-%E3%83%B4%E3%83%B4%E3%82%A1%E3%83%B3-b242a7401/',
   facebookUrl: 'https://www.facebook.com/vuvnhn',
   instagramUrl: 'https://www.instagram.com/riceskrtttricemoney/',
