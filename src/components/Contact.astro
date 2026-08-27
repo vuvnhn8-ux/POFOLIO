@@ -45,8 +45,9 @@ const socials = [
     <div class="glass-deep mx-auto flex max-w-sm flex-col items-center gap-8 rounded-[2.5rem] px-10 py-12 text-center">
 
       <!-- ── Large mail icon button (no email text) ── -->
-      <a
-        href={`mailto:${profile.email}`}
+      <button
+        type="button"
+        data-email={profile.email}
         class="contact-mail-btn"
         aria-label="Send email"
         title="Send email"
@@ -64,7 +65,7 @@ const socials = [
           <rect x="2" y="4" width="20" height="16" rx="3" />
           <path d="M2 7l10 7 10-7" />
         </svg>
-      </a>
+      </button>
 
       <!-- ── Four social icon buttons ── -->
       <div class="flex items-center gap-4" aria-label="Social profiles">
@@ -110,6 +111,16 @@ const socials = [
     </div>
   </div>
 </section>
+
+<script>
+  const contactMailBtn = document.querySelector('.contact-mail-btn');
+  if (contactMailBtn) {
+    contactMailBtn.addEventListener('click', () => {
+      const email = contactMailBtn.getAttribute('data-email') || '';
+      window.open('https://mail.google.com/mail/?view=cm&fs=1&to=' + encodeURIComponent(email), '_blank');
+    });
+  }
+</script>
 
 <style>
   /* ── Mail button — larger primary icon ── */
