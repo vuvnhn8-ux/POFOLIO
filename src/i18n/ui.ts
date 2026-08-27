@@ -17,7 +17,7 @@ export const profile = {
   instagramUrl: 'https://www.instagram.com/riceskrtttricemoney/',
   whatsappUrl: 'https://wa.me/817090122965',
   githubUrl: 'https://github.com/vuvnhn8-ux',
-  cvPath: '/public/cv.pdf',
+  cvPath: 'https://onlinecv.hoangvuvan.xyz/',
   portrait: '/images/personal-11.jpg',
 };
 
