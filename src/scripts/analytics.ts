@@ -132,6 +132,25 @@ function onExit(): void {
   track('exit', { dur: Date.now() - session.start });
 }
 
+let lastClick: { label: string; ts: number } = { label: '', ts: 0 };
+document.addEventListener('click', (e) => {
+  const target = e.target as Element | null;
+  const el = target?.closest?.('a[href],button,[data-pa]') as Element | null;
+  if (!el) return;
+  let label = el.getAttribute('data-pa') || '';
+  if (!label) {
+    const text = (el.textContent || '').trim().replace(/\s+/g, ' ');
+    if (el.tagName === 'A') label = text || el.getAttribute('href') || '';
+    else label = text || 'button';
+  }
+  label = String(label).slice(0, 120);
+  if (!label) return;
+  const nowTs = Date.now();
+  if (label === lastClick.label && nowTs - lastClick.ts < 500) return;
+  lastClick = { label, ts: nowTs };
+  track('click', { page, label });
+});
+
 window.setInterval(() => track('heartbeat'), HEARTBEAT_MS);
 window.addEventListener('pagehide', onExit);
 document.addEventListener('visibilitychange', () => {
